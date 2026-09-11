@@ -10,7 +10,7 @@
   --bg-elevated: hsl(224, 35%, 19%);
 
   /* Surface & Glassmorphism */
-  --surface-glass: rgba(17, 24, 39, 0.72);
+  --surface-glass: rgba(17, 24, 39, 0.75);
   --surface-glass-border: rgba(255, 255, 255, 0.08);
   --surface-glass-hover: rgba(30, 41, 59, 0.85);
   --surface-card: hsl(223, 40%, 12%);
@@ -27,6 +27,20 @@
   --accent-emerald: hsl(150, 84%, 48%);
   --accent-amber: hsl(38, 92%, 50%);
 
+  /* Backwards-compatibility Aliases */
+  --color-bg: var(--bg-primary);
+  --color-surface: var(--surface-card);
+  --color-border: var(--surface-card-border);
+  --color-border-glow: rgba(0, 240, 255, 0.3);
+  --color-primary: var(--accent-cyan);
+  --color-secondary: var(--accent-purple);
+  --color-success: var(--accent-emerald);
+  --color-text-main: var(--text-primary);
+  --color-text-muted: var(--text-secondary);
+  --gradient-primary: var(--grad-accent-text);
+  --font-display: var(--font-heading);
+  --shadow-xl: var(--shadow-lg);
+
   /* Gradients */
   --grad-cyan-blue: linear-gradient(135deg, hsl(187, 94%, 52%) 0%, hsl(217, 91%, 60%) 100%);
   --grad-purple-pink: linear-gradient(135deg, hsl(270, 91%, 65%) 0%, hsl(330, 85%, 60%) 100%);
@@ -40,16 +54,16 @@
   --font-mono: 'JetBrains Mono', 'Fira Code', Menlo, Monaco, Consolas, monospace;
 
   /* Font Sizes */
-  --text-xs: 0.75rem;    /* 12px */
-  --text-sm: 0.875rem;   /* 14px */
-  --text-base: 1rem;     /* 16px */
-  --text-lg: 1.125rem;   /* 18px */
-  --text-xl: 1.25rem;    /* 20px */
-  --text-2xl: 1.5rem;    /* 24px */
-  --text-3xl: 2rem;      /* 32px */
-  --text-4xl: 2.5rem;    /* 40px */
-  --text-5xl: 3.5rem;    /* 56px */
-  --text-6xl: 4.5rem;    /* 72px */
+  --text-xs: 0.75rem;
+  --text-sm: 0.875rem;
+  --text-base: 1rem;
+  --text-lg: 1.125rem;
+  --text-xl: 1.25rem;
+  --text-2xl: 1.5rem;
+  --text-3xl: 2rem;
+  --text-4xl: 2.5rem;
+  --text-5xl: 3.5rem;
+  --text-6xl: 4.5rem;
 
   /* Text Colors */
   --text-primary: hsl(210, 40%, 98%);
@@ -64,13 +78,14 @@
   --space-4: 1rem;
   --space-6: 1.5rem;
   --space-8: 2rem;
+  --space-10: 2.5rem;
   --space-12: 3rem;
   --space-16: 4rem;
   --space-24: 6rem;
   --space-32: 8rem;
 
   /* Layout Containers */
-  --container-max: 1240px;
+  --container-max: 1200px;
   --container-pad: 1.5rem;
 
   /* Borders & Radii */

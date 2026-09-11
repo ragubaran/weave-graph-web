@@ -269,9 +269,11 @@
 .stat-number {
   font-size: 2.75rem;
   font-weight: 800;
-  font-family: var(--font-display);
-  background: var(--gradient-primary);
+  font-family: var(--font-heading);
+  color: var(--accent-cyan);
+  background: var(--grad-accent-text);
   -webkit-background-clip: text;
+  background-clip: text;
   -webkit-text-fill-color: transparent;
   display: block;
   line-height: 1.1;
