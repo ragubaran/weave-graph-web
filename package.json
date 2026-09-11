@@ -1,0 +1,17 @@
+{
+  "name": "weave-graph-web",
+  "version": "1.0.0",
+  "description": "Official website and documentation for weave-graph code intelligence engine",
+  "scripts": {
+    "dev": "npx -y serve . -l 3000",
+    "start": "npx -y serve . -l 3000"
+  },
+  "keywords": [
+    "code-intelligence",
+    "graph",
+    "mcp",
+    "ai-agents",
+    "rust"
+  ],
+  "license": "MIT"
+}

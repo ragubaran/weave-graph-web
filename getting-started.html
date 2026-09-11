@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Getting Started | Weave Graph Documentation</title>
+  <meta name="description" content="Quick start guide for Weave Graph: Installation via Homebrew, Cargo, npx, PyPI, repository indexing, and Model Context Protocol (MCP) setup with Claude and Cursor.">
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="Getting Started with Weave Graph">
+  <meta property="og:description" content="Install in seconds, index your codebase, and attach Weave Graph MCP to Claude Code or Cursor.">
+  <meta property="og:type" content="article">
+  <meta property="og:image" content="/assets/img/favicon.svg">
+
+  <link rel="icon" type="image/svg+xml" href="/assets/img/favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="/assets/css/variables.css">
+  <link rel="stylesheet" href="/assets/css/animations.css">
+  <link rel="stylesheet" href="/assets/css/main.css">
+  <link rel="stylesheet" href="/assets/css/components.css">
+</head>
+<body>
+
+  <!-- Navigation Header -->
+  <header class="navbar">
+    <div class="container navbar-inner">
+      <a href="index.html" class="brand">
+        <svg class="brand-icon" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="16" cy="16" r="14" stroke="url(#logo-grad)" stroke-width="2.5" />
+          <circle cx="9" cy="16" r="3" fill="#00f0ff" />
+          <circle cx="23" cy="10" r="3" fill="#a855f7" />
+          <circle cx="21" cy="22" r="3" fill="#00f0ff" />
+          <path d="M9 16L23 10M9 16L21 22M23 10L21 22" stroke="rgba(255,255,255,0.7)" stroke-width="1.5" />
+          <defs>
+            <linearGradient id="logo-grad" x1="0" y1="0" x2="32" y2="32" gradientUnits="userSpaceOnUse">
+              <stop stop-color="#00f0ff" />
+              <stop offset="1" stop-color="#a855f7" />
+            </linearGradient>
+          </defs>
+        </svg>
+        <span>weave-graph</span>
+        <span class="badge badge-cyan" style="font-size: 0.7rem; margin-left: 0.25rem;">v1.0.0</span>
+      </a>
+
+      <nav class="nav-links">
+        <a href="index.html">Overview</a>
+        <a href="getting-started.html" class="active">Getting Started</a>
+        <a href="comparison.html">Comparison</a>
+        <a href="release-notes.html">Release Notes</a>
+        <a href="roadmap.html">Roadmap</a>
+      </nav>
+
+      <div class="nav-actions">
+        <a href="https://github.com/ragubaran/weave-graph" target="_blank" rel="noopener noreferrer" class="btn btn-secondary" style="padding: 0.5rem 0.85rem;" title="GitHub Repository">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+        </a>
+        <a href="#installation" class="btn btn-primary">Install</a>
+        <button class="mobile-menu-toggle" aria-label="Toggle Navigation">☰</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Content Section -->
+  <main class="section">
+    <div class="container" style="max-width: 960px;">
+      
+      <!-- Page Title -->
+      <div style="margin-bottom: var(--space-10);">
+        <span class="badge badge-cyan" style="margin-bottom: var(--space-2);">Documentation</span>
+        <h1 style="font-size: 2.75rem; font-weight: 800; letter-spacing: -0.02em;">Getting Started</h1>
+        <p style="color: var(--color-text-muted); font-size: 1.15rem; margin-top: var(--space-2);">
+          Install the <code style="font-family: var(--font-mono); color: var(--color-primary);">weave</code> binary, index your repository, and enable deterministic code intelligence in your IDE.
+        </p>
+      </div>
+
+      <!-- Step 1: Installation -->
+      <section id="installation" style="margin-bottom: var(--space-12);">
+        <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: var(--space-4);">
+          <span style="display: flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 50%; background: var(--color-primary); color: #000; font-weight: 800;">1</span>
+          <h2 style="font-size: 1.75rem; font-weight: 700;">Install the CLI Binary</h2>
+        </div>
+        <p style="color: var(--color-text-muted); margin-bottom: var(--space-4);">
+          Select your package manager. All prebuilt binaries are statically linked with bundled SQLite and zero external runtime dependencies.
+        </p>
+
+        <div class="code-tabs-wrapper">
+          <div class="code-tabs-header">
+            <div class="code-tabs-nav">
+              <button class="tab-btn active" data-target="get-brew">Homebrew (macOS/Linux)</button>
+              <button class="tab-btn" data-target="get-cargo">Cargo (Rust)</button>
+              <button class="tab-btn" data-target="get-npm">npm / npx</button>
+              <button class="tab-btn" data-target="get-pypi">PyPI (pip / uv)</button>
+              <button class="tab-btn" data-target="get-source">Build from Source</button>
+            </div>
+            <button class="copy-btn">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+              <span>Copy</span>
+            </button>
+          </div>
+          <pre id="get-brew" class="code-pane active"><code># Tap and install the official formula
+brew tap ragubaran/tap
+brew install weave-graph
+
+# Verify installation
+weave --version</code></pre>
+          <pre id="get-cargo" class="code-pane"><code># Compile from crates.io with locked dependencies
+cargo install weave-graph-cli --locked
+
+# Verify installation
+weave --version</code></pre>
+          <pre id="get-npm" class="code-pane"><code># Run without global install
+npx @weave-graph/cli init
+
+# Or install globally
+npm install -g @weave-graph/cli
+weave --version</code></pre>
+          <pre id="get-pypi" class="code-pane"><code># Install via uv (recommended)
+uv tool install weave-graph
+
+# Or standard pip
+pip install weave-graph
+weave --version</code></pre>
+          <pre id="get-source" class="code-pane"><code># Clone repository
+git clone https://github.com/ragubaran/weave-graph.git
+cd weave-graph
+
+# Build optimized production release
+cargo build --release -p weave-graph-cli
+cp target/release/weave /usr/local/bin/</code></pre>
+        </div>
+      </section>
+
+      <!-- Step 2: Initialize & Index -->
+      <section id="indexing" style="margin-bottom: var(--space-12);">
+        <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: var(--space-4);">
+          <span style="display: flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 50%; background: var(--color-primary); color: #000; font-weight: 800;">2</span>
+          <h2 style="font-size: 1.75rem; font-weight: 700;">Initialize and Index Repository</h2>
+        </div>
+        <p style="color: var(--color-text-muted); margin-bottom: var(--space-4);">
+          Weave Graph supports both single repository mode and multi-repo / monorepo federations.
+        </p>
+
+        <div class="code-tabs-wrapper">
+          <div class="code-tabs-header">
+            <div class="code-tabs-nav">
+              <button class="tab-btn active" data-target="mode-single">Single Repository Mode</button>
+              <button class="tab-btn" data-target="mode-multi">Multi-Repo Federation Mode</button>
+            </div>
+            <button class="copy-btn">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+              <span>Copy</span>
+            </button>
+          </div>
+          <pre id="mode-single" class="code-pane active"><code># 1. Initialize inside project root (creates .weave/config.toml)
+weave init --mode single
+
+# 2. Build full AST index (parallel Tree-sitter parse across CPU cores)
+weave index
+
+# 3. Verify SQLite graph integrity and stats
+weave check</code></pre>
+          <pre id="mode-multi" class="code-pane"><code># 1. Initialize multi-repo federation
+weave init --mode multiple
+
+# 2. Add sibling workspace repositories
+weave repo add core ../backend-core
+weave repo add api ../gateway-api
+
+# 3. Index all repositories in parallel with cross-repo edge resolution
+weave index --parallel</code></pre>
+        </div>
+      </section>
+
+      <!-- Step 3: MCP Agent Setup -->
+      <section id="mcp-setup" style="margin-bottom: var(--space-12);">
+        <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: var(--space-4);">
+          <span style="display: flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 50%; background: var(--color-primary); color: #000; font-weight: 800;">3</span>
+          <h2 style="font-size: 1.75rem; font-weight: 700;">Connect AI Agents (Claude Code, Cursor, Windsurf)</h2>
+        </div>
+        <p style="color: var(--color-text-muted); margin-bottom: var(--space-4);">
+          Weave Graph embeds a native Model Context Protocol (MCP) server that runs over standard I/O (stdio) or localhost HTTP/SSE. It exposes structural query tools without needing any cloud API.
+        </p>
+
+        <div class="code-tabs-wrapper">
+          <div class="code-tabs-header">
+            <div class="code-tabs-nav">
+              <button class="tab-btn active" data-target="mcp-claude">Claude Code CLI</button>
+              <button class="tab-btn" data-target="mcp-cursor">Cursor IDE</button>
+              <button class="tab-btn" data-target="mcp-windsurf">Windsurf / Antigravity</button>
+            </div>
+            <button class="copy-btn">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+              <span>Copy</span>
+            </button>
+          </div>
+          <pre id="mcp-claude" class="code-pane active"><code># Run one command to register Weave Graph in Claude Code:
+claude mcp add weave-graph weave serve --mcp
+
+# Verify registration
+claude mcp list</code></pre>
+          <pre id="mcp-cursor" class="code-pane"><code>// Add to ~/.cursor/mcp.json or workspace .cursor/mcp.json:
+{
+  "mcpServers": {
+    "weave-graph": {
+      "command": "weave",
+      "args": ["serve", "--mcp"]
+    }
+  }
+}</code></pre>
+          <pre id="mcp-windsurf" class="code-pane"><code>// Add to ~/.codeium/windsurf/mcp_config.json:
+{
+  "mcpServers": {
+    "weave-graph": {
+      "command": "weave",
+      "args": ["serve", "--mcp"]
+    }
+  }
+}</code></pre>
+        </div>
+      </section>
+
+      <!-- Step 4: CLI Query Reference -->
+      <section id="cli-reference" style="margin-bottom: var(--space-12);">
+        <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: var(--space-4);">
+          <span style="display: flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 50%; background: var(--color-primary); color: #000; font-weight: 800;">4</span>
+          <h2 style="font-size: 1.75rem; font-weight: 700;">Query Commands Cheat Sheet</h2>
+        </div>
+        <p style="color: var(--color-text-muted); margin-bottom: var(--space-4);">
+          You can run graph queries directly from your shell or let agent tools invoke them automatically:
+        </p>
+
+        <div class="grid grid-2">
+          <div class="glass-card">
+            <h3 style="font-size: 1.1rem; color: var(--color-primary); font-family: var(--font-mono); margin-bottom: 0.5rem;">weave callers &lt;symbol&gt;</h3>
+            <p style="font-size: 0.9rem; color: var(--color-text-muted); line-height: 1.6;">
+              Discovers every inbound call site referencing a given function, method, or struct across all indexed crates.
+            </p>
+          </div>
+
+          <div class="glass-card">
+            <h3 style="font-size: 1.1rem; color: var(--color-primary); font-family: var(--font-mono); margin-bottom: 0.5rem;">weave callees &lt;symbol&gt;</h3>
+            <p style="font-size: 0.9rem; color: var(--color-text-muted); line-height: 1.6;">
+              Extracts all downstream symbols and dependencies invoked inside a target definition.
+            </p>
+          </div>
+
+          <div class="glass-card">
+            <h3 style="font-size: 1.1rem; color: var(--color-primary); font-family: var(--font-mono); margin-bottom: 0.5rem;">weave impact &lt;path&gt;</h3>
+            <p style="font-size: 0.9rem; color: var(--color-text-muted); line-height: 1.6;">
+              Calculates blast radius for refactors: transitive dependents, consumer files, and affected crate boundaries.
+            </p>
+          </div>
+
+          <div class="glass-card">
+            <h3 style="font-size: 1.1rem; color: var(--color-primary); font-family: var(--font-mono); margin-bottom: 0.5rem;">weave path &lt;from&gt; &lt;to&gt;</h3>
+            <p style="font-size: 0.9rem; color: var(--color-text-muted); line-height: 1.6;">
+              Finds the shortest directed call or dependency path connecting two symbols in the CSR graph.
+            </p>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container footer-inner">
+      <div class="footer-brand">
+        <a href="index.html" class="brand">
+          <svg class="brand-icon" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="16" cy="16" r="14" stroke="url(#footer-grad)" stroke-width="2.5" />
+            <circle cx="9" cy="16" r="3" fill="#00f0ff" />
+            <circle cx="23" cy="10" r="3" fill="#a855f7" />
+            <path d="M9 16L23 10" stroke="rgba(255,255,255,0.7)" stroke-width="1.5" />
+            <defs>
+              <linearGradient id="footer-grad" x1="0" y1="0" x2="32" y2="32" gradientUnits="userSpaceOnUse">
+                <stop stop-color="#00f0ff" />
+                <stop offset="1" stop-color="#a855f7" />
+              </linearGradient>
+            </defs>
+          </svg>
+          <span>weave-graph</span>
+        </a>
+        <p class="footer-tagline">
+          The memory-safe, ultra-lightweight code intelligence engine for AI agents. Built with pure Rust 2024 and deterministic AST graphs.
+        </p>
+      </div>
+
+      <div class="footer-nav">
+        <div class="footer-col">
+          <div class="footer-col-title">Documentation</div>
+          <ul class="footer-links">
+            <li><a href="getting-started.html">Getting Started</a></li>
+            <li><a href="getting-started.html#mcp-setup">Claude & Cursor MCP</a></li>
+            <li><a href="comparison.html">Market Comparison</a></li>
+            <li><a href="roadmap.html">Interactive Roadmap</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <div class="footer-col-title">Releases</div>
+          <ul class="footer-links">
+            <li><a href="release-notes.html">v1.0.0 Release Notes</a></li>
+            <li><a href="release-notes.html#milestones">Deliverable Matrix</a></li>
+            <li><a href="https://github.com/ragubaran/weave-graph/releases" target="_blank" rel="noopener noreferrer">GitHub Releases</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <div class="footer-col-title">Community</div>
+          <ul class="footer-links">
+            <li><a href="https://github.com/ragubaran/weave-graph" target="_blank" rel="noopener noreferrer">GitHub Repository</a></li>
+            <li><a href="https://github.com/ragubaran/weave-graph/issues" target="_blank" rel="noopener noreferrer">Issue Tracker</a></li>
+            <li><a href="https://github.com/ragubaran/weave-graph/blob/main/LICENSE" target="_blank" rel="noopener noreferrer">Apache-2.0 / MIT License</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="container footer-bottom">
+      <div>© 2026 Weave Graph Contributors. Pure Rust Deterministic Engine.</div>
+      <div>Zero Telemetry • Zero Network Calls</div>
+    </div>
+  </footer>
+
+  <script src="/assets/js/main.js"></script>
+  <script src="/assets/js/tabs.js"></script>
+  <script src="/assets/js/copy.js"></script>
+</body>
+</html>
