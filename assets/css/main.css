@@ -369,84 +369,164 @@ code, kbd, samp, pre {
 }
 
 /* ==========================================================================
-   Footer
+   Footer & Sub-Columns
    ========================================================================== */
 .footer, .site-footer {
   margin-top: auto;
-  border-top: 1px solid var(--surface-glass-border);
-  background: hsl(222, 47%, 5%);
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  background: radial-gradient(circle at 50% 0%, rgba(13, 20, 36, 0.95), hsl(222, 47%, 4%));
   padding: var(--space-16) 0 var(--space-8) 0;
+  position: relative;
+  overflow: hidden;
 }
 
-.footer-inner, .footer-grid {
+.footer::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 15%;
+  right: 15%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(0, 240, 255, 0.5), rgba(168, 85, 247, 0.5), transparent);
+}
+
+.footer-inner {
   display: grid;
-  grid-template-columns: 2fr repeat(3, 1fr);
-  gap: var(--space-8);
+  grid-template-columns: 1.25fr 2fr;
+  gap: var(--space-12);
   margin-bottom: var(--space-12);
+  align-items: start;
+}
+
+.footer-brand {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.footer-brand .brand {
+  margin-bottom: var(--space-3);
 }
 
 .footer-brand p, .footer-tagline {
-  margin-top: var(--space-4);
-  font-size: 0.875rem;
-  max-width: 340px;
-  color: var(--text-muted);
+  font-size: 0.9rem;
+  max-width: 360px;
+  color: var(--text-secondary);
   line-height: 1.6;
+  margin-bottom: var(--space-4);
+}
+
+/* Footer Sub-Columns (Documentation, Releases, Community) */
+.footer-nav {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-8);
+}
+
+.footer-col {
+  display: flex;
+  flex-direction: column;
 }
 
 .footer-col-title, .footer-col h4 {
+  font-family: var(--font-heading);
   font-size: 0.85rem;
-  color: var(--text-primary);
-  margin-bottom: var(--space-4);
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
   font-weight: 700;
+  color: #ffffff;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: var(--space-4);
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.footer-col-title::after, .footer-col h4::after {
+  content: "";
+  display: block;
+  width: 22px;
+  height: 2px;
+  background: var(--accent-cyan);
+  border-radius: 2px;
 }
 
 .footer-links {
   list-style: none;
   display: flex;
   flex-direction: column;
-  gap: var(--space-2);
+  gap: 0.65rem;
   padding: 0;
   margin: 0;
+}
+
+.footer-links li {
+  margin: 0;
+  padding: 0;
 }
 
 .footer-links a {
   font-size: 0.875rem;
   color: var(--text-muted);
   text-decoration: none;
-  transition: color var(--transition-fast);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  transition: color var(--transition-fast), transform var(--transition-fast);
+}
+
+.footer-links a::before {
+  content: "›";
+  color: rgba(255, 255, 255, 0.25);
+  font-weight: bold;
+  font-size: 1.1rem;
+  line-height: 1;
+  transition: color var(--transition-fast), transform var(--transition-fast);
 }
 
 .footer-links a:hover {
   color: var(--accent-cyan);
+  transform: translateX(4px);
+}
+
+.footer-links a:hover::before {
+  color: var(--accent-cyan);
+  transform: translateX(2px);
 }
 
 .footer-bottom {
-  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
   padding-top: var(--space-6);
   display: flex;
   align-items: center;
   justify-content: space-between;
-  font-size: 0.8rem;
+  font-size: 0.825rem;
   color: var(--text-dim);
   flex-wrap: wrap;
   gap: 1rem;
 }
 
-@media (max-width: 900px) {
-  .footer-inner, .footer-grid {
-    grid-template-columns: 1fr 1fr;
-    gap: var(--space-6);
+@media (max-width: 960px) {
+  .footer-inner {
+    grid-template-columns: 1fr;
+    gap: var(--space-10);
   }
 }
 
-@media (max-width: 600px) {
-  .footer-inner, .footer-grid {
+@media (max-width: 680px) {
+  .footer-nav {
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-8);
+  }
+}
+
+@media (max-width: 480px) {
+  .footer-nav {
     grid-template-columns: 1fr;
+    gap: var(--space-6);
   }
   .footer-bottom {
     flex-direction: column;
     text-align: center;
+    gap: var(--space-2);
   }
 }
