@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Release Notes v1.0.0 | Weave Graph</title>
-  <meta name="description" content="Release notes for Weave Graph v1.0.0: Pure Rust 2024 core, CSR matrix indexing, crash resilience, MCP server, and multi-repo federation.">
+  <meta name="description" content="Release notes for Weave Graph v1.0.0: Pure Rust 2024 core, CSR matrix indexing, crash resilience, MCP server, local SLM linking, and multi-repo federation.">
 
   <!-- Open Graph -->
   <meta property="og:title" content="Weave Graph v1.0.0 Release Notes">
@@ -159,6 +159,13 @@
               Automated multi-channel deployment via GitHub Actions: Homebrew Tap (<code style="font-family: var(--font-mono); color: var(--color-primary);">brew install weave-graph</code>), Cargo (<code style="font-family: var(--font-mono); color: var(--color-primary);">cargo install weave-graph-cli</code>), npm/npx (<code style="font-family: var(--font-mono); color: var(--color-primary);">@weave-graph/cli</code>), and PyPI (<code style="font-family: var(--font-mono); color: var(--color-primary);">weave-graph</code>).
             </p>
           </div>
+
+          <div class="glass-card">
+            <h3 style="font-size: 1.25rem; color: var(--color-text-main); margin-bottom: var(--space-2);">7. Local SLM Linking & Intent Routing (--features slm)</h3>
+            <p style="color: var(--color-text-muted); font-size: 0.95rem; line-height: 1.6;">
+              Optional on-device SLM linking (<code style="font-family: var(--font-mono); color: var(--color-primary);">weave ask</code>) for zero-cloud terminal queries. Strictly grounds natural language inputs against AST symbols to prevent hallucinations, downloads checksummed GGUF models (<code style="font-family: var(--font-mono); color: var(--color-primary);">weave slm pull</code>), extracts ADR rules (<code style="font-family: var(--font-mono); color: var(--color-primary);">weave slm review-rules</code>), and maintains 0MB idle RAM.
+            </p>
+          </div>
         </div>
       </section>
 
@@ -169,8 +176,8 @@
           <pre style="margin: 0; font-family: var(--font-mono); font-size: 0.9rem; color: #e6edf3;"><code># Homebrew
 brew update && brew upgrade weave-graph
 
-# Cargo
-cargo install weave-graph-cli --force --locked
+# Cargo (with optional SLM feature)
+cargo install weave-graph-cli --features slm --force --locked
 
 # npm
 npm update -g @weave-graph/cli
@@ -213,6 +220,7 @@ weave check --migrate</code></pre>
           <ul class="footer-links">
             <li><a href="getting-started.html">Getting Started</a></li>
             <li><a href="getting-started.html#mcp-setup">Claude & Cursor MCP</a></li>
+            <li><a href="getting-started.html#slm-setup">Local SLM Linking</a></li>
             <li><a href="comparison.html">Market Comparison</a></li>
             <li><a href="roadmap.html">Interactive Roadmap</a></li>
           </ul>

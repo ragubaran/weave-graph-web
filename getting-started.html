@@ -4,11 +4,11 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Getting Started | Weave Graph Documentation</title>
-  <meta name="description" content="Quick start guide for Weave Graph: Installation via Homebrew, Cargo, npx, PyPI, repository indexing, and Model Context Protocol (MCP) setup with Claude and Cursor.">
+  <meta name="description" content="Quick start guide for Weave Graph: Installation via Homebrew, Cargo, npx, PyPI, repository indexing, Model Context Protocol (MCP) setup with Claude and Cursor, and Local SLM linking.">
 
   <!-- Open Graph -->
   <meta property="og:title" content="Getting Started with Weave Graph">
-  <meta property="og:description" content="Install in seconds, index your codebase, and attach Weave Graph MCP to Claude Code or Cursor.">
+  <meta property="og:description" content="Install in seconds, index your codebase, attach Weave Graph MCP to Claude Code or Cursor, and enable on-device SLM query routing.">
   <meta property="og:type" content="article">
   <meta property="og:image" content="/assets/img/favicon.svg">
 
@@ -72,7 +72,7 @@
         <span class="badge badge-cyan" style="margin-bottom: var(--space-2);">Documentation</span>
         <h1 style="font-size: 2.75rem; font-weight: 800; letter-spacing: -0.02em;">Getting Started</h1>
         <p style="color: var(--color-text-muted); font-size: 1.15rem; margin-top: var(--space-2);">
-          Install the <code style="font-family: var(--font-mono); color: var(--color-primary);">weave</code> binary, index your repository, and enable deterministic code intelligence in your IDE.
+          Install the <code style="font-family: var(--font-mono); color: var(--color-primary);">weave</code> binary, index your repository, link Local SLM models, and attach AI coding agents via MCP.
         </p>
       </div>
 
@@ -109,6 +109,9 @@ weave --version</code></pre>
           <pre id="get-cargo" class="code-pane"><code># Compile from crates.io with locked dependencies
 cargo install weave-graph-cli --locked
 
+# Or compile with optional local SLM support enabled
+cargo install weave-graph-cli --features slm --locked
+
 # Verify installation
 weave --version</code></pre>
           <pre id="get-npm" class="code-pane"><code># Run without global install
@@ -128,7 +131,7 @@ git clone https://github.com/ragubaran/weave-graph.git
 cd weave-graph
 
 # Build optimized production release
-cargo build --release -p weave-graph-cli
+cargo build --release -p weave-graph-cli --features slm
 cp target/release/weave /usr/local/bin/</code></pre>
         </div>
       </section>
@@ -181,7 +184,7 @@ weave index --parallel</code></pre>
           <h2 style="font-size: 1.75rem; font-weight: 700;">Connect AI Agents (Claude Code, Cursor, Windsurf)</h2>
         </div>
         <p style="color: var(--color-text-muted); margin-bottom: var(--space-4);">
-          Weave Graph embeds a native Model Context Protocol (MCP) server that runs over standard I/O (stdio) or localhost HTTP/SSE. It exposes structural query tools without needing any cloud API.
+          Weave Graph embeds a native Model Context Protocol (MCP) server that runs over standard I/O (stdio) or localhost HTTP/SSE. It cuts agent context consumption by <strong>92%</strong> by feeding exact sub-graphs instead of raw source code dumps.
         </p>
 
         <div class="code-tabs-wrapper">
@@ -222,10 +225,74 @@ claude mcp list</code></pre>
         </div>
       </section>
 
-      <!-- Step 4: CLI Query Reference -->
-      <section id="cli-reference" style="margin-bottom: var(--space-12);">
+      <!-- Step 4: Local SLM Linking -->
+      <section id="slm-setup" style="margin-bottom: var(--space-12);">
         <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: var(--space-4);">
           <span style="display: flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 50%; background: var(--color-primary); color: #000; font-weight: 800;">4</span>
+          <h2 style="font-size: 1.75rem; font-weight: 700;">Local SLM Linking (<code style="font-family: var(--font-mono); font-size: 1.4rem; color: var(--color-primary);">weave slm</code> & <code style="font-family: var(--font-mono); font-size: 1.4rem; color: var(--color-primary);">weave ask</code>)</h2>
+        </div>
+        <p style="color: var(--color-text-muted); margin-bottom: var(--space-4);">
+          When compiled with <code style="font-family: var(--font-mono); color: var(--color-primary);">--features slm</code>, Weave Graph links a local Small Language Model (0.5B–3B GGUF) for on-device natural language routing with <strong>zero cloud data egress</strong> and <strong>0MB idle RAM</strong> until invoked.
+        </p>
+
+        <div class="code-tabs-wrapper">
+          <div class="code-tabs-header">
+            <div class="code-tabs-nav">
+              <button class="tab-btn active" data-target="slm-query">Terminal NL Queries (weave ask)</button>
+              <button class="tab-btn" data-target="slm-models">Model Pull & Lifecycle</button>
+              <button class="tab-btn" data-target="slm-config">Configuration (.weave/config.toml)</button>
+              <button class="tab-btn" data-target="slm-rules">ADR Rule Mining & Journal</button>
+            </div>
+            <button class="copy-btn">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+              <span>Copy</span>
+            </button>
+          </div>
+
+          <pre id="slm-query" class="code-pane active"><code># Ask questions in natural language right in your shell
+weave ask "Who calls verifyJWTSession and what is its blast radius?"
+
+# The SLM strictly grounds parameters against the symbol index:
+# Resolved query: get_symbol_callers(symbol="verifyJWTSession", depth=2)
+# Traversal execution: 1.4ms via CSR bitmasks (zero hallucinations!)</code></pre>
+
+          <pre id="slm-models" class="code-pane"><code># Download & checksum-verify a compact GGUF model into cache
+weave slm pull qwen2.5-coder-0.5b --sha256 7a1d...
+
+# List available & downloaded models in local registry
+weave slm list
+
+# Run the held-out routing benchmark (asserts tool accuracy & TTFT)
+weave slm doctor</code></pre>
+
+          <pre id="slm-config" class="code-pane"><code># Add to .weave/config.toml
+[slm]
+model = "qwen2.5-coder-0.5b"
+backend = "llama-cli"         # or "heuristic" for instant fallback
+lazy_load = true             # Guaranteed 0MB idle RSS until weave ask is run</code></pre>
+
+          <pre id="slm-rules" class="code-pane"><code># Mine architectural rules from Markdown ADRs ("services must not call DB")
+weave slm review-rules --path docs/adr/
+
+# Confirm candidate rule #1 to enforce in CI via policy-lint
+weave slm review-rules --confirm 1
+
+# Synthesize Git diff + graph delta into a structured changelog
+weave journal --since HEAD~1</code></pre>
+        </div>
+
+        <div class="glass-card" style="margin-top: var(--space-6); border-color: rgba(168, 85, 247, 0.3);">
+          <h3 style="font-size: 1.1rem; color: var(--color-secondary); margin-bottom: 0.5rem;">Why 3 Tiers? (Core ↔ SLM ↔ Frontier LLM)</h3>
+          <p style="font-size: 0.9rem; color: var(--color-text-muted); line-height: 1.6;">
+            <strong>Tier 1 (Deterministic Core)</strong> guarantees sub-millisecond CSR graph queries. <strong>Tier 2 (Local SLM)</strong> acts as a zero-cost on-device translation bridge for terminal developers. <strong>Tier 3 (Frontier LLMs like Claude or Cursor)</strong> receives exact sub-graph slices via MCP, eliminating hallucinations while saving 92% on token bills.
+          </p>
+        </div>
+      </section>
+
+      <!-- Step 5: CLI Query Reference -->
+      <section id="cli-reference" style="margin-bottom: var(--space-12);">
+        <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: var(--space-4);">
+          <span style="display: flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 50%; background: var(--color-primary); color: #000; font-weight: 800;">5</span>
           <h2 style="font-size: 1.75rem; font-weight: 700;">Query Commands Cheat Sheet</h2>
         </div>
         <p style="color: var(--color-text-muted); margin-bottom: var(--space-4);">

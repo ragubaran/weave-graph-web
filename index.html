@@ -4,12 +4,12 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Weave Graph | Ultra-Lightweight Code Intelligence Engine</title>
-  <meta name="description" content="Ultra-lightweight (<15MB binary, <80MB RAM), 100% deterministic code intelligence engine in pure Rust with Model Context Protocol (MCP) support. Cuts AI coding agent context token consumption by 92%.">
-  <meta name="keywords" content="weave-graph, code graph, MCP server, rust, tree-sitter, ast, code intelligence, claude code, cursor, repomix alternative">
+  <meta name="description" content="Ultra-lightweight (<15MB binary, <80MB RAM), 100% deterministic code intelligence engine in pure Rust with Model Context Protocol (MCP) and Local SLM linking. Cuts AI coding agent context token consumption by 92%.">
+  <meta name="keywords" content="weave-graph, code graph, MCP server, rust, tree-sitter, ast, code intelligence, claude code, cursor, slm, qwen2.5-coder">
 
   <!-- Open Graph -->
   <meta property="og:title" content="Weave Graph — Zero-Cloud Code Intelligence Engine">
-  <meta property="og:description" content="Sub-millisecond AST symbol graph & blast radius engine. 92% token reduction for AI coding agents.">
+  <meta property="og:description" content="Sub-millisecond AST symbol graph, Local SLM intent routing, and 92% token reduction for AI coding agents.">
   <meta property="og:type" content="website">
   <meta property="og:image" content="/assets/img/favicon.svg">
 
@@ -70,7 +70,7 @@
       <div class="container">
         <div class="hero-pill">
           <span class="animate-pulse">⚡</span>
-          <span>Zero Cloud Leaks • Pure Rust • 100% Deterministic</span>
+          <span>Zero Cloud Leaks • Pure Rust • Deterministic Core + Local SLM</span>
         </div>
 
         <h1 class="hero-title">
@@ -79,12 +79,12 @@
         </h1>
 
         <p class="hero-subtitle">
-          Stop dumping 100,000 raw source tokens into LLM prompts. Weave Graph indexes your codebase into compressed Compressed Sparse Row (CSR) bitmasks, exposing callers, callees, and blast radiuses to Claude Code, Cursor, and Windsurf via standard MCP in under <strong>2ms</strong>.
+          Stop dumping 100,000 raw source tokens into LLM prompts. Weave Graph indexes your codebase into Compressed Sparse Row (CSR) bitmasks, exposing callers, callees, blast radiuses, and local SLM intent routing to Claude Code, Cursor, and Windsurf in under <strong>2ms</strong>.
         </p>
 
         <div class="hero-cta-group">
           <a href="getting-started.html" class="btn btn-primary btn-lg">Quick Start Guide →</a>
-          <a href="comparison.html" class="btn btn-secondary btn-lg">Compare vs Alternatives</a>
+          <a href="getting-started.html#slm-setup" class="btn btn-secondary btn-lg">Explore SLM Linking 🧠</a>
         </div>
 
         <!-- Metric Cards -->
@@ -180,6 +180,57 @@
       </div>
     </section>
 
+    <!-- 3-Tier Architecture Section -->
+    <section class="section" style="background: rgba(13, 17, 23, 0.5); border-top: 1px solid var(--color-border); border-bottom: 1px solid var(--color-border);">
+      <div class="container">
+        <div style="text-align: center; max-width: 780px; margin: 0 auto var(--space-10);">
+          <span class="badge badge-purple" style="margin-bottom: var(--space-2);">The 3-Tier Intelligence Model</span>
+          <h2 style="font-size: 2.25rem; font-weight: 800; letter-spacing: -0.02em;">Deterministic Core ↔ Local SLM ↔ Frontier LLM</h2>
+          <p style="color: var(--color-text-muted); font-size: 1.05rem;">
+            A unified code intelligence architecture connecting microsecond deterministic graph walks with on-device SLMs and frontier coding agents.
+          </p>
+        </div>
+
+        <div class="grid grid-3">
+          <div class="glass-card" style="border-top: 3px solid var(--color-primary);">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--space-3);">
+              <span class="badge badge-cyan">Tier 1: Foundation</span>
+              <span style="font-size: 0.8rem; color: var(--color-text-muted); font-family: var(--font-mono);">&lt; 2ms Latency</span>
+            </div>
+            <h3 style="font-size: 1.25rem; margin-bottom: var(--space-2);">Zero-LLM Core Engine</h3>
+            <p style="color: var(--color-text-muted); font-size: 0.9rem; line-height: 1.6; margin-bottom: var(--space-4);">
+              Microsecond Tree-sitter parsers, SQLite WAL storage, and contiguous uint32 CSR adjacency matrices. 100% offline, zero network dependencies, and &lt;80MB RAM for 500k symbols.
+            </p>
+            <div style="font-size: 0.8rem; color: var(--color-primary); font-family: var(--font-mono);">weave index • weave callers • weave check</div>
+          </div>
+
+          <div class="glass-card" style="border-top: 3px solid var(--color-secondary);">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--space-3);">
+              <span class="badge badge-purple">Tier 2: Edge SLM</span>
+              <span style="font-size: 0.8rem; color: var(--color-text-muted); font-family: var(--font-mono);">0.5B–3B GGUF</span>
+            </div>
+            <h3 style="font-size: 1.25rem; margin-bottom: var(--space-2);">Local Intent Router (weave ask)</h3>
+            <p style="color: var(--color-text-muted); font-size: 0.9rem; line-height: 1.6; margin-bottom: var(--space-4);">
+              Natural language terminal routing with zero cloud data egress. Strictly grounds extracted parameters against AST symbols, mining ADR rules and synthesizing Git changelogs with 0MB idle RAM.
+            </p>
+            <div style="font-size: 0.8rem; color: var(--color-secondary); font-family: var(--font-mono);">weave ask • weave slm pull • weave journal</div>
+          </div>
+
+          <div class="glass-card" style="border-top: 3px solid #27c93f;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--space-3);">
+              <span class="badge badge-success">Tier 3: Frontier LLM</span>
+              <span style="font-size: 0.8rem; color: var(--color-text-muted); font-family: var(--font-mono);">Native MCP</span>
+            </div>
+            <h3 style="font-size: 1.25rem; margin-bottom: var(--space-2);">Autonomous Agent Linking</h3>
+            <p style="color: var(--color-text-muted); font-size: 0.9rem; line-height: 1.6; margin-bottom: var(--space-4);">
+              Direct Stdio & SSE MCP integration for Claude Code, Cursor, Windsurf, and Antigravity. Prunes massive 100k-token file trees into exact 1k-token subgraphs, cutting LLM context bills by 92%.
+            </p>
+            <div style="font-size: 0.8rem; color: #27c93f; font-family: var(--font-mono);">weave serve --mcp • Claude • Cursor</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <!-- Architectural Pillars -->
     <section class="section">
       <div class="container">
@@ -268,7 +319,7 @@
             </button>
           </div>
           <pre id="inst-brew" class="code-pane active"><code>brew install ragubaran/tap/weave-graph</code></pre>
-          <pre id="inst-cargo" class="code-pane"><code>cargo install weave-graph-cli --locked</code></pre>
+          <pre id="inst-cargo" class="code-pane"><code>cargo install weave-graph-cli --features slm --locked</code></pre>
           <pre id="inst-npx" class="code-pane"><code>npx @weave-graph/cli init</code></pre>
           <pre id="inst-pypi" class="code-pane"><code>uv tool install weave-graph</code></pre>
         </div>
@@ -320,6 +371,7 @@
           <ul class="footer-links">
             <li><a href="getting-started.html">Getting Started</a></li>
             <li><a href="getting-started.html#mcp-setup">Claude & Cursor MCP</a></li>
+            <li><a href="getting-started.html#slm-setup">Local SLM Linking</a></li>
             <li><a href="comparison.html">Market Comparison</a></li>
             <li><a href="roadmap.html">Interactive Roadmap</a></li>
           </ul>
