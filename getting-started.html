@@ -42,7 +42,7 @@
           </defs>
         </svg>
         <span>weave-graph</span>
-        <span class="badge badge-cyan" style="font-size: 0.7rem; margin-left: 0.25rem;">v1.0.0</span>
+        <span class="badge badge-cyan" style="font-size: 0.7rem; margin-left: 0.25rem;">v0.1.0</span>
       </a>
 
       <nav class="nav-links">
@@ -85,22 +85,32 @@
         <p style="color: var(--color-text-muted); margin-bottom: var(--space-4);">
           Select your package manager. All prebuilt binaries are statically linked with bundled SQLite and zero external runtime dependencies.
         </p>
+        <p style="color: var(--color-warning, #f59e0b); font-size: 0.9rem; margin-bottom: var(--space-4);">
+          ⚠ v0.1.0 hasn't tagged its first release yet — Homebrew, crates.io, npm, and PyPI packages aren't published. Build from source below until they land.
+        </p>
 
         <div class="code-tabs-wrapper">
           <div class="code-tabs-header">
             <div class="code-tabs-nav">
-              <button class="tab-btn active" data-target="get-brew">Homebrew (macOS/Linux)</button>
-              <button class="tab-btn" data-target="get-cargo">Cargo (Rust)</button>
-              <button class="tab-btn" data-target="get-npm">npm / npx</button>
-              <button class="tab-btn" data-target="get-pypi">PyPI (pip / uv)</button>
-              <button class="tab-btn" data-target="get-source">Build from Source</button>
+              <button class="tab-btn active" data-target="get-source">Build from Source</button>
+              <button class="tab-btn" data-target="get-brew">Homebrew (soon)</button>
+              <button class="tab-btn" data-target="get-cargo">Cargo (soon)</button>
+              <button class="tab-btn" data-target="get-npm">npm / npx (soon)</button>
+              <button class="tab-btn" data-target="get-pypi">PyPI (soon)</button>
             </div>
             <button class="copy-btn">
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
               <span>Copy</span>
             </button>
           </div>
-          <pre id="get-brew" class="code-pane active"><code># Tap and install the official formula
+          <pre id="get-source" class="code-pane active"><code># Clone repository
+git clone https://github.com/ragubaran/weave-graph.git
+cd weave-graph
+
+# Build optimized production release
+cargo build --release -p weave-graph-cli --features slm
+cp target/release/weave /usr/local/bin/</code></pre>
+          <pre id="get-brew" class="code-pane"><code># Tap and install the official formula
 brew tap ragubaran/tap
 brew install weave-graph
 
@@ -126,13 +136,6 @@ uv tool install weave-graph
 # Or standard pip
 pip install weave-graph
 weave --version</code></pre>
-          <pre id="get-source" class="code-pane"><code># Clone repository
-git clone https://github.com/ragubaran/weave-graph.git
-cd weave-graph
-
-# Build optimized production release
-cargo build --release -p weave-graph-cli --features slm
-cp target/release/weave /usr/local/bin/</code></pre>
         </div>
       </section>
 
@@ -371,7 +374,7 @@ weave journal --since HEAD~1</code></pre>
         <div class="footer-col">
           <div class="footer-col-title">Releases</div>
           <ul class="footer-links">
-            <li><a href="release-notes.html">v1.0.0 Release Notes</a></li>
+            <li><a href="release-notes.html">v0.1.0 Release Notes</a></li>
             <li><a href="release-notes.html#milestones">Deliverable Matrix</a></li>
             <li><a href="https://github.com/ragubaran/weave-graph/releases" target="_blank" rel="noopener noreferrer">GitHub Releases</a></li>
           </ul>

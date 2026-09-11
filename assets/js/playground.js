@@ -2,7 +2,7 @@
 
 const queryData = {
   callers: {
-    command: 'weave callers Storage::purge_file_edges_bidirectional',
+    command: 'weave query "callers(Storage::purge_file_edges_bidirectional)"',
     speed: '1.4ms',
     output: `Found 3 inbound caller(s) across 2 crates:
   1. crates/weave-graph-core/src/engine.rs:142
@@ -18,7 +18,7 @@ CSR Traversal: 3 hops | Adjacency lookups: 12 | RAM: 1.2MB`,
     reduction: '97.1%'
   },
   callees: {
-    command: 'weave callees GraphEngine::reindex_file',
+    command: 'weave query "callees(GraphEngine::reindex_file)"',
     speed: '0.9ms',
     output: `Found 4 outbound callee(s):
   ├── Storage::purge_file_edges_bidirectional [bidirectional purge invariant]
@@ -32,7 +32,7 @@ CSR Traversal: 1 hop | Adjacency lookups: 4 | RAM: 0.8MB`,
     reduction: '97.2%'
   },
   impact: {
-    command: 'weave impact crates/weave-graph-core/src/model.rs',
+    command: 'weave query "impact(crates/weave-graph-core/src/model.rs)"',
     speed: '3.2ms',
     output: `Blast Radius Analysis for: crates/weave-graph-core/src/model.rs
   Direct dependents: 4 crates (weave-graph-parse, weave-graph-store-sqlite, weave-graph-mcp, weave-graph-cli)
@@ -46,7 +46,7 @@ Summary: Core type alteration requires recompiling 4 workspace crates.`,
     reduction: '97.9%'
   },
   path: {
-    command: 'weave path SymbolIndex -> CsrMatrix',
+    command: 'weave query "path(SymbolIndex, CsrMatrix)"',
     speed: '2.1ms',
     output: `Shortest Directed Path (Length: 3 hops):
   [Symbol] weave_graph_core::model::SymbolIndex

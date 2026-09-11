@@ -43,7 +43,7 @@
           </defs>
         </svg>
         <span>weave-graph</span>
-        <span class="badge badge-cyan" style="font-size: 0.7rem; margin-left: 0.25rem;">v1.0.0</span>
+        <span class="badge badge-cyan" style="font-size: 0.7rem; margin-left: 0.25rem;">v0.1.0</span>
       </a>
 
       <nav class="nav-links">
@@ -308,21 +308,25 @@
         <div class="code-tabs-wrapper">
           <div class="code-tabs-header">
             <div class="code-tabs-nav">
-              <button class="tab-btn active" data-target="inst-brew">Homebrew</button>
-              <button class="tab-btn" data-target="inst-cargo">Cargo</button>
-              <button class="tab-btn" data-target="inst-npx">npm / npx</button>
-              <button class="tab-btn" data-target="inst-pypi">pip / uv</button>
+              <button class="tab-btn active" data-target="inst-source">Source</button>
+              <button class="tab-btn" data-target="inst-brew">Homebrew (soon)</button>
+              <button class="tab-btn" data-target="inst-cargo">Cargo (soon)</button>
+              <button class="tab-btn" data-target="inst-npx">npm / npx (soon)</button>
+              <button class="tab-btn" data-target="inst-pypi">pip / uv (soon)</button>
             </div>
             <button class="copy-btn">
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
               <span>Copy</span>
             </button>
           </div>
-          <pre id="inst-brew" class="code-pane active"><code>brew install ragubaran/tap/weave-graph</code></pre>
+          <pre id="inst-source" class="code-pane active"><code>git clone https://github.com/ragubaran/weave-graph.git && cd weave-graph
+cargo build --release -p weave-graph-cli --features slm</code></pre>
+          <pre id="inst-brew" class="code-pane"><code>brew install ragubaran/tap/weave-graph</code></pre>
           <pre id="inst-cargo" class="code-pane"><code>cargo install weave-graph-cli --features slm --locked</code></pre>
           <pre id="inst-npx" class="code-pane"><code>npx @weave-graph/cli init</code></pre>
           <pre id="inst-pypi" class="code-pane"><code>uv tool install weave-graph</code></pre>
         </div>
+        <p style="color: var(--color-text-muted); font-size: 0.85rem; margin-top: 0.75rem;">Homebrew, crates.io, npm, and PyPI packages ship with the first tagged release — build from source today.</p>
       </div>
     </section>
 
@@ -380,7 +384,7 @@
         <div class="footer-col">
           <div class="footer-col-title">Releases</div>
           <ul class="footer-links">
-            <li><a href="release-notes.html">v1.0.0 Release Notes</a></li>
+            <li><a href="release-notes.html">v0.1.0 Release Notes</a></li>
             <li><a href="release-notes.html#milestones">Deliverable Matrix</a></li>
             <li><a href="https://github.com/ragubaran/weave-graph/releases" target="_blank" rel="noopener noreferrer">GitHub Releases</a></li>
           </ul>
