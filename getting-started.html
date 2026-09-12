@@ -48,6 +48,7 @@
       <nav class="nav-links">
         <a href="index.html">Overview</a>
         <a href="getting-started.html" class="active">Getting Started</a>
+        <a href="self-hosted.html">Self-Hosted</a>
         <a href="visualisation.html">Visualisation</a>
         <a href="comparison.html">Comparison</a>
         <a href="performance.html">Performance</a>
@@ -156,6 +157,7 @@ weave --version</code></pre>
             <div class="code-tabs-nav">
               <button class="tab-btn active" data-target="mode-single">Single Repository Mode</button>
               <button class="tab-btn" data-target="mode-multi">Multi-Repo Federation Mode</button>
+              <button class="tab-btn" data-target="mode-custom">Custom / Enterprise Mode</button>
             </div>
             <button class="copy-btn">
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
@@ -179,6 +181,17 @@ weave repo add api ../gateway-api
 
 # 3. Index all repositories in parallel with cross-repo edge resolution
 weave index --parallel</code></pre>
+          <pre id="mode-custom" class="code-pane"><code># 1. Initialize custom enterprise mode (enables RBAC, Hub, and Policy gates)
+weave init --mode custom
+
+# 2. Configure internal hub registry & storage vault
+weave config set hub.url "http://hub.internal.corp:8080"
+weave config set storage.home "/var/weave-vault/my-project"
+
+# 3. Pull latest pre-indexed snapshot or build locally
+weave sync pull --fallback-latest || weave index
+
+# See the full guide: https://weavegraph.dev/self-hosted.html</code></pre>
         </div>
       </section>
 
@@ -540,7 +553,8 @@ lazy_load = true                   # 0MB idle RSS until weave ask is run</code><
         <div class="footer-col">
           <div class="footer-col-title">Documentation</div>
           <ul class="footer-links">
-            <li><a href="getting-started.html">Getting Started</a></li>
+            <li><a href="getting-started.html">Getting Started</a>
+        <a href="self-hosted.html">Self-Hosted</a></li>
             <li><a href="visualisation.html">Visualisation</a></li>
             <li><a href="comparison.html">Market Comparison</a></li>
             <li><a href="performance.html">Performance Metrics 5.4</a></li>

@@ -49,6 +49,7 @@
       <nav class="nav-links">
         <a href="index.html" class="active">Overview</a>
         <a href="getting-started.html">Getting Started</a>
+        <a href="self-hosted.html">Self-Hosted</a>
         <a href="visualisation.html">Visualisation</a>
         <a href="comparison.html">Comparison</a>
         <a href="performance.html">Performance</a>
@@ -318,6 +319,28 @@
             </p>
           </div>
         </div>
+
+        <!-- Self-Hosted & Enterprise Callout Banner -->
+        <div class="glass-card" style="margin-top: var(--space-8); padding: var(--space-6) var(--space-8); border-color: rgba(168, 85, 247, 0.4); background: linear-gradient(135deg, rgba(168, 85, 247, 0.08) 0%, rgba(0, 240, 255, 0.04) 100%); display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: var(--space-4);">
+          <div style="max-width: 680px;">
+            <div style="display: flex; align-items: center; gap: var(--space-2); margin-bottom: var(--space-2);">
+              <span class="badge badge-purple">Enterprise &amp; Self-Hosted</span>
+              <span class="badge badge-cyan">Custom Mode</span>
+            </div>
+            <h3 style="font-size: 1.35rem; font-weight: 700; margin-bottom: var(--space-1); color: var(--color-text-main);">
+              Deploying in VPCs, Monorepos, or Air-Gapped Clusters?
+            </h3>
+            <p style="color: var(--color-text-muted); font-size: 0.95rem; line-height: 1.6; margin: 0;">
+              Explore Custom Mode (<code style="font-family: var(--font-mono); color: var(--color-primary);">--features custom</code>): Query-Layer RBAC, SCIM 2.0 directory sync with Okta &amp; Azure AD, centralized snapshot registry (<code style="font-family: var(--font-mono); color: var(--color-primary);">weave-registry</code>), OTel traces, and CI policy enforcement.
+            </p>
+          </div>
+          <div>
+            <a href="self-hosted.html" class="btn btn-primary" style="white-space: nowrap;">
+              Self-Hosted Guide &rarr;
+            </a>
+          </div>
+        </div>
+
       </div>
     </section>
 
@@ -400,7 +423,8 @@ cargo build --release -p weave-graph-cli --features slm</code></pre>
         <div class="footer-col">
           <div class="footer-col-title">Documentation</div>
           <ul class="footer-links">
-            <li><a href="getting-started.html">Getting Started</a></li>
+            <li><a href="getting-started.html">Getting Started</a>
+        <a href="self-hosted.html">Self-Hosted</a></li>
             <li><a href="visualisation.html">Visualisation</a></li>
             <li><a href="comparison.html">Market Comparison</a></li>
             <li><a href="performance.html">Performance Metrics 5.4</a></li>
