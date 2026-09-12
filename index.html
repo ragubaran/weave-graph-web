@@ -43,7 +43,7 @@
           </defs>
         </svg>
         <span class="brand-title">weave-graph</span>
-        <span class="badge badge-cyan brand-badge">v1.0.0</span>
+        <span class="badge badge-cyan brand-badge">v1.0.1</span>
       </a>
 
       <nav class="nav-links">
@@ -51,6 +51,7 @@
         <a href="getting-started.html">Getting Started</a>
         <a href="visualisation.html">Visualisation</a>
         <a href="comparison.html">Comparison</a>
+        <a href="performance.html">Performance</a>
         <a href="release-notes.html">Release Notes</a>
         <a href="roadmap.html">Roadmap</a>
       </nav>
@@ -292,6 +293,30 @@
               Every crate is verified by <code style="font-family: var(--font-mono); color: var(--color-primary);">cargo-llvm-cov</code>. Rigid unit, integration, and E2E CLI test suites ensure zero undefined behavior.
             </p>
           </div>
+
+          <div class="glass-card">
+            <div style="font-size: 2rem; margin-bottom: var(--space-4);">📑</div>
+            <h3 style="font-size: 1.25rem; margin-bottom: var(--space-2);">29+ Language Grammars</h3>
+            <p style="color: var(--color-text-muted); font-size: 0.95rem; line-height: 1.6;">
+              Native AST extraction for Rust, Python, TS, Go, Java, C/C++, ArkTS, Solidity, CUDA, Metal, Svelte, Vue, Astro, Terraform, Nix, COBOL, Erlang, and more.
+            </p>
+          </div>
+
+          <div class="glass-card">
+            <div style="font-size: 2rem; margin-bottom: var(--space-4);">🛡️</div>
+            <h3 style="font-size: 1.25rem; margin-bottom: var(--space-2);">Boundary Contract Verifier</h3>
+            <p style="color: var(--color-text-muted); font-size: 0.95rem; line-height: 1.6;">
+              <code style="font-family: var(--font-mono); color: var(--color-primary);">weave check-contracts</code> computes SHA-256 hashes of public interfaces to stop breaking changes and signature drift in CI pipelines.
+            </p>
+          </div>
+
+          <div class="glass-card">
+            <div style="font-size: 2rem; margin-bottom: var(--space-4);">🎯</div>
+            <h3 style="font-size: 1.25rem; margin-bottom: var(--space-2);">PR Blast Radius (weave blast)</h3>
+            <p style="color: var(--color-text-muted); font-size: 0.95rem; line-height: 1.6;">
+              3-dot merge-base git diff analysis graphing transitive callers across pull requests, generating ready-to-post markdown reports for CI.
+            </p>
+          </div>
         </div>
       </div>
     </section>
@@ -377,9 +402,10 @@ cargo build --release -p weave-graph-cli --features slm</code></pre>
           <ul class="footer-links">
             <li><a href="getting-started.html">Getting Started</a></li>
             <li><a href="visualisation.html">Visualisation</a></li>
+            <li><a href="comparison.html">Market Comparison</a></li>
+            <li><a href="performance.html">Performance Metrics 5.4</a></li>
             <li><a href="getting-started.html#mcp-setup">Claude & Cursor MCP</a></li>
             <li><a href="getting-started.html#slm-setup">Local SLM Linking</a></li>
-            <li><a href="comparison.html">Market Comparison</a></li>
             <li><a href="roadmap.html">Interactive Roadmap</a></li>
           </ul>
         </div>
@@ -387,8 +413,8 @@ cargo build --release -p weave-graph-cli --features slm</code></pre>
         <div class="footer-col">
           <div class="footer-col-title">Releases</div>
           <ul class="footer-links">
-            <li><a href="release-notes.html">v1.0.0 Release Notes</a></li>
-            <li><a href="release-notes.html#milestones">Deliverable Matrix</a></li>
+            <li><a href="release-notes.html">v1.0.1 Release Notes</a></li>
+            <li><a href="release-notes.html#v1.0.0">v1.0.0 Archive</a></li>
             <li><a href="https://github.com/ragubaran/weave-graph/releases" target="_blank" rel="noopener noreferrer">GitHub Releases</a></li>
           </ul>
         </div>

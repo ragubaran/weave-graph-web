@@ -42,7 +42,7 @@
           </defs>
         </svg>
         <span class="brand-title">weave-graph</span>
-        <span class="badge badge-cyan brand-badge">v1.0.0</span>
+        <span class="badge badge-cyan brand-badge">v1.0.1</span>
       </a>
 
       <nav class="nav-links">
@@ -50,6 +50,7 @@
         <a href="getting-started.html" class="active">Getting Started</a>
         <a href="visualisation.html">Visualisation</a>
         <a href="comparison.html">Comparison</a>
+        <a href="performance.html">Performance</a>
         <a href="release-notes.html">Release Notes</a>
         <a href="roadmap.html">Roadmap</a>
       </nav>
@@ -335,6 +336,180 @@ weave journal --since HEAD~1</code></pre>
       </section>
 
     </div>
+        <!-- Step 6: Configuration Guide -->
+      <section id="configuration" style="margin-bottom: var(--space-12);">
+        <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: var(--space-4);">
+          <span style="display: flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 50%; background: var(--color-primary); color: #000; font-weight: 800;">6</span>
+          <h2 style="font-size: 1.75rem; font-weight: 700;">Configuration Guide (.weave/config.toml)</h2>
+        </div>
+        <p style="color: var(--color-text-muted); margin-bottom: var(--space-4); line-height: 1.6;">
+          All runtime behaviors in Weave Graph are controlled deterministically through <code style="font-family: var(--font-mono); color: var(--color-primary);">.weave/config.toml</code> or via CLI commands like <code style="font-family: var(--font-mono); color: var(--color-primary);">weave config set &lt;key&gt; &lt;value&gt;</code>.
+        </p>
+
+        <div class="code-snippet-box" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-md); padding: 1.25rem; margin-bottom: var(--space-6);">
+          <pre style="margin: 0; font-family: var(--font-mono); font-size: 0.88rem; color: #e6edf3; line-height: 1.5;"><code># .weave/config.toml — Complete Annotated Reference
+
+# Workspace mode: "single" repository or "multiple" (federated workspace)
+mode = "single"
+
+# Database Storage Location (optional relocation off repo tree)
+[storage]
+home = "/fast/nvme/weave-cache"     # Keeps git repos clean; zero dirty artifacts
+
+# Federation & Cross-Repository Linking (--features federation)
+[federation]
+linked_repos = [
+  "../auth-service",
+  "../payment-service",
+  "../inventory-service"
+]
+
+# File Watcher & Incremental Auto-Sync (--features watch)
+[watch]
+enabled = true                     # Auto-reindex on file save
+debounce_ms = 2000                 # Burst event debounce window
+blast_radius_ceiling = 200         # Defers reindex if blast radius exceeds 200 symbols
+
+# Visualization & Reporting (--features viz)
+[report]
+format = "all"                     # "canvas", "markdown", "html", or "all"
+auto_open = false                  # Open browser automatically after weave report
+
+[viz]
+mode = "static"                    # "static" offline HTML or "server"
+port = 8080                        # Loopback port (127.0.0.1 only)
+
+# Centralized Registry Sync (--features hub)
+[hub]
+url = "http://127.0.0.1:8080"      # Endpoint of weave-registry daemon
+
+# Role-Based Access Control Masking (--features rbac)
+[rbac.users]
+alice = ["internal", "core"]       # Unmasks private functions matching role
+bob = ["public_api"]
+
+# Local SLM Intent Router (--features slm)
+[slm]
+default_model = "qwen2.5-coder-0.5b"
+backend = "llama-cli"              # "llama-cli" or "heuristic"
+lazy_load = true                   # 0MB idle RSS until weave ask is run</code></pre>
+        </div>
+
+        <h3 style="font-size: 1.2rem; font-weight: 700; margin-bottom: 0.75rem;">CLI Configuration Commands</h3>
+        <div class="grid grid-3" style="gap: var(--space-4);">
+          <div class="glass-card">
+            <h4 style="font-size: 0.95rem; font-family: var(--font-mono); color: var(--color-primary); margin-bottom: 0.35rem;">weave config set &lt;k&gt; &lt;v&gt;</h4>
+            <p style="font-size: 0.85rem; color: var(--color-text-muted);">Sets scalar or dotted configuration keys in <code style="font-size: 0.8rem;">.weave/config.toml</code>.</p>
+          </div>
+          <div class="glass-card">
+            <h4 style="font-size: 0.95rem; font-family: var(--font-mono); color: var(--color-primary); margin-bottom: 0.35rem;">weave config get &lt;k&gt;</h4>
+            <p style="font-size: 0.85rem; color: var(--color-text-muted);">Reads and prints the current value of any dotted key.</p>
+          </div>
+          <div class="glass-card">
+            <h4 style="font-size: 0.95rem; font-family: var(--font-mono); color: var(--color-primary); margin-bottom: 0.35rem;">weave repo add &lt;path&gt;</h4>
+            <p style="font-size: 0.85rem; color: var(--color-text-muted);">Appends another repository path into <code style="font-size: 0.8rem;">[federation] linked_repos</code>.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Step 7: Complete Feature Matrix & Cargo Flags -->
+      <section id="feature-matrix" style="margin-bottom: var(--space-12);">
+        <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: var(--space-4);">
+          <span style="display: flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 50%; background: var(--color-primary); color: #000; font-weight: 800;">7</span>
+          <h2 style="font-size: 1.75rem; font-weight: 700;">Complete Feature List & Cargo Flags</h2>
+        </div>
+        <p style="color: var(--color-text-muted); margin-bottom: var(--space-4); line-height: 1.6;">
+          In accordance with <strong>Core Invariant 5 & 8</strong>, the base build ships zero network code and zero runtime dependencies. All extended capabilities are modular, off-by-default Cargo features with verified 0MB idle RAM overhead:
+        </p>
+
+        <div class="table-responsive">
+          <table class="compare-table">
+            <thead>
+              <tr>
+                <th>Feature</th>
+                <th>Cargo Flag</th>
+                <th>Status</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Deterministic Core</strong></td>
+                <td><code style="color: var(--color-primary);">--no-default-features</code></td>
+                <td><span class="badge badge-cyan">9.6 MB Static</span></td>
+                <td>8 core languages, integer CSR matrix, SQLite store, stdio MCP server, <code style="font-size: 0.85rem;">weave query</code>.</td>
+              </tr>
+              <tr>
+                <td><strong>Extended Languages</strong></td>
+                <td><code style="color: var(--color-primary);">--features lang-extended</code></td>
+                <td><span class="badge badge-cyan">Default (29+ Langs)</span></td>
+                <td>Adds ArkTS, Solidity, CUDA, Metal, Svelte, Vue, Astro, Terraform, Nix, COBOL, Erlang, etc.</td>
+              </tr>
+              <tr>
+                <td><strong>Documentation & Notes</strong></td>
+                <td><code style="color: var(--color-primary);">--features docs,notes</code></td>
+                <td><span class="badge badge-cyan">Available</span></td>
+                <td>Markdown wikilinks (<code style="font-size: 0.85rem;">[[Note]]</code>), JSON Canvas export, and symbol note pinning (<code style="font-size: 0.85rem;">weave note pin</code>).</td>
+              </tr>
+              <tr>
+                <td><strong>Federation & Contracts</strong></td>
+                <td><code style="color: var(--color-primary);">--features federation</code></td>
+                <td><span class="badge badge-cyan">Available</span></td>
+                <td>Cross-repo dependency cycle detection (Tarjan SCC) and boundary contract validation.</td>
+              </tr>
+              <tr>
+                <td><strong>File Watcher</strong></td>
+                <td><code style="color: var(--color-primary);">--features watch</code></td>
+                <td><span class="badge badge-cyan">Available</span></td>
+                <td>Debounced filesystem monitor with automated blast-radius safety ceiling.</td>
+              </tr>
+              <tr>
+                <td><strong>Offline Visualizer</strong></td>
+                <td><code style="color: var(--color-primary);">--features viz</code></td>
+                <td><span class="badge badge-cyan">Available</span></td>
+                <td>Offline SVG/Canvas HTML graph viewer (<code style="font-size: 0.85rem;">weave viz</code> or <code style="font-size: 0.85rem;">weave report --html</code>).</td>
+              </tr>
+              <tr>
+                <td><strong>Local SLM Router</strong></td>
+                <td><code style="color: var(--color-primary);">--features slm</code></td>
+                <td><span class="badge badge-cyan">Available</span></td>
+                <td>Terminal natural-language query routing (<code style="font-size: 0.85rem;">weave ask</code>) and ADR rule extraction.</td>
+              </tr>
+              <tr>
+                <td><strong>Centralized Hub</strong></td>
+                <td><code style="color: var(--color-primary);">--features hub</code></td>
+                <td><span class="badge badge-cyan">Available</span></td>
+                <td>Client push/pull snapshot sync + standalone lightweight <code style="font-size: 0.85rem;">weave-registry</code> daemon.</td>
+              </tr>
+              <tr>
+                <td><strong>RBAC Masking</strong></td>
+                <td><code style="color: var(--color-primary);">--features rbac</code></td>
+                <td><span class="badge badge-cyan">Available</span></td>
+                <td>Query-layer security guard masking private symbols across CLI, MCP, and export streams.</td>
+              </tr>
+              <tr>
+                <td><strong>OpenTelemetry Tracing</strong></td>
+                <td><code style="color: var(--color-primary);">--features otel</code></td>
+                <td><span class="badge badge-cyan">Available</span></td>
+                <td>OTLP JSON span ingestion and latency heatmap annotations on call graphs.</td>
+              </tr>
+              <tr>
+                <td><strong>Python SDK Wheel</strong></td>
+                <td><code style="color: var(--color-primary);">--features python</code></td>
+                <td><span class="badge badge-cyan">maturin wheel</span></td>
+                <td>PyO3 native bindings (<code style="font-size: 0.85rem;">import weave_graph</code>) with zero impact on the CLI binary.</td>
+              </tr>
+              <tr>
+                <td><strong>Full Team Bundle</strong></td>
+                <td><code style="color: var(--color-primary);">--features team</code></td>
+                <td><span class="badge badge-purple">Recommended</span></td>
+                <td>Convenience bundle activating <code style="font-size: 0.85rem;">docs</code>, <code style="font-size: 0.85rem;">federation</code>, and <code style="font-size: 0.85rem;">notes</code>.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
   </main>
 
   <!-- Footer -->
@@ -367,8 +542,9 @@ weave journal --since HEAD~1</code></pre>
           <ul class="footer-links">
             <li><a href="getting-started.html">Getting Started</a></li>
             <li><a href="visualisation.html">Visualisation</a></li>
-            <li><a href="getting-started.html#mcp-setup">Claude & Cursor MCP</a></li>
             <li><a href="comparison.html">Market Comparison</a></li>
+            <li><a href="performance.html">Performance Metrics 5.4</a></li>
+            <li><a href="getting-started.html#mcp-setup">Claude & Cursor MCP</a></li>
             <li><a href="roadmap.html">Interactive Roadmap</a></li>
           </ul>
         </div>
