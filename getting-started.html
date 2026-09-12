@@ -327,10 +327,77 @@ weave check-contracts
         </div>
       </section>
 
-      <!-- Step 5: CLI Query Reference -->
-      <section id="cli-reference" style="margin-bottom: var(--space-12);">
+      <!-- Step 5: Graph Hub & Snapshot Sync -->
+      <section id="hub-sync" style="margin-bottom: var(--space-12);">
         <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: var(--space-4);">
           <span style="display: flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 50%; background: var(--color-primary); color: #000; font-weight: 800;">5</span>
+          <h2 style="font-size: 1.75rem; font-weight: 700;">Graph Hub &amp; Snapshot Sync (<code style="font-family: var(--font-mono); font-size: 1.4rem; color: var(--color-primary);">weave sync</code>)</h2>
+        </div>
+        <p style="color: var(--color-text-muted); margin-bottom: var(--space-4);">
+          When managing large codebases across teams, compile with <code style="font-family: var(--font-mono); color: var(--color-primary);">--features hub</code> to synchronize pre-indexed graph snapshots via your central hub registry. Pull instant snapshots in CI or local environments without re-indexing from scratch, and publish verified post-merge snapshots.
+        </p>
+
+        <div class="code-tabs-wrapper">
+          <div class="code-tabs-header">
+            <div class="code-tabs-nav">
+              <button class="tab-btn active" data-target="hub-pull">Pull Snapshots (weave sync pull)</button>
+              <button class="tab-btn" data-target="hub-push">Publish Snapshots (weave sync push)</button>
+              <button class="tab-btn" data-target="hub-config">Config (.weave/config.toml)</button>
+              <button class="tab-btn" data-target="hub-server">Standalone Registry Server</button>
+            </div>
+            <button class="copy-btn">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+              <span>Copy</span>
+            </button>
+          </div>
+
+          <pre id="hub-pull" class="code-pane active"><code># 1. Hydrate pre-computed graph snapshot for current commit (instantaneous!)
+weave sync pull
+
+# 2. Fall back to the hub's latest default-branch snapshot if current commit isn't indexed yet
+weave sync pull --fallback-latest
+
+# Writes atomically via .rebuild swap (Core Invariant 2: crash-resilient!)</code></pre>
+
+          <pre id="hub-push" class="code-pane"><code># Publish current graph snapshot to the hub (typically executed in CI post-merge)
+weave sync push
+
+# Enforces safety invariants:
+# - Refuses to push from dirty or non-default feature branches
+# - Validates base_commit_sha against hub head (returns 409 conflict on mismatch)
+# - Triggers automatic atomic rebuild on the hub disk spool queue</code></pre>
+
+          <pre id="hub-config" class="code-pane"><code># Point repository to your internal hub registry (via CLI or .weave/config.toml)
+weave config set hub.url "http://hub.internal.corp:8080"
+weave config set hub.retention_snapshots 10
+
+# In .weave/config.toml:
+# [hub]
+# url = "http://hub.internal.corp:8080"
+# retention_snapshots = 10</code></pre>
+
+          <pre id="hub-server" class="code-pane"><code># Launch the standalone lightweight weave-registry daemon on a central server/container
+weave-registry \
+  --bind 0.0.0.0:8080 \
+  --data-dir /var/weave-hub/data \
+  --max-queue-depth-per-repo 50 \
+  --max-pushes-per-minute-per-repo 10
+
+# Dedicated worker thread per repository drains pushes sequentially without lock contention</code></pre>
+        </div>
+
+        <div class="glass-card" style="margin-top: var(--space-6); border-color: rgba(0, 240, 255, 0.25);">
+          <div style="font-weight: 600; color: var(--color-primary); margin-bottom: var(--space-1);">Tamper-Resistant Cryptographic Verification (<code style="font-family: var(--font-mono);">hub-provenance</code>)</div>
+          <p style="font-size: 0.9rem; color: var(--color-text-muted); line-height: 1.6; margin: 0;">
+            Enable <code style="color: var(--color-primary); font-family: var(--font-mono);">--features hub-provenance</code> to enforce HMAC-SHA256 or hardware-backed signatures (<code style="color: var(--color-primary); font-family: var(--font-mono);">X-Weave-Signature</code>) on every snapshot. Untrusted, modified, or corrupt snapshot blobs are rejected before hydration.
+          </p>
+        </div>
+      </section>
+
+      <!-- Step 6: CLI Query Reference -->
+      <section id="cli-reference" style="margin-bottom: var(--space-12);">
+        <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: var(--space-4);">
+          <span style="display: flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 50%; background: var(--color-primary); color: #000; font-weight: 800;">6</span>
           <h2 style="font-size: 1.75rem; font-weight: 700;">Query Commands Cheat Sheet</h2>
         </div>
         <p style="color: var(--color-text-muted); margin-bottom: var(--space-4);">
@@ -368,11 +435,10 @@ weave check-contracts
         </div>
       </section>
 
-    </div>
-        <!-- Step 6: Configuration Guide -->
+      <!-- Step 7: Configuration Guide -->
       <section id="configuration" style="margin-bottom: var(--space-12);">
         <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: var(--space-4);">
-          <span style="display: flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 50%; background: var(--color-primary); color: #000; font-weight: 800;">6</span>
+          <span style="display: flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 50%; background: var(--color-primary); color: #000; font-weight: 800;">7</span>
           <h2 style="font-size: 1.75rem; font-weight: 700;">Configuration Guide (.weave/config.toml)</h2>
         </div>
         <p style="color: var(--color-text-muted); margin-bottom: var(--space-4); line-height: 1.6;">
@@ -445,10 +511,10 @@ lazy_load = true                   # 0MB idle RSS until weave ask is run</code><
         </div>
       </section>
 
-      <!-- Step 7: Complete Feature Matrix & Cargo Flags -->
+      <!-- Step 8: Complete Feature Matrix & Cargo Flags -->
       <section id="feature-matrix" style="margin-bottom: var(--space-12);">
         <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: var(--space-4);">
-          <span style="display: flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 50%; background: var(--color-primary); color: #000; font-weight: 800;">7</span>
+          <span style="display: flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 50%; background: var(--color-primary); color: #000; font-weight: 800;">8</span>
           <h2 style="font-size: 1.75rem; font-weight: 700;">Complete Feature List & Cargo Flags</h2>
         </div>
         <p style="color: var(--color-text-muted); margin-bottom: var(--space-4); line-height: 1.6;">
@@ -542,7 +608,7 @@ lazy_load = true                   # 0MB idle RSS until weave ask is run</code><
           </table>
         </div>
       </section>
-
+    </div>
   </main>
 
   <!-- Footer -->
@@ -573,8 +639,8 @@ lazy_load = true                   # 0MB idle RSS until weave ask is run</code><
         <div class="footer-col">
           <div class="footer-col-title">Documentation</div>
           <ul class="footer-links">
-            <li><a href="getting-started.html">Getting Started</a>
-        <a href="self-hosted.html">Self-Hosted</a></li>
+            <li><a href="getting-started.html">Getting Started</a></li>
+            <li><a href="self-hosted.html">Self-Hosted Guide</a></li>
             <li><a href="visualisation.html">Visualisation</a></li>
             <li><a href="comparison.html">Market Comparison</a></li>
             <li><a href="performance.html">Performance Metrics 5.4</a></li>
