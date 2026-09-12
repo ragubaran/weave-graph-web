@@ -86,14 +86,14 @@
           <div class="timeline-content">
             <div class="timeline-header">
               <span class="timeline-phase">Phase 1 • Core Engine</span>
-              <span class="badge badge-success">Completed & Production Ready</span>
+              <span class="badge badge-success">Completed & Shipped</span>
             </div>
             <h3 class="timeline-title">Deterministic Engine & Single-Repo MCP</h3>
             <p style="color: var(--color-text-muted); font-size: 0.95rem; line-height: 1.6;">
-              Ultra-lightweight core (<15MB static binary, <80MB RAM), memory compaction via CSR matrix, and Model Context Protocol (MCP) server for local coding agents.
+              Ultra-lightweight core (&lt;15MB static binary (only core), &lt;80MB RAM), memory compaction via CSR matrix, and Model Context Protocol (MCP) server for local coding agents.
             </p>
             <ul class="timeline-deliverables">
-              <li><strong>Zero-LLM AST Parsing:</strong> Tree-sitter parsers for Rust, Python, and TypeScript/JavaScript.</li>
+              <li><strong>Zero-LLM AST Parsing:</strong> High-throughput Tree-sitter parsers for core systems languages.</li>
               <li><strong>CSR Matrix Layout:</strong> Contiguous uint32 adjacency matrices with Roaring bitmasks.</li>
               <li><strong>Crash-Resilient Indexing:</strong> Atomic <code style="font-family: var(--font-mono); color: var(--color-primary);">.rebuild</code> swap and mandatory bidirectional edge purging.</li>
               <li><strong>Native MCP Server:</strong> Stdio and localhost loopback SSE tools for Claude Code, Cursor, Windsurf.</li>
@@ -104,44 +104,46 @@
 
         <!-- Phase 2 -->
         <div class="timeline-item">
-          <div class="timeline-marker active"></div>
+          <div class="timeline-marker done"></div>
           <div class="timeline-content">
             <div class="timeline-header">
               <span class="timeline-phase">Phase 2 • Federation & Team Intelligence</span>
-              <span class="badge badge-cyan">Finalizing & In Active Testing</span>
+              <span class="badge badge-success">Completed & Shipped (v1.0.1)</span>
             </div>
-            <h3 class="timeline-title">Multi-Repo Federation & Intent Routing</h3>
+            <h3 class="timeline-title">Multi-Repo Federation, 29+ Languages & Boundary Contracts</h3>
             <p style="color: var(--color-text-muted); font-size: 0.95rem; line-height: 1.6;">
-              Extending single-repo indexing to cross-repo workspace federations, topological cycle detection, real-time filesystem watchers, and intent-routed SLM integrations.
+              Cross-repo workspace federations, topological cycle analysis, 29+ language grammars with Rayon AST parallelism, boundary contracts, and live MCP budgeting.
             </p>
             <ul class="timeline-deliverables">
-              <li><strong>Federation Virtual Schema:</strong> Multi-repo linking via <code style="font-family: var(--font-mono); color: var(--color-primary);">weave repo add</code> and cross-boundary call resolution.</li>
-              <li><strong>Topological Analysis:</strong> Tarjan's Strongly Connected Components (SCC) for circular dependency detection.</li>
-              <li><strong>Live Delta Watchers:</strong> Real-time background AST reindexing via <code style="font-family: var(--font-mono); color: var(--color-primary);">notify-rs</code>.</li>
-              <li><strong>SLM Intent Routing:</strong> IntentRouter trait for fast heuristic query routing and zero-cloud triage.</li>
-              <li><strong>Git Blame Provenance:</strong> AST node annotation with commit author, churn risk, and recency scores.</li>
+              <li><strong>29+ Language Grammars:</strong> Extended breadth (ArkTS, CUDA, Metal, Solidity, Svelte, Vue, Nix) via <code style="font-family: var(--font-mono); color: var(--color-primary);">feature: lang-extended</code>.</li>
+              <li><strong>Federation Virtual Schema:</strong> Multi-repo linking via <code style="font-family: var(--font-mono); color: var(--color-primary);">weave repo add</code> / <code style="font-family: var(--font-mono); color: var(--color-primary);">weave link</code> and cross-boundary resolution.</li>
+              <li><strong>Topological Cycle Analysis:</strong> Tarjan's Strongly Connected Components (SCC) for circular dependency detection.</li>
+              <li><strong>Contract Verification & Blast Radius:</strong> Boundary contract checking (<code style="font-family: var(--font-mono); color: var(--color-primary);">weave check-contracts</code>) and PR blast radius (<code style="font-family: var(--font-mono); color: var(--color-primary);">weave blast</code>).</li>
+              <li><strong>Git Blame & Pinned Notes:</strong> Author provenance scoring and architectural documentation notes (<code style="font-family: var(--font-mono); color: var(--color-primary);">weave note</code>).</li>
+              <li><strong>Live MCP Reload & Token Budgeting:</strong> Hot config reload without restart and 3-tier progressive token budgeting (150 / 500 / 2000 tokens).</li>
             </ul>
           </div>
         </div>
 
         <!-- Phase 3 -->
         <div class="timeline-item">
-          <div class="timeline-marker planned"></div>
+          <div class="timeline-marker active"></div>
           <div class="timeline-content">
             <div class="timeline-header">
               <span class="timeline-phase">Phase 3 • Enterprise Scale & Extensions</span>
-              <span class="badge badge-purple">In Design & RFC</span>
+              <span class="badge badge-cyan">In Active Delivery (M3.0–M3.8 Landed)</span>
             </div>
-            <h3 class="timeline-title">Distributed Replication, RBAC & Local GGUF</h3>
+            <h3 class="timeline-title">Query-Layer RBAC, Hybrid Vector Search & Edge Hub</h3>
             <p style="color: var(--color-text-muted); font-size: 0.95rem; line-height: 1.6;">
-              Optional features isolated behind Cargo feature flags ensuring zero degradation to default-build latency or RSS.
+              Enterprise access control, local semantic discovery, OpenTelemetry latency aggregation, and browser WASM execution isolated behind zero-overhead Cargo feature flags.
             </p>
             <ul class="timeline-deliverables">
-              <li><strong>LibSQL / Turso Edge Replication:</strong> Read-only replica synchronization across distributed developer pods (<code style="font-family: var(--font-mono); color: var(--color-primary);">feature: turso</code>).</li>
-              <li><strong>Query-Layer RBAC:</strong> Security masking implemented inside the storage and traversal boundary, never export-only.</li>
-              <li><strong>Local GGUF / Llama.cpp Engine:</strong> Embedded execution of compact 1B-3B quantized models for offline natural language summaries.</li>
-              <li><strong>Architectural Policy Linter:</strong> Automated CI verification against layer violations and prohibited call patterns (<code style="font-family: var(--font-mono); color: var(--color-primary);">weave lint</code>).</li>
-              <li><strong>Hybrid Semantic Index:</strong> Blending deterministic CSR graph walks with local compact vector reranking.</li>
+              <li><strong>Query-Layer RBAC (<code style="font-family: var(--font-mono); color: var(--color-primary);">feature: rbac</code>):</strong> Invariant masking enforced inside storage/traversal boundary with SCIM 2.0 directory sync.</li>
+              <li><strong>Architectural Policy Linter (<code style="font-family: var(--font-mono); color: var(--color-primary);">feature: policy-lint</code>):</strong> Automated CI verification against layer violations and forbidden edges (<code style="font-family: var(--font-mono); color: var(--color-primary);">weave lint</code>).</li>
+              <li><strong>Hybrid Semantic & Vector Search:</strong> Tier 1 FTS5 BM25 search + Tier 2 quantized local vector retrieval (<code style="font-family: var(--font-mono); color: var(--color-primary);">weave search --semantic</code>).</li>
+              <li><strong>OpenTelemetry Tracing (<code style="font-family: var(--font-mono); color: var(--color-primary);">feature: otel</code>):</strong> Ingesting trace spans to query live p50/p95/p99 latency directly on graph nodes.</li>
+              <li><strong>In-Browser WASM & Packaging Optimization:</strong> 155 KB standalone browser WASM graph runtime (<code style="font-family: var(--font-mono); color: var(--color-primary);">weave-graph-wasm</code>) and 9.6 MB minimal CLI binary.</li>
+              <li><strong>Central Graph Hub & Edge Replication:</strong> Snapshot cryptographic verification (<code style="font-family: var(--font-mono); color: var(--color-primary);">hub-provenance</code>) and LibSQL/Turso edge sync (<code style="font-family: var(--font-mono); color: var(--color-primary);">feature: turso</code>).</li>
             </ul>
           </div>
         </div>
