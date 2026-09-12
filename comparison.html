@@ -94,7 +94,7 @@
           <tbody>
             <tr>
               <td><strong>Binary Size</strong></td>
-              <td class="highlight-col"><span class="check-yes">&lt; 15 MB (Static)</span></td>
+              <td class="highlight-col"><span class="check-yes">&lt; 15 MB (only core)</span></td>
               <td>&gt; 250 MB</td>
               <td>Docker (~2 GB)</td>
               <td>Python + deps (~120 MB)</td>
@@ -199,7 +199,7 @@
               Sourcegraph is a phenomenal enterprise search tool, but running it locally requires massive Go/PostgreSQL processes consuming gigabytes of system memory.
             </p>
             <p style="color: var(--color-text-muted); font-size: 0.95rem; line-height: 1.6;">
-              <strong>The Weave Difference:</strong> A sub-15MB standalone binary with bundled SQLite and contiguous CSR matrices that lives seamlessly in any repository under <code style="font-family: var(--font-mono); color: var(--color-primary);">.weave/</code>, consuming less than 80MB RAM even on massive repos.
+              <strong>The Weave Difference:</strong> A sub-15MB standalone binary (only core) with bundled SQLite and contiguous CSR matrices that lives seamlessly in any repository under <code style="font-family: var(--font-mono); color: var(--color-primary);">.weave/</code>, consuming less than 80MB RAM even on massive repos.
             </p>
           </div>
 
@@ -229,7 +229,7 @@
               Graphify is a commendable Python tool that extracts knowledge graphs and exposes tools via MCP. However, running on Python means relying on heavy heap-allocated dicts and large monolithic <code style="font-family: var(--font-mono); color: var(--color-primary);">graph.json</code> files that consume 500MB–1.5GB RAM and lack transactional crash resilience.
             </p>
             <p style="color: var(--color-text-muted); font-size: 0.95rem; line-height: 1.6;">
-              <strong>The Weave Difference:</strong> Weave Graph is a zero-dependency &lt;15MB pure Rust binary. It compacts symbols into contiguous uint32 CSR arrays bounded to &lt;80MB RAM for 500,000 symbols, traverses edges in &lt;2ms, enforces bidirectional edge integrity on incremental saves, and provides multi-repo virtual schema federation.
+              <strong>The Weave Difference:</strong> Weave Graph is a zero-dependency &lt;15MB pure Rust binary (only core). It compacts symbols into contiguous uint32 CSR arrays bounded to &lt;80MB RAM for 500,000 symbols, traverses edges in &lt;2ms, enforces bidirectional edge integrity on incremental saves, and provides multi-repo virtual schema federation.
             </p>
           </div>
 
