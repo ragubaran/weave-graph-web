@@ -4,11 +4,11 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Getting Started | Weave Graph Documentation</title>
-  <meta name="description" content="Quick start guide for Weave Graph: Installation via Homebrew, Cargo, npx, PyPI, repository indexing, Model Context Protocol (MCP) setup with Claude and Cursor, and Local SLM linking.">
+  <meta name="description" content="Quick start guide for Weave Graph: Installation via Homebrew, Cargo, npx, PyPI, repository indexing, Model Context Protocol (MCP) setup with Claude and Cursor, multi-repo linking, architectural notes, contract verification, and PR blast radius.">
 
   <!-- Open Graph -->
   <meta property="og:title" content="Getting Started with Weave Graph">
-  <meta property="og:description" content="Install in seconds, index your codebase, attach Weave Graph MCP to Claude Code or Cursor, and enable on-device SLM query routing.">
+  <meta property="og:description" content="Install in seconds, index your codebase, attach Weave Graph MCP to Claude Code or Cursor, and explore multi-repo linking, architectural notes, and blast radius analysis.">
   <meta property="og:type" content="article">
   <meta property="og:image" content="/assets/img/favicon.svg">
 
@@ -75,7 +75,7 @@
         <span class="badge badge-cyan" style="margin-bottom: var(--space-2);">Documentation</span>
         <h1 style="font-size: 2.75rem; font-weight: 800; letter-spacing: -0.02em;">Getting Started</h1>
         <p style="color: var(--color-text-muted); font-size: 1.15rem; margin-top: var(--space-2);">
-          Install the <code style="font-family: var(--font-mono); color: var(--color-primary);">weave</code> binary, index your repository, link Local SLM models, and attach AI coding agents via MCP.
+          Install the <code style="font-family: var(--font-mono); color: var(--color-primary);">weave</code> binary, index your repository, attach AI coding agents via MCP, and leverage multi-repo linking, notes, and PR blast radius.
         </p>
       </div>
 
@@ -111,7 +111,7 @@ git clone https://github.com/ragubaran/weave-graph.git
 cd weave-graph
 
 # Build optimized production release
-cargo build --release -p weave-graph-cli --features slm
+cargo build --release -p weave-graph-cli --features team
 cp target/release/weave /usr/local/bin/</code></pre>
           <pre id="get-brew" class="code-pane"><code># Tap and install the official formula
 brew tap ragubaran/tap
@@ -243,23 +243,23 @@ claude mcp list</code></pre>
         </div>
       </section>
 
-      <!-- Step 4: Local SLM Linking -->
-      <section id="slm-setup" style="margin-bottom: var(--space-12);">
+      <!-- Step 4: Core Developer Workflows -->
+      <section id="developer-workflows" style="margin-bottom: var(--space-12);">
         <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: var(--space-4);">
           <span style="display: flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 50%; background: var(--color-primary); color: #000; font-weight: 800;">4</span>
-          <h2 style="font-size: 1.75rem; font-weight: 700;">Local SLM Linking (<code style="font-family: var(--font-mono); font-size: 1.4rem; color: var(--color-primary);">weave slm</code> & <code style="font-family: var(--font-mono); font-size: 1.4rem; color: var(--color-primary);">weave ask</code>)</h2>
+          <h2 style="font-size: 1.75rem; font-weight: 700;">Developer Workflows: Linking, Notes, Blast Radius &amp; Contracts</h2>
         </div>
         <p style="color: var(--color-text-muted); margin-bottom: var(--space-4);">
-          When compiled with <code style="font-family: var(--font-mono); color: var(--color-primary);">--features slm</code>, Weave Graph links a local Small Language Model (0.5B–3B GGUF) for on-device natural language routing with <strong>zero cloud data egress</strong> and <strong>0MB idle RAM</strong> until invoked.
+          Accelerate your day-to-day engineering workflows with multi-repo workspace linking, architectural decision pinning, pull-request blast radius analysis, and automated boundary contract verification.
         </p>
 
         <div class="code-tabs-wrapper">
           <div class="code-tabs-header">
             <div class="code-tabs-nav">
-              <button class="tab-btn active" data-target="slm-query">Terminal NL Queries (weave ask)</button>
-              <button class="tab-btn" data-target="slm-models">Model Pull & Lifecycle</button>
-              <button class="tab-btn" data-target="slm-config">Configuration (.weave/config.toml)</button>
-              <button class="tab-btn" data-target="slm-rules">ADR Rule Mining & Journal</button>
+              <button class="tab-btn active" data-target="workflow-linking">Multi-Repo Linking (weave link)</button>
+              <button class="tab-btn" data-target="workflow-notes">Architectural Notes (weave note)</button>
+              <button class="tab-btn" data-target="workflow-blast">PR Blast Radius (weave blast)</button>
+              <button class="tab-btn" data-target="workflow-contracts">Contract Checks (weave check-contracts)</button>
             </div>
             <button class="copy-btn">
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
@@ -267,43 +267,63 @@ claude mcp list</code></pre>
             </button>
           </div>
 
-          <pre id="slm-query" class="code-pane active"><code># Ask questions in natural language right in your shell
-weave ask "Who calls verifyJWTSession and what is its blast radius?"
+          <pre id="workflow-linking" class="code-pane active"><code># Link sibling repositories into a unified multi-repo composite graph
+weave link ../backend-service ../api-gateway ../auth-service
 
-# The SLM strictly grounds parameters against the symbol index:
-# Resolved query: get_symbol_callers(symbol="verifyJWTSession", depth=2)
-# Traversal execution: 1.4ms via CSR bitmasks (zero hallucinations!)</code></pre>
+# Detect cross-repository circular dependency cycles via Tarjan's SCC
+weave query "cycles()"
 
-          <pre id="slm-models" class="code-pane"><code># Download & checksum-verify a compact GGUF model into cache
-weave slm pull qwen2.5-coder-0.5b --sha256 7a1d...
+# Resolve cross-boundary function and type calls across repositories
+weave query "callers(AuthService.verifyToken)" --direction in
 
-# List available & downloaded models in local registry
-weave slm list
+# Generate a federated multi-repo visual architecture report with Louvain clustering
+weave report-federated ../backend-service ../api-gateway</code></pre>
 
-# Run the held-out routing benchmark (asserts tool accuracy & TTFT)
-weave slm doctor</code></pre>
+          <pre id="workflow-notes" class="code-pane"><code># 1. Pin an ephemeral session note to a code symbol (24h TTL)
+weave note pin AuthService.verify "Rate-limited per RFC 6238 §3; do not remove jitter."
 
-          <pre id="slm-config" class="code-pane"><code># Add to .weave/config.toml
-[slm]
-model = "qwen2.5-coder-0.5b"
-backend = "llama-cli"         # or "heuristic" for instant fallback
-lazy_load = true             # Guaranteed 0MB idle RSS until weave ask is run</code></pre>
+# 2. Pin a permanent architectural decision note (--keep, content-hash staleness tracking)
+weave note pin --keep --kind arch_decision PaymentQueue "Single-writer by design — see ADR-014."
 
-          <pre id="slm-rules" class="code-pane"><code># Mine architectural rules from Markdown ADRs ("services must not call DB")
-weave slm review-rules --path docs/adr/
+# 3. List active notes, author tags, and staleness status
+weave note list
 
-# Confirm candidate rule #1 to enforce in CI via policy-lint
-weave slm review-rules --confirm 1
+# Notes persist across reindexes by moniker; AI agents recall them automatically via MCP!</code></pre>
 
-# Synthesize Git diff + graph delta into a structured changelog
-weave journal --since HEAD~1</code></pre>
+          <pre id="workflow-blast" class="code-pane"><code># Calculate exact transitive blast radius of a PR against the base branch
+weave blast --base main
+
+# Output structured markdown report ready for CI/CD comments (e.g. GitHub Actions)
+weave blast --base main --format markdown > blast_report.md
+
+# Inspect JSON format for automated CI risk scoring
+weave blast --base main --format json
+
+# Automatically folds touched symbols by architectural module and caller depth</code></pre>
+
+          <pre id="workflow-contracts" class="code-pane"><code># Check public API contracts across repo boundaries to prevent breaking changes
+weave check-contracts
+
+# Generates cryptographic SHA-256 signatures of public exported types & functions
+# Fails in CI with non-zero exit code if exported signatures drift without bumping versions:
+#   [ERROR] Contract broken: AuthService::verifyToken signature changed
+#   Expected: fn(token: &str) -> Result<User, AuthError>
+#   Actual:   fn(token: &str, tenant: &str) -> Result<User, AuthError></code></pre>
         </div>
 
-        <div class="glass-card" style="margin-top: var(--space-6); border-color: rgba(168, 85, 247, 0.3);">
-          <h3 style="font-size: 1.1rem; color: var(--color-secondary); margin-bottom: 0.5rem;">Why 3 Tiers? (Core ↔ SLM ↔ Frontier LLM)</h3>
-          <p style="font-size: 0.9rem; color: var(--color-text-muted); line-height: 1.6;">
-            <strong>Tier 1 (Deterministic Core)</strong> guarantees sub-millisecond CSR graph queries. <strong>Tier 2 (Local SLM)</strong> acts as a zero-cost on-device translation bridge for terminal developers. <strong>Tier 3 (Frontier LLMs like Claude or Cursor)</strong> receives exact sub-graph slices via MCP, eliminating hallucinations while saving 92% on token bills.
-          </p>
+        <div class="grid grid-2" style="margin-top: var(--space-6); gap: var(--space-4);">
+          <div class="glass-card" style="border-top: 2px solid var(--color-primary);">
+            <h3 style="font-size: 1.05rem; margin-bottom: var(--space-2); color: var(--color-text-main);">Zero Cloud Leak Guarantee</h3>
+            <p style="font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5; margin: 0;">
+              Linking, contract checking, notes, and blast radius analysis run 100% locally on your machine with zero network calls and zero telemetry.
+            </p>
+          </div>
+          <div class="glass-card" style="border-top: 2px solid var(--color-secondary);">
+            <h3 style="font-size: 1.05rem; margin-bottom: var(--space-2); color: var(--color-text-main);">Automated CI Gates</h3>
+            <p style="font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5; margin: 0;">
+              Integrate <code style="color: var(--color-primary); font-family: var(--font-mono);">weave check-contracts</code> and <code style="color: var(--color-primary); font-family: var(--font-mono);">weave blast</code> directly into GitHub Actions to protect your codebase on every PR.
+            </p>
+          </div>
         </div>
       </section>
 
