@@ -157,7 +157,7 @@ weave --version</code></pre>
             <div class="code-tabs-nav">
               <button class="tab-btn active" data-target="mode-single">Single Repository Mode</button>
               <button class="tab-btn" data-target="mode-multi">Multi-Repo Federation Mode</button>
-              <button class="tab-btn" data-target="mode-custom">Custom / Enterprise Mode</button>
+              <button class="tab-btn" data-target="mode-custom">Custom Mode (Self-Hosted Tier)</button>
             </div>
             <button class="copy-btn">
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
@@ -181,7 +181,7 @@ weave repo add api ../gateway-api
 
 # 3. Index all repositories in parallel with cross-repo edge resolution
 weave index --parallel</code></pre>
-          <pre id="mode-custom" class="code-pane"><code># 1. Initialize custom enterprise mode (enables RBAC, Hub, and Policy gates)
+          <pre id="mode-custom" class="code-pane"><code># 1. Initialize custom mode for self-hosted tier (enables RBAC, Hub, and Policy gates)
 weave init --mode custom
 
 # 2. Configure internal hub registry & storage vault

@@ -3,11 +3,11 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Self-Hosted & Custom Mode Enterprise Guide | Weave Graph</title>
+  <title>Self-Hosted Tier & Custom Mode Guide | Weave Graph</title>
   <meta name="description" content="Comprehensive enterprise and self-hosted deployment guide for Weave Graph: Custom Mode, Query-Layer RBAC, SCIM 2.0 Directory Sync, Graph Hub & Registry, OpenTelemetry Traces, Policy Linting, and Local SLMs.">
 
   <!-- Open Graph -->
-  <meta property="og:title" content="Self-Hosted & Custom Mode Enterprise Guide - Weave Graph">
+  <meta property="og:title" content="Self-Hosted Tier & Custom Mode Guide - Weave Graph">
   <meta property="og:description" content="Deploy Weave Graph on self-hosted enterprise infrastructure with query-layer RBAC, SCIM directory sync, centralized hub snapshots, OTel tracing, and CI policy linter.">
   <meta property="og:type" content="article">
   <meta property="og:image" content="/assets/img/favicon.svg">
@@ -67,7 +67,7 @@
   <!-- Hero Header -->
   <section class="page-hero">
     <div class="container text-center">
-      <span class="badge badge-purple" style="margin-bottom: var(--space-2);">Enterprise & On-Premises</span>
+      <span class="badge badge-purple" style="margin-bottom: var(--space-2);">Self-Hosted Tier &amp; Custom Mode</span>
       <h1 class="hero-title" style="font-size: 3rem; margin-top: var(--space-2);">
         Self-Hosted & <span class="gradient-text">Custom Mode</span>
       </h1>
@@ -104,7 +104,7 @@
       </div>
 
       <p style="color: var(--color-text-muted); line-height: 1.6; margin-bottom: var(--space-4);">
-        While standard <strong>Single Mode</strong> (individual developers) and <strong>Multiple Mode</strong> (local multi-repo links) run entirely offline without coordination, <strong>Custom Mode</strong> activates the enterprise tier for organizations that require centralized graph synchronization, team access controls, and automated compliance gates.
+        Weave Graph is distributed in two compile-time tiers: the ultra-lightweight <strong>Standard Tier</strong> (<code style="color: var(--color-primary);">weave</code>, ~13.8 MB) for individual developers and CI PR runners, and the <strong>Self-Hosted Tier</strong> (<code style="color: var(--color-primary);">weave-custom</code>, ~41.6 MB) for private VPCs, compliance deployments, and multi-team microservice meshes with centralized Hub sync, query-layer RBAC, SCIM directory synchronization, and architectural policy enforcement.
       </p>
 
       <div class="grid grid-3" style="gap: var(--space-4); margin-bottom: var(--space-6);">
@@ -217,34 +217,134 @@ weave rbac serve-scim --port 8080
         The <strong>Graph Hub</strong> provides centralized snapshot storage and delta distribution across CI runners and developer pods. Instead of reindexing large multi-million-line monorepos from scratch, developers pull pre-computed graph snapshots in milliseconds.
       </p>
 
-      <h3 style="font-size: 1.15rem; font-weight: 600; margin-bottom: var(--space-3); color: var(--color-text-main);">1. Deploying the Standalone <code style="font-family: var(--font-mono); font-size: 1rem;">weave-registry</code> Server</h3>
+      <!-- Deployment Manifests Matrix -->
+      <h3 style="font-size: 1.15rem; font-weight: 600; margin-bottom: var(--space-3); color: var(--color-text-main);">1. Production Deployment Manifests</h3>
       <p style="color: var(--color-text-muted); font-size: 0.95rem; margin-bottom: var(--space-3);">
-        Deploy the dedicated registry daemon on a shared internal server or container. It handles disk spool queues, sequential per-repo commits, and backpressure rate limits:
+        Hardened, production-ready manifests are available in the repository's <a href="https://github.com/ragubaran/weave-graph/tree/main/deploy" target="_blank" rel="noopener noreferrer" style="color: var(--color-primary); text-decoration: underline;"><code>deploy/</code> directory</a>:
       </p>
-      <div class="code-block" style="margin-bottom: var(--space-4);">
-        <pre><code class="language-bash"># Run weave-registry with calibrated merge-rate limits
-weave-registry   --bind 0.0.0.0:8080   --data-dir /var/weave-hub/data   --max-queue-depth-per-repo 50   --max-pushes-per-minute-per-repo 10</code></pre>
+
+      <div style="overflow-x: auto; margin-bottom: var(--space-6);">
+        <table style="width: 100%; border-collapse: collapse; font-size: 0.9rem; text-align: left;">
+          <thead>
+            <tr style="border-bottom: 1px solid var(--color-border); color: var(--color-text-main);">
+              <th style="padding: var(--space-3);">Target</th>
+              <th style="padding: var(--space-3);">Manifests</th>
+              <th style="padding: var(--space-3);">Architecture & Security Properties</th>
+            </tr>
+          </thead>
+          <tbody style="color: var(--color-text-muted);">
+            <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);">
+              <td style="padding: var(--space-3); font-weight: 600; color: var(--color-primary);">Docker Compose</td>
+              <td style="padding: var(--space-3); font-family: var(--font-mono); font-size: 0.82rem;"><a href="https://github.com/ragubaran/weave-graph/tree/main/deploy/docker" target="_blank" style="color: var(--color-primary);">deploy/docker/</a></td>
+              <td style="padding: var(--space-3);">Distroless non-root (<code>uid 65532</code>) + Nginx TLS 1.3 reverse proxy sidecar.</td>
+            </tr>
+            <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);">
+              <td style="padding: var(--space-3); font-weight: 600; color: var(--color-cyan);">Kubernetes / EKS / GKE</td>
+              <td style="padding: var(--space-3); font-family: var(--font-mono); font-size: 0.82rem;"><a href="https://github.com/ragubaran/weave-graph/tree/main/deploy/kubernetes" target="_blank" style="color: var(--color-primary);">deploy/kubernetes/</a></td>
+              <td style="padding: var(--space-3);">Single-replica Deployment + ClusterIP Service + TLS Ingress Controller.</td>
+            </tr>
+            <tr>
+              <td style="padding: var(--space-3); font-weight: 600; color: #f59e0b;">Linux Bare-Metal / VM</td>
+              <td style="padding: var(--space-3); font-family: var(--font-mono); font-size: 0.82rem;"><a href="https://github.com/ragubaran/weave-graph/tree/main/deploy/systemd" target="_blank" style="color: var(--color-primary);">deploy/systemd/</a></td>
+              <td style="padding: var(--space-3);">Hardened <code>systemd</code> unit (<code>ProtectSystem=strict</code>, <code>/var/lib/weave-registry</code>).</td>
+            </tr>
+          </tbody>
+        </table>
       </div>
 
-      <h3 style="font-size: 1.15rem; font-weight: 600; margin-bottom: var(--space-3); color: var(--color-text-main);">2. Client Configuration & CI Automation</h3>
+      <!-- Docker Compose Option -->
+      <h3 style="font-size: 1.15rem; font-weight: 600; margin-bottom: var(--space-3); color: var(--color-text-main);">2. Docker & Docker Compose Deployment</h3>
       <p style="color: var(--color-text-muted); font-size: 0.95rem; margin-bottom: var(--space-3);">
-        Configure repositories to synchronize with your internal hub:
+        Build the distroless container and launch with an Nginx TLS proxy terminating SSL:
       </p>
       <div class="code-block" style="margin-bottom: var(--space-4);">
-        <pre><code class="language-bash"># Point local repo to the internal hub
-weave config set hub.url "http://hub.internal.corp:8080"
+        <pre><code class="language-bash"># Build distroless registry container
+docker build -f deploy/docker/Dockerfile -t weave-registry:latest .
 
-# Hydrate graph snapshot for current commit (with fallback to latest default-branch snapshot)
+# Launch single-node composition with Nginx TLS reverse proxy
+cd deploy/docker
+docker compose up -d</code></pre>
+      </div>
+
+      <!-- AWS Production Guide -->
+      <h3 style="font-size: 1.15rem; font-weight: 600; margin-bottom: var(--space-3); color: var(--color-text-main);">3. AWS Production Deployment Guide</h3>
+      <p style="color: var(--color-text-muted); font-size: 0.95rem; margin-bottom: var(--space-3);">
+        <strong>Option A: AWS ECS (Fargate) + EFS Persistent Volume + Application Load Balancer</strong>
+      </p>
+      <div class="code-block" style="margin-bottom: var(--space-4);">
+        <pre><code class="language-json">{
+  "family": "weave-registry",
+  "networkMode": "awsvpc",
+  "requiresCompatibilities": ["FARGATE"],
+  "cpu": "1024",
+  "memory": "2048",
+  "containerDefinitions": [
+    {
+      "name": "weave-registry",
+      "image": "123456789012.dkr.ecr.us-east-1.amazonaws.com/weave-registry:latest",
+      "essential": true,
+      "portMappings": [{"containerPort": 8080, "protocol": "tcp"}],
+      "command": ["--bind", "0.0.0.0:8080", "--data-dir", "/data", "--max-queue-depth-per-repo", "1000", "--max-pushes-per-minute-per-repo", "600"],
+      "mountPoints": [{"sourceVolume": "registry-efs", "containerPath": "/data", "readOnly": false}]
+    }
+  ],
+  "volumes": [
+    {
+      "name": "registry-efs",
+      "efsVolumeConfiguration": {"fileSystemId": "fs-0123456789abcdef0", "transitEncryption": "ENABLED", "authorizationConfig": {"accessPointId": "fsap-0123456789abcdef0"}}
+    }
+  ]
+}</code></pre>
+      </div>
+
+      <!-- GCP Production Guide -->
+      <h3 style="font-size: 1.15rem; font-weight: 600; margin-bottom: var(--space-3); color: var(--color-text-main);">4. GCP Production Deployment Guide</h3>
+      <p style="color: var(--color-text-muted); font-size: 0.95rem; margin-bottom: var(--space-3);">
+        <strong>Option A: Google Cloud Run + Filestore / Cloud Storage FUSE + Cloud Load Balancing</strong>
+      </p>
+      <div class="code-block" style="margin-bottom: var(--space-4);">
+        <pre><code class="language-bash"># Deploy containerized registry to Cloud Run with attached storage volume
+gcloud run deploy weave-registry \
+  --image gcr.io/my-project/weave-registry:latest \
+  --platform managed \
+  --region us-central1 \
+  --port 8080 \
+  --cpu 2 \
+  --memory 2Gi \
+  --ingress internal-and-cloud-load-balancing \
+  --execution-environment gen2 \
+  --add-volume name=registry-storage,type=cloud-storage,bucket=weave-registry-snapshots \
+  --add-volume-mount volume=registry-storage,mount-path=/data \
+  --args="--bind,0.0.0.0:8080,--data-dir,/data,--max-queue-depth-per-repo,1000,--max-pushes-per-minute-per-repo,600"</code></pre>
+      </div>
+
+      <!-- Client Configuration & CI Automation -->
+      <h3 style="font-size: 1.15rem; font-weight: 600; margin-bottom: var(--space-3); color: var(--color-text-main);">5. Client Configuration & CI Acceleration Workflow</h3>
+      <div class="code-block" style="margin-bottom: var(--space-4);">
+        <pre><code class="language-toml"># .weave/config.toml
+[hub]
+url = "https://weave-registry.internal.corp"
+snapshot_retention = 20</code></pre>
+      </div>
+
+      <div class="code-block" style="margin-bottom: var(--space-4);">
+        <pre><code class="language-bash"># In PR CI runners: instantly hydrate pre-computed graph snapshot for merge-base
 weave sync pull --fallback-latest
 
-# In CI post-merge pipeline: publish freshly indexed snapshot
+# Incrementally parse only files modified in the pull request
+weave index --incremental
+
+# In post-merge trunk pipeline: publish freshly indexed snapshot
 weave sync push</code></pre>
       </div>
 
       <div style="background: rgba(168, 85, 247, 0.05); border: 1px solid rgba(168, 85, 247, 0.25); border-radius: var(--radius-md); padding: var(--space-4);">
-        <div style="font-weight: 600; color: var(--color-secondary); margin-bottom: var(--space-1);">Snapshot Provenance & Tamper Verification (<code style="font-family: var(--font-mono);">hub-provenance</code>)</div>
+        <div style="font-weight: 600; color: var(--color-secondary); margin-bottom: var(--space-1);">Snapshot Provenance & Required Proxy Response Headers</div>
         <div style="font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.6;">
-          Enable cryptographic snapshot signing via <code style="color: var(--color-primary); font-family: var(--font-mono);">--features hub-provenance</code>. Every published snapshot payload is accompanied by an <code style="color: var(--color-primary); font-family: var(--font-mono);">X-Weave-Signature</code> header generated with HMAC-SHA256 or external hardware security modules (Lodestone Nexus). Corrupted or tampered snapshots are rejected before hydration.
+          When running behind TLS reverse proxies (Nginx, Envoy, ALB, Cloud Load Balancer), ensure these response headers are forwarded:
+          <br/>• <code style="color: var(--color-primary); font-family: var(--font-mono);">X-Weave-Signature</code>: Carries cryptographic Merkle signature sidecar on <code>pull</code>.
+          <br/>• <code style="color: var(--color-primary); font-family: var(--font-mono);">Upload-Offset</code>: Enables resumable chunked upload recovery on <code>HEAD</code>.
+          <br/>• <code style="color: var(--color-primary); font-family: var(--font-mono);">Retry-After</code>: Delivers adaptive backoff signals when push rate limits are reached.
         </div>
       </div>
     </section>
