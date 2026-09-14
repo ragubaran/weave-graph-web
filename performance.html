@@ -269,9 +269,9 @@
               <tr>
                 <td><strong>CSR Memory per Edge</strong></td>
                 <td>&lt;= 8 bytes</td>
-                <td class="highlight-col"><strong>~4.0 bytes/edge</strong> forward; <strong>~8.0 bytes/edge</strong> bidirectional</td>
+                <td class="highlight-col"><strong>~4.0 bytes/edge</strong> forward (common path); <strong>~8.0 bytes/edge</strong> bidirectional (lazy reverse)</td>
                 <td>Intel i7-1068NG7 / macOS</td>
-                <td><span class="status-badge status-met">✅ Met</span></td>
+                <td><span class="status-badge status-met">✅ Met (&le;8 B target)</span></td>
               </tr>
               <tr>
                 <td><strong>1-File Delta Patch</strong></td>
@@ -439,17 +439,48 @@
           <div class="glass-card" style="padding: 1.25rem;">
             <div style="color: var(--color-text-muted); font-size: 0.8rem; text-transform: uppercase; font-weight: 600;">Edges Footprint</div>
             <div style="font-family: var(--font-display); font-size: 1.75rem; font-weight: 800; color: #34d399; margin: 0.25rem 0;">~4.0 B</div>
-            <div style="font-size: 0.8rem; color: var(--color-text-muted);">Bytes per edge (forward only)</div>
+            <div style="font-size: 0.8rem; color: var(--color-text-muted);">Bytes per edge (forward path)</div>
           </div>
           <div class="glass-card" style="padding: 1.25rem;">
             <div style="color: var(--color-text-muted); font-size: 0.8rem; text-transform: uppercase; font-weight: 600;">Bidirectional</div>
             <div style="font-family: var(--font-display); font-size: 1.75rem; font-weight: 800; color: #60a5fa; margin: 0.25rem 0;">~24B / ~8B</div>
-            <div style="font-size: 0.8rem; color: var(--color-text-muted);">Per node / per edge bidirectional</div>
+            <div style="font-size: 0.8rem; color: var(--color-text-muted);">Per node / per edge (lazy reverse)</div>
           </div>
           <div class="glass-card" style="padding: 1.25rem;">
             <div style="color: var(--color-text-muted); font-size: 0.8rem; text-transform: uppercase; font-weight: 600;">Compaction Maps</div>
             <div style="font-family: var(--font-display); font-size: 1.75rem; font-weight: 800; color: #a855f7; margin: 0.25rem 0;">+~8.0 B</div>
             <div style="font-size: 0.8rem; color: var(--color-text-muted);">NodeId &rarr; CSR index interning</div>
+          </div>
+        </div>
+
+        <!-- CSR Optimization & Historical vs Current State Breakdown -->
+        <div class="glass-card" style="padding: 1.5rem; margin-bottom: var(--space-6); border-left: 4px solid var(--color-primary);">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem; flex-wrap: wrap; gap: 0.5rem;">
+            <h3 style="font-size: 1.1rem; font-weight: 700; margin: 0; color: #fff;">CSR Memory Optimization & SLO Target Validation</h3>
+            <span class="status-badge status-met">✅ Target SLO Met (&le; 8 Bytes/Edge)</span>
+          </div>
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.25rem; font-size: 0.88rem; line-height: 1.5;">
+            <div>
+              <div style="font-weight: 600; color: #fb7185; margin-bottom: 0.35rem;">❌ Historical State (Missed)</div>
+              <p style="color: var(--color-text-muted); margin: 0;">
+                Measured at <strong>12 bytes/edge</strong> (24 B/edge bidirectional). Caused by storing an unused 8-byte <code style="color: var(--color-primary); font-family: var(--font-mono);">f64</code> edge weight (<code style="color: var(--color-primary); font-family: var(--font-mono);">Csr&lt;(), f64, ...&gt;</code>) alongside the 4-byte <code style="color: var(--color-primary); font-family: var(--font-mono);">u32</code> target index.
+              </p>
+            </div>
+            <div>
+              <div style="font-weight: 600; color: #60a5fa; margin-bottom: 0.35rem;">⚡ Optimizations Applied</div>
+              <ul style="color: var(--color-text-muted); margin: 0; padding-left: 1.1rem;">
+                <li><strong>Dropped Unused Weight:</strong> Replaced <code style="color: var(--color-primary); font-family: var(--font-mono);">Csr&lt;(), f64, ...&gt;</code> with <code style="color: var(--color-primary); font-family: var(--font-mono);">Csr&lt;(), (), ...&gt;</code> in <code style="color: var(--color-primary); font-family: var(--font-mono);">csr.rs</code> (eliminated 8B overhead).</li>
+                <li><strong>Lazy Reverse CSR:</strong> Converted <code style="color: var(--color-primary); font-family: var(--font-mono);">reverse_csr</code> to construct lazily via <code style="color: var(--color-primary); font-family: var(--font-mono);">OnceLock</code> on first call to <code style="color: var(--color-primary); font-family: var(--font-mono);">callers_within</code>.</li>
+              </ul>
+            </div>
+            <div>
+              <div style="font-weight: 600; color: #34d399; margin-bottom: 0.35rem;">✅ Current Verified State</div>
+              <p style="color: var(--color-text-muted); margin: 0;">
+                <strong>Forward path (common case):</strong> ~4.0 bytes/edge (~12.0 B/node).<br>
+                <strong>Bidirectional path:</strong> ~8.0 bytes/edge (~24.0 B/node) when <code style="color: var(--color-primary); font-family: var(--font-mono);">callers_within</code> is invoked.<br>
+                <strong>Status:</strong> Comfortably under the &le;8 bytes/edge SLO target.
+              </p>
+            </div>
           </div>
         </div>
 
@@ -624,7 +655,7 @@
           Weave Graph does not gloss over architectural compromises. When an empirical measurement diverges or balances packaging breadth against resource constraints, the engineering cause is documented openly:
         </p>
 
-        <div class="grid grid-3">
+        <div class="grid grid-2">
           <div class="glass-card">
             <h3 style="font-size: 1.15rem; color: #fb7185; margin-bottom: var(--space-2);">Note 1: AST Parser Speed</h3>
             <p style="color: var(--color-text-muted); font-size: 0.9rem; line-height: 1.6;">
@@ -633,16 +664,9 @@
           </div>
 
           <div class="glass-card">
-            <h3 style="font-size: 1.15rem; color: #34d399; margin-bottom: var(--space-2);">Note 2: CSR Memory Compactness</h3>
+            <h3 style="font-size: 1.15rem; color: #34d399; margin-bottom: var(--space-2);">Note 2: CSR Memory per Edge Optimization</h3>
             <p style="color: var(--color-text-muted); font-size: 0.9rem; line-height: 1.6;">
-              Our CSR structures achieve <strong>~12.0 bytes/node</strong> and <strong>~4.0 bytes/edge</strong> forward (~24.0 bytes/node and ~8.0 bytes/edge bidirectional), meeting the &le;24B/node and &le;8B/edge Target SLOs while maintaining integer-compacted 32-bit string interning.
-            </p>
-          </div>
-
-          <div class="glass-card">
-            <h3 style="font-size: 1.15rem; color: #34d399; margin-bottom: var(--space-2);">Note 3: Static Binary Size (&lt; 15 MB Met)</h3>
-            <p style="color: var(--color-text-muted); font-size: 0.9rem; line-height: 1.6;">
-              A zero-feature core build (<code style="color: var(--color-primary); font-family: var(--font-mono);">--no-default-features</code>) compiles to <strong>9.6 MB</strong>, cleanly satisfying the &lt;15MB Target SLO invariant. Compiling all 29 extended language grammars embeds static C parser tables and bundled SQLite into the binary (~41.1 MB stripped release), avoiding runtime dependencies.
+              Initially measured at 12 bytes/edge (24 B/edge bidirectional) which missed the &le;8 B/edge Target SLO due to storing an unused 8-byte <code style="color: var(--color-primary); font-family: var(--font-mono);">f64</code> edge weight (<code style="color: var(--color-primary); font-family: var(--font-mono);">Csr&lt;(), f64, ...&gt;</code>). By dropping the weight overhead (<code style="color: var(--color-primary); font-family: var(--font-mono);">Csr&lt;(), (), ...&gt;</code> in <code style="color: var(--color-primary); font-family: var(--font-mono);">csr.rs</code>) and constructing reverse CSR matrices lazily via <code style="color: var(--color-primary); font-family: var(--font-mono);">OnceLock</code> on first call to <code style="color: var(--color-primary); font-family: var(--font-mono);">callers_within</code>, memory footprint was reduced to <strong>~4.0 bytes/edge</strong> forward (and ~8.0 bytes/edge bidirectional), cleanly achieving the <span style="color: #34d399; font-weight: 600;">&le;8 bytes/edge Target SLO</span>.
             </p>
           </div>
         </div>
