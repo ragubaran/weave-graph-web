@@ -3,12 +3,12 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Roadmap | Weave Graph Architecture & Milestones</title>
-  <meta name="description" content="Official development roadmap for Weave Graph: Phase 1 Core Engine, Phase 2 Federation & Team Intelligence, and Phase 3 Enterprise & Custom Extensions.">
+  <title>Roadmap | Weave Graph Architecture & Evolution</title>
+  <meta name="description" content="Development roadmap and phased implementation breakdown for Weave Graph: From single-repo speed to multi-repo federation, query-layer RBAC, and local SLM intent routing.">
 
   <!-- Open Graph -->
-  <meta property="og:title" content="Weave Graph Architecture Roadmap">
-  <meta property="og:description" content="Explore current milestones and future plans for Weave Graph across Core, Federation, and Enterprise phases.">
+  <meta property="og:title" content="Weave Graph — Architecture & Feature Roadmap">
+  <meta property="og:description" content="Explore the phased architecture of Weave Graph — from deterministic single-repo performance to enterprise RBAC, hybrid vector search, and local AI agent routing.">
   <meta property="og:type" content="article">
   <meta property="og:image" content="/assets/img/favicon.svg">
 
@@ -21,6 +21,89 @@
   <link rel="stylesheet" href="/assets/css/animations.css?v=1.0.4">
   <link rel="stylesheet" href="/assets/css/main.css?v=1.0.4">
   <link rel="stylesheet" href="/assets/css/components.css?v=1.0.4">
+  <style>
+    .timeline {
+      position: relative;
+      max-width: 900px;
+      margin: 0 auto;
+      padding-left: 2rem;
+    }
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 0.75rem;
+      top: 1rem;
+      bottom: 1rem;
+      width: 2px;
+      background: var(--color-border);
+    }
+    .timeline-item {
+      position: relative;
+      margin-bottom: var(--space-12);
+    }
+    .timeline-marker {
+      position: absolute;
+      left: -2rem;
+      top: 0.25rem;
+      width: 1.5rem;
+      height: 1.5rem;
+      border-radius: 50%;
+      background: var(--color-bg);
+      border: 3px solid var(--color-primary);
+      z-index: 1;
+    }
+    .timeline-marker.done {
+      background: #10b981;
+      border-color: #059669;
+    }
+    .timeline-marker.active {
+      background: #00f0ff;
+      border-color: #0088cc;
+      box-shadow: 0 0 12px rgba(0, 240, 255, 0.6);
+    }
+    .timeline-content {
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-lg);
+      padding: var(--space-6);
+      transition: transform 0.2s, border-color 0.2s;
+    }
+    .timeline-content:hover {
+      border-color: rgba(0, 240, 255, 0.3);
+    }
+    .timeline-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: var(--space-3);
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+    .timeline-phase {
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      color: var(--color-primary);
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .timeline-title {
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin-bottom: var(--space-2);
+      color: var(--color-text-main);
+    }
+    .timeline-deliverables {
+      margin-top: var(--space-4);
+      padding-left: 1.25rem;
+      color: var(--color-text-muted);
+      font-size: 0.95rem;
+    }
+    .timeline-deliverables li {
+      margin-bottom: 0.5rem;
+      line-height: 1.5;
+    }
+  </style>
 </head>
 <body>
 
@@ -60,13 +143,13 @@
         <a href="https://github.com/ragubaran/weave-graph" target="_blank" rel="noopener noreferrer" class="btn btn-secondary" style="padding: 0.5rem 0.85rem;" title="GitHub Repository">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
         </a>
-        <a href="getting-started.html" class="btn btn-primary">Install</a>
+        <a href="getting-started.html" class="btn btn-primary">Install CLI</a>
         <button class="mobile-menu-toggle" aria-label="Toggle Navigation">☰</button>
       </div>
     </div>
   </header>
 
-  <!-- Main Roadmap Content -->
+  <!-- Main Content -->
   <main class="section">
     <div class="container">
       
@@ -98,7 +181,7 @@
               <li><strong>Integer-Compacted CSR Matrix:</strong> Contiguous uint32 adjacency matrices (<code style="font-family: var(--font-mono); color: var(--color-primary);">petgraph::csr</code>) with Roaring bitmap set-intersections for sub-millisecond traversals.</li>
               <li><strong>Crash-Resilient Indexing & Purge:</strong> Atomic <code style="font-family: var(--font-mono); color: var(--color-primary);">.rebuild</code> swap and mandatory bidirectional edge purging preventing dangling pointers.</li>
               <li><strong>Zero-Config AI Agent MCP Integration:</strong> Stdio and loopback HTTP MCP server (<code style="font-family: var(--font-mono); color: var(--color-primary);">weave serve --mcp</code>) with auto-registration in <code style="font-family: var(--font-mono); color: var(--color-primary);">.mcp.json</code> and live reload.</li>
-              <li><strong>Smart Ignore Management:</strong> Automatic <code style="font-family: var(--font-mono); color: var(--color-primary);">.gitignore</code> and <code style="font-family: var(--font-mono); color: var(--color-primary);">.ignore</code> handling that excludes runtime databases while keeping <code style="font-family: var(--font-mono); color: var(--color-primary);">.weave/config.toml</code> trackable.</li>
+              <li><strong>Smart Ignore Management:</strong> Automatic <code style="font-family: var(--font-mono); color: var(--color-primary);">.gitignore</code> and <code style="font-family: var(--font-mono); color: var(--color-primary);">.ignore</code> handling that excludes runtime databases while keeping <code style="font-family: var(--font-mono); color: var(--color-primary); me">.weave/config.toml</code> trackable.</li>
               <li><strong>PR Blast Radius Analysis:</strong> Git three-dot diff traversal (<code style="font-family: var(--font-mono); color: var(--color-primary);">weave blast</code>) with markdown and JSON export formats.</li>
               <li><strong>Strict Quality Standards:</strong> &ge;90% line coverage enforced across all crates, Google Rust style, and forward N+1 beta compatibility.</li>
             </ul>
@@ -120,7 +203,7 @@
             <ul class="timeline-deliverables">
               <li><strong>Federation Virtual Schema (<code style="font-family: var(--font-mono); color: var(--color-primary);">feature: federation</code>):</strong> Multi-repo linking (<code style="font-family: var(--font-mono); color: var(--color-primary);">weave link</code>), cross-boundary queries (<code style="font-family: var(--font-mono); color: var(--color-primary);">weave query-federated</code>), and unified canvas maps.</li>
               <li><strong>Topological Cycle Analysis & Contracts:</strong> Tarjan's Strongly Connected Components (SCC) and automated public API contract drift CI gates (<code style="font-family: var(--font-mono); color: var(--color-primary);">weave check-contracts</code>).</li>
-              <li><strong>Markdown & Obsidian Ingestion (<code style="font-family: var(--font-mono); color: var(--color-primary);">feature: docs</code>):</strong> Zero-regex streaming markdown parser (<code style="font-family: var(--font-mono); color: var(--color-primary);">pulldown-cmark</code>), wikilinks, and <code style="font-family: var(--font-mono); color: var(--color-primary);">.canvas</code> export.</li>
+              <li><strong>Markdown & Obsidian Ingestion (<code style="font-family: var(--font-mono); color: var(--color-primary);">feature: docs</code>):</strong> Zero-regex streaming markdown parser (<code style="font-family: var(--font-mono); color: var(--color-primary);">pulldown-cmark</code>), wikilinks, and <code style="font-family: var(--font-mono); color: var(--color-primary); me">.canvas</code> export.</li>
               <li><strong>Pinned Symbol Notes (<code style="font-family: var(--font-mono); color: var(--color-primary);">feature: notes</code>):</strong> Persistent agent/human knowledge pins (<code style="font-family: var(--font-mono); color: var(--color-primary);">weave note pin/list</code>, MCP recall) with content-hash staleness tracking.</li>
               <li><strong>Debounced Watch Mode & HTML Viewer:</strong> File watcher (<code style="font-family: var(--font-mono); color: var(--color-primary);">feature: watch</code>) with blast-radius gating and offline zero-dependency HTML viewer (<code style="font-family: var(--font-mono); color: var(--color-primary);">feature: viz</code>).</li>
               <li><strong>Snapshot Hub Client (<code style="font-family: var(--font-mono); color: var(--color-primary);">feature: hub</code>):</strong> Network-efficient snapshot hydration and delta publishing (<code style="font-family: var(--font-mono); color: var(--color-primary);">weave sync pull/push</code>).</li>
@@ -132,18 +215,18 @@
 
         <!-- Phase 3 -->
         <div class="timeline-item">
-          <div class="timeline-marker active"></div>
+          <div class="timeline-marker done"></div>
           <div class="timeline-content">
             <div class="timeline-header">
               <span class="timeline-phase">Phase 3 • Enterprise Scale & Custom Extensions (M3.0–M3.10)</span>
-              <span class="badge badge-cyan">In Active Delivery</span>
+              <span class="badge badge-success">Completed & Shipped (v1.0.1)</span>
             </div>
             <h3 class="timeline-title">Query-Layer RBAC, Hybrid Vector Search, SCIM & Registry</h3>
             <p style="color: var(--color-text-muted); font-size: 0.95rem; line-height: 1.6;">
               Enterprise security controls, distributed trace overlays, architectural boundary enforcement, cryptographic provenance, and two-tier vector search isolated behind zero-overhead feature flags.
             </p>
             <ul class="timeline-deliverables">
-              <li><strong>Query-Layer RBAC (<code style="font-family: var(--font-mono); color: var(--color-primary);">feature: rbac</code>):</strong> Storage/traversal boundary node masking with identity enforcement (<code style="font-family: var(--font-mono); color: var(--color-primary);">--as</code>, <code style="font-family: var(--font-mono); color: var(--color-primary);">--require-as</code>) and SCIM 2.0 directory synchronization.</li>
+              <li><strong>Query-Layer RBAC (<code style="font-family: var(--font-mono); color: var(--color-primary);">feature: rbac</code>):</strong> Storage/traversal boundary node masking with identity enforcement (<code style="font-family: var(--font-mono); color: var(--color-primary);">--as</code>, <code style="font-family: var(--font-mono); color: var(--color-primary); me">--require-as</code>) and SCIM 2.0 directory synchronization.</li>
               <li><strong>Architectural Policy Linter (<code style="font-family: var(--font-mono); color: var(--color-primary);">feature: policy-lint</code>):</strong> YAML boundary rule verification (<code style="font-family: var(--font-mono); color: var(--color-primary);">weave policy lint</code>) and architectural drift analytics (<code style="font-family: var(--font-mono); color: var(--color-primary);">weave policy drift</code>).</li>
               <li><strong>Two-Tier Hybrid Search:</strong> High-performance FTS5 BM25 keyword search (<code style="font-family: var(--font-mono); color: var(--color-primary);">feature: fts</code>) and local quantized vector ANN retrieval (<code style="font-family: var(--font-mono); color: var(--color-primary);">feature: vector</code>, <code style="font-family: var(--font-mono); color: var(--color-primary);">sqlite-vec</code>).</li>
               <li><strong>OpenTelemetry Trace Overlays (<code style="font-family: var(--font-mono); color: var(--color-primary);">feature: otel</code>):</strong> Ingesting distributed trace spans (<code style="font-family: var(--font-mono); color: var(--color-primary);">weave traces import</code>) to overlay live p50/p95/p99 latency percentiles on graph nodes.</li>
@@ -151,6 +234,25 @@
               <li><strong>In-Browser WASM Graph Runtime:</strong> Standalone 155.6 KB browser WASM binary (<code style="font-family: var(--font-mono); color: var(--color-primary);">weave-graph-wasm</code>) for client-side offline graph traversal.</li>
               <li><strong>Central Enterprise Registry Service:</strong> Chunked upload spooling and token-authenticated registry backend (<code style="font-family: var(--font-mono); color: var(--color-primary);">weave-registry</code>).</li>
               <li><strong>Extended Architecture & Drift Waivers:</strong> Role-gated drift waivers (<code style="font-family: var(--font-mono); color: var(--color-primary);">--allow-drift</code>) and audited PR blast exemptions (<code style="font-family: var(--font-mono); color: var(--color-primary);">--skip --reason</code>).</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Phase 4 -->
+        <div class="timeline-item">
+          <div class="timeline-marker active"></div>
+          <div class="timeline-content">
+            <div class="timeline-header">
+              <span class="timeline-phase">Phase 4 • Autonomous & Local Intelligence Scaling (M4.0–M4.1)</span>
+              <span class="badge badge-cyan">In Active Delivery</span>
+            </div>
+            <h3 class="timeline-title">On-Device Multimodal Ingestion & In-Process Model Runtimes</h3>
+            <p style="color: var(--color-text-muted); font-size: 0.95rem; line-height: 1.6;">
+              Heavy on-device vision model scanning, in-process C++/FFI llama.cpp model execution, and Metal/CUDA hardware acceleration while preserving 0 MB idle RAM.
+            </p>
+            <ul class="timeline-deliverables">
+              <li><strong>Local On-Device Vision Scanning (<code style="font-family: var(--font-mono); color: var(--color-primary);">feature: vision</code>):</strong> Multimodal image and diagram scanning (<code style="font-family: var(--font-mono); color: var(--color-primary);">weave scan-images</code>) using GGUF + mmproj vision projectors.</li>
+              <li><strong>In-Process Llama.cpp Engine:</strong> Native GGUF model execution with lazy weight loading and on-demand GPU acceleration (Metal/CUDA/Vulkan).</li>
             </ul>
           </div>
         </div>
@@ -211,8 +313,9 @@
         <div class="footer-col">
           <div class="footer-col-title">Releases</div>
           <ul class="footer-links">
-            <li><a href="release-notes.html">v1.0.1 Release Notes</a></li>
-            <li><a href="release-notes.html#milestones">Deliverable Matrix</a></li>
+            <li><a href="release-notes.html">Release Notes</a></li>
+            <li><a href="release-notes.html#v1.0.1">v1.0.1 Notes</a></li>
+            <li><a href="release-notes.html#v1.0.0">v1.0.0 Archive</a></li>
             <li><a href="https://github.com/ragubaran/weave-graph/releases" target="_blank" rel="noopener noreferrer">GitHub Releases</a></li>
           </ul>
         </div>
