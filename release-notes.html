@@ -4,11 +4,11 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Release Notes | Weave Graph</title>
-  <meta name="description" content="Release notes for Weave Graph: Zero-config MCP integration, smart ignore resolution, query-layer RBAC hardening, empirical benchmark matrix, 29+ Tree-sitter languages, and deterministic graph intelligence.">
+  <meta name="description" content="Release notes for Weave Graph: MCP auto-registration, smart ignore resolution, query-layer RBAC hardening, a local pre-push gate, 29 Tree-sitter languages, and deterministic graph intelligence.">
 
   <!-- Open Graph -->
   <meta property="og:title" content="Weave Graph Release Notes & Version History">
-  <meta property="og:description" content="Read what's new in Weave Graph — Zero-config AI Agent MCP setup, smart .gitignore resolution, RBAC hardening, CSR matrix indexing, and sub-millisecond code intelligence.">
+  <meta property="og:description" content="Read what's new in Weave Graph — AI agent MCP setup, smart .gitignore resolution, RBAC hardening, CSR matrix indexing, and deterministic graph intelligence.">
   <meta property="og:type" content="article">
   <meta property="og:image" content="/assets/img/favicon.svg">
 
@@ -17,10 +17,10 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet">
 
-  <link rel="stylesheet" href="/assets/css/variables.css?v=1.0.4">
-  <link rel="stylesheet" href="/assets/css/animations.css?v=1.0.4">
-  <link rel="stylesheet" href="/assets/css/main.css?v=1.0.4">
-  <link rel="stylesheet" href="/assets/css/components.css?v=1.0.4">
+  <link rel="stylesheet" href="/assets/css/variables.css?v=1.0.7">
+  <link rel="stylesheet" href="/assets/css/animations.css?v=1.0.7">
+  <link rel="stylesheet" href="/assets/css/main.css?v=1.0.7">
+  <link rel="stylesheet" href="/assets/css/components.css?v=1.0.7">
 </head>
 <body>
 
@@ -70,25 +70,32 @@
   <main class="section">
     <div class="container" style="max-width: 960px;">
 
-      <!-- Unreleased / Next Release Banner -->
-      <div style="margin-bottom: var(--space-12); padding-bottom: var(--space-12); border-bottom: 1px solid var(--color-border);">
+      <!-- Unreleased / In-Development Work -->
+      <div id="unreleased" style="margin-bottom: var(--space-12); padding-bottom: var(--space-12); border-bottom: 1px solid var(--color-border);">
         <div style="display: flex; gap: 0.75rem; align-items: center; margin-bottom: var(--space-3); flex-wrap: wrap;">
-          <span class="badge badge-purple" style="font-size: 0.85rem; font-weight: 700;">Unreleased • Active Branch</span>
-          <span class="badge badge-cyan" style="font-size: 0.85rem;">Phase 3 Security & DX</span>
-          <span style="color: var(--color-text-muted); font-size: 0.85rem;">Continuous Integration</span>
+          <span class="badge badge-purple" style="font-size: 0.85rem; font-weight: 700;">Unreleased — In Development</span>
+          <span style="color: var(--color-text-muted); font-size: 0.85rem;">Built on top of v1.0.0, not yet tagged</span>
         </div>
-        <h1 style="font-size: 2.5rem; font-weight: 800; letter-spacing: -0.02em;">Unreleased — Zero-Config AI MCP, Smart Ignore, RBAC Hardening & Storage Boundary</h1>
+        <h1 style="font-size: 2.5rem; font-weight: 800; letter-spacing: -0.02em;">Unreleased — Pre-Push Hooks, RBAC Hardening & Verified Binary Sizes</h1>
         <p style="color: var(--color-text-muted); font-size: 1.15rem; margin-top: var(--space-2); line-height: 1.6;">
-          Major developer experience improvements for AI coding agents via <code style="font-family: var(--font-mono); color: var(--color-primary);">weave init</code>, query-layer RBAC enforcement, registry bearer authentication, push signature provenance, and expanded 8-tool MCP surface.
+          Work merged to <code style="font-family: var(--font-mono); color: var(--color-primary);">main</code> since v1.0.0. None of this has been tagged or published as a release yet.
         </p>
 
         <!-- Unreleased Key Highlights Grid -->
         <div class="grid grid-2" style="margin-top: var(--space-8); gap: var(--space-4);">
           <div class="glass-card">
-            <div class="badge badge-cyan" style="margin-bottom: var(--space-2);">Zero-Config Setup</div>
-            <h3 style="font-size: 1.25rem; color: var(--color-text-main); margin-bottom: var(--space-2);">Universal AI Agent MCP Auto-Registration</h3>
+            <div class="badge badge-cyan" style="margin-bottom: var(--space-2);">Local Pre-Push Gate</div>
+            <h3 style="font-size: 1.25rem; color: var(--color-text-main); margin-bottom: var(--space-2);"><code style="font-family: var(--font-mono); color: var(--color-primary);">weave hooks install</code> / <code style="font-family: var(--font-mono); color: var(--color-primary);">uninstall</code></h3>
             <p style="color: var(--color-text-muted); font-size: 0.95rem; line-height: 1.6;">
-              <code style="font-family: var(--font-mono); color: var(--color-primary);">weave init</code> automatically creates or safely merges configuration into root <code style="font-family: var(--font-mono); color: var(--color-primary);">.mcp.json</code>. Out of the box compatibility with <strong>Claude Code, Cursor, Windsurf, Google Antigravity, Gemini Code Assist, GitHub Copilot, Codex, OpenCode, Hermes, and Kiro</strong> without overwriting existing tool entries.
+              Writes a local, offline <code style="font-size: 0.85rem;">pre-push</code> git hook that runs <code style="font-size: 0.85rem;">weave blast --base &lt;ref&gt;</code> (advisory) then <code style="font-size: 0.85rem;">weave check-contracts --submodules</code> before a push leaves the machine. Refuses to overwrite a hook it didn't write unless <code style="font-size: 0.85rem;">--force</code> is passed; <code style="font-size: 0.85rem;">uninstall</code> only removes a hook it installed.
+            </p>
+          </div>
+
+          <div class="glass-card">
+            <div class="badge badge-cyan" style="margin-bottom: var(--space-2);">Zero-Config Setup</div>
+            <h3 style="font-size: 1.25rem; color: var(--color-text-main); margin-bottom: var(--space-2);">MCP Auto-Registration</h3>
+            <p style="color: var(--color-text-muted); font-size: 0.95rem; line-height: 1.6;">
+              <code style="font-family: var(--font-mono); color: var(--color-primary);">weave init</code> creates or non-destructively merges the <code style="font-family: var(--font-mono); color: var(--color-primary);">weave</code> server entry into root <code style="font-family: var(--font-mono); color: var(--color-primary);">.mcp.json</code>. Clients that read a project-level <code style="font-size: 0.85rem;">.mcp.json</code> (Claude Code, Cursor, and others) pick it up with no further steps; other MCP clients still need to be pointed manually at <code style="font-size: 0.85rem;">weave serve --mcp</code>.
             </p>
           </div>
 
@@ -96,31 +103,47 @@
             <div class="badge badge-purple" style="margin-bottom: var(--space-2);">Smart Git & Ripgrep Ignores</div>
             <h3 style="font-size: 1.25rem; color: var(--color-text-main); margin-bottom: var(--space-2);">Clean Version Control for Config</h3>
             <p style="color: var(--color-text-muted); font-size: 0.95rem; line-height: 1.6;">
-              Configures <code style="font-family: var(--font-mono); color: var(--color-primary);">.gitignore</code> and <code style="font-family: var(--font-mono); color: var(--color-primary);">.ignore</code> with <code style="font-size: 0.85rem;">.weave/*</code> and <code style="font-size: 0.85rem;">!.weave/config.toml</code>. Ensures databases and lockfiles stay uncommitted while configuration is safely committed and tracked in git.
+              Configures <code style="font-family: var(--font-mono); color: var(--color-primary);">.gitignore</code> and <code style="font-family: var(--font-mono); color: var(--color-primary);">.ignore</code> with <code style="font-size: 0.85rem;">.weave/*</code> and <code style="font-size: 0.85rem;">!.weave/config.toml</code>. Ensures the derived graph database stays uncommitted while <code style="font-size: 0.85rem;">config.toml</code> stays tracked in git.
             </p>
           </div>
 
           <div class="glass-card">
-            <div class="badge badge-cyan" style="margin-bottom: var(--space-2);">RBAC Enforcement</div>
-            <h3 style="font-size: 1.25rem; color: var(--color-text-main); margin-bottom: var(--space-2);">Query-Layer RBAC Hardening</h3>
+            <div class="badge badge-cyan" style="margin-bottom: var(--space-2);">RBAC Hardening</div>
+            <h3 style="font-size: 1.25rem; color: var(--color-text-main); margin-bottom: var(--space-2);">Query-Layer RBAC & Identity Sources</h3>
             <p style="color: var(--color-text-muted); font-size: 0.95rem; line-height: 1.6;">
-              Introduces <code style="font-family: var(--font-mono); color: var(--color-primary);">weave serve --mcp --require-as</code> and <code style="font-family: var(--font-mono); color: var(--color-primary);">[rbac] require_identity = true</code> to block unauthenticated sessions in shared environments. Closes waiver bypasses, adds SCIM bearer auth, and enforces pre-truncation RBAC filters on semantic search.
+              <code style="font-family: var(--font-mono); color: var(--color-primary);">weave serve --mcp --require-as</code> and <code style="font-family: var(--font-mono); color: var(--color-primary);">[rbac] require_identity = true</code> refuse to start an unmasked session. An identity-less <code style="font-size: 0.85rem;">--allow-drift</code> waiver is now rejected outright once any user is granted the <code style="font-size: 0.85rem;">allow-drift</code> role. Adds a per-user <code style="font-size: 0.85rem;">path_scope</code> that narrows the <code style="font-size: 0.85rem;">internal</code> role's unmask to specific paths, GitHub org/team-to-role mapping (<code style="font-size: 0.85rem;">github-auth</code> feature), and SCIM group ingestion that accepts real Okta/Azure/Google payload shapes.
             </p>
           </div>
 
           <div class="glass-card">
-            <div class="badge badge-purple" style="margin-bottom: var(--space-2);">Enterprise Registry</div>
-            <h3 style="font-size: 1.25rem; color: var(--color-text-main); margin-bottom: var(--space-2);">Hub Registry Auth & Push Provenance</h3>
+            <div class="badge badge-purple" style="margin-bottom: var(--space-2);">Registry Auth & Provenance</div>
+            <h3 style="font-size: 1.25rem; color: var(--color-text-main); margin-bottom: var(--space-2);">Bearer Auth & Snapshot Signing</h3>
             <p style="color: var(--color-text-muted); font-size: 0.95rem; line-height: 1.6;">
-              <code style="font-family: var(--font-mono); color: var(--color-primary);">weave-registry --auth-token</code> enforces bearer authentication on graph sync. <code style="font-family: var(--font-mono); color: var(--color-primary);">--provenance-key</code> validates <code style="font-size: 0.85rem;">X-Weave-Signature</code> headers before committing snapshot pushes.
+              <code style="font-family: var(--font-mono); color: var(--color-primary);">weave-registry --auth-token</code> requires a bearer token on every request. <code style="font-family: var(--font-mono); color: var(--color-primary);">--provenance-key-file</code> (feature <code style="font-size: 0.85rem;">hub-provenance</code>) verifies a push's <code style="font-size: 0.85rem;">X-Weave-Signature</code> header — an HMAC-SHA-256 signature over a shared operator secret — before the snapshot is committed.
             </p>
           </div>
 
           <div class="glass-card">
-            <div class="badge badge-cyan" style="margin-bottom: var(--space-2);">8 MCP Tools</div>
-            <h3 style="font-size: 1.25rem; color: var(--color-text-main); margin-bottom: var(--space-2);">Expanded MCP Agent Capabilities</h3>
+            <div class="badge badge-cyan" style="margin-bottom: var(--space-2);">12 MCP Tools</div>
+            <h3 style="font-size: 1.25rem; color: var(--color-text-main); margin-bottom: var(--space-2);">New Tools & Pre-Flight Verification</h3>
             <p style="color: var(--color-text-muted); font-size: 0.95rem; line-height: 1.6;">
-              Adds <code style="font-family: var(--font-mono); color: var(--color-primary);">weave_search_semantic</code> (vector feature) and <code style="font-family: var(--font-mono); color: var(--color-primary);">weave_policy_lint</code> (policy feature), all guarded through a unified session-bound <code style="font-size: 0.85rem;">RbacGuard</code>.
+              The MCP surface is now 7 core tools plus 5 feature-gated ones (2 for <code style="font-size: 0.85rem;">notes</code>, 1 each for <code style="font-size: 0.85rem;">fts</code>, <code style="font-size: 0.85rem;">vector</code>, <code style="font-size: 0.85rem;">policy-lint</code>) — up from 6. New: <code style="font-family: var(--font-mono); color: var(--color-primary);">weave_check_freshness</code>, <code style="font-family: var(--font-mono); color: var(--color-primary);">weave_explore</code>, <code style="font-family: var(--font-mono); color: var(--color-primary);">weave_find_all</code>, and <code style="font-family: var(--font-mono); color: var(--color-primary);">weave_verify</code>. A new CLI command, <code style="font-family: var(--font-mono); color: var(--color-primary);">weave verify</code>, is a deterministic pre-flight check for phantom symbols and stale submodule references before an agent edit lands. Note: <code style="font-size: 0.85rem;">weave_search_semantic</code> runs on an experimental mock-embedding provider, not a trained model.
+            </p>
+          </div>
+
+          <div class="glass-card">
+            <div class="badge badge-purple" style="margin-bottom: var(--space-2);">Full-Text Search</div>
+            <h3 style="font-size: 1.25rem; color: var(--color-text-main); margin-bottom: var(--space-2);">Body & Doc-Comment Indexing</h3>
+            <p style="color: var(--color-text-muted); font-size: 0.95rem; line-height: 1.6;">
+              <code style="font-family: var(--font-mono); color: var(--color-primary);">weave search</code>'s BM25 FTS index (feature <code style="font-size: 0.85rem;">fts</code>) now covers a symbol's body and doc comment, not just its name and signature.
+            </p>
+          </div>
+
+          <div class="glass-card">
+            <div class="badge badge-cyan" style="margin-bottom: var(--space-2);">Resource Budget</div>
+            <h3 style="font-size: 1.25rem; color: var(--color-text-main); margin-bottom: var(--space-2);">Cgroup-Aware Indexing Cap</h3>
+            <p style="color: var(--color-text-muted); font-size: 0.95rem; line-height: 1.6;">
+              Indexing now reads the cgroup v2/v1 memory limit (or host memory if none is set), reserves a quarter of it, and shrinks parse batches and staged writes — never grows them — to stay under budget, printing a one-line reason when it does.
             </p>
           </div>
 
@@ -128,131 +151,51 @@
             <div class="badge badge-purple" style="margin-bottom: var(--space-2);">Storage & Federation</div>
             <h3 style="font-size: 1.25rem; color: var(--color-text-main); margin-bottom: var(--space-2);">Persistent Federated Queries</h3>
             <p style="color: var(--color-text-muted); font-size: 0.95rem; line-height: 1.6;">
-              Composite federation graphs are persisted to <code style="font-family: var(--font-mono); color: var(--color-primary);">.weave/federation/&lt;partner&gt;.db</code> with atomic rename. <code style="font-family: var(--font-mono); color: var(--color-primary);">weave query-federated</code> and <code style="font-family: var(--font-mono); color: var(--color-primary);">weave report-federated</code> query cross-repository graphs directly.
-            </p>
-          </div>
-        </div>
-      </div>
-
-      <!-- Release v1.0.1 -->
-      <div id="v1.0.1" style="margin-bottom: var(--space-12); padding-bottom: var(--space-12); border-bottom: 1px solid var(--color-border);">
-        <div style="display: flex; gap: 0.75rem; align-items: center; margin-bottom: var(--space-3); flex-wrap: wrap;">
-          <span class="badge badge-cyan" style="font-size: 0.85rem; font-weight: 700;">Version 1.0.1</span>
-          <span class="badge badge-purple" style="font-size: 0.85rem;">GA Release</span>
-          <span style="color: var(--color-text-muted); font-size: 0.85rem;">Released: 2026-09-12</span>
-        </div>
-        <h2 style="font-size: 2.25rem; font-weight: 800; letter-spacing: -0.02em;">Weave Graph v1.0.1 — Extended Multi-Language Support & Contract Verification</h2>
-        <p style="color: var(--color-text-muted); font-size: 1.15rem; margin-top: var(--space-2); line-height: 1.6;">
-          Release 1.0.1 introduces 17 additional Tree-sitter language grammars, boundary contract hashing (<code style="font-family: var(--font-mono); color: var(--color-primary);">weave check-contracts</code>), live MCP server auto-reload, progressive token budgeting, and PR blast radius analysis.
-        </p>
-
-        <!-- v1.0.1 Key Features Grid -->
-        <div class="grid grid-2" style="margin-top: var(--space-8); gap: var(--space-4);">
-          <div class="glass-card">
-            <div class="badge badge-cyan" style="margin-bottom: var(--space-2);">17 Extended Languages</div>
-            <h3 style="font-size: 1.25rem; color: var(--color-text-main); margin-bottom: var(--space-2);">29+ Supported Languages</h3>
-            <p style="color: var(--color-text-muted); font-size: 0.95rem; line-height: 1.6;">
-              Extends Tree-sitter parsing under <code style="font-family: var(--font-mono); color: var(--color-primary);">--features lang-extended</code> with 17 new languages: <strong>ArkTS</strong> (<code style="font-size: 0.85rem;">.ets</code>), <strong>Objective-C/C++</strong> (<code style="font-size: 0.85rem;">.m</code>, <code style="font-size: 0.85rem;">.mm</code>), <strong>Metal</strong> (<code style="font-size: 0.85rem;">.metal</code>), <strong>CUDA</strong> (<code style="font-size: 0.85rem;">.cu</code>, <code style="font-size: 0.85rem;">.cuh</code>), <strong>Svelte</strong> (<code style="font-size: 0.85rem;">.svelte</code>), <strong>Vue</strong> (<code style="font-size: 0.85rem;">.vue</code>), <strong>Astro</strong> (<code style="font-size: 0.85rem;">.astro</code>), <strong>Liquid</strong> (<code style="font-size: 0.85rem;">.liquid</code>), <strong>Pascal/Delphi</strong> (<code style="font-size: 0.85rem;">.pas</code>, <code style="font-size: 0.85rem;">.pp</code>), <strong>Luau</strong> (<code style="font-size: 0.85rem;">.luau</code>), <strong>CFML</strong> (<code style="font-size: 0.85rem;">.cfm</code>, <code style="font-size: 0.85rem;">.cfc</code>), <strong>COBOL</strong> (<code style="font-size: 0.85rem;">.cbl</code>, <code style="font-size: 0.85rem;">.cob</code>), <strong>Visual Basic .NET</strong> (<code style="font-size: 0.85rem;">.vb</code>), <strong>Erlang</strong> (<code style="font-size: 0.85rem;">.erl</code>, <code style="font-size: 0.85rem;">.hrl</code>), <strong>Solidity</strong> (<code style="font-size: 0.85rem;">.sol</code>), <strong>Terraform/OpenTofu</strong> (<code style="font-size: 0.85rem;">.tf</code>, <code style="font-size: 0.85rem;">.tofu</code>), and <strong>Nix</strong> (<code style="font-size: 0.85rem;">.nix</code>).
-            </p>
-          </div>
-
-          <div class="glass-card">
-            <div class="badge badge-purple" style="margin-bottom: var(--space-2);">CI Contract Gate</div>
-            <h3 style="font-size: 1.25rem; color: var(--color-text-main); margin-bottom: var(--space-2);">Boundary Contract Verification</h3>
-            <p style="color: var(--color-text-muted); font-size: 0.95rem; line-height: 1.6;">
-              <code style="font-family: var(--font-mono); color: var(--color-primary);">weave check-contracts</code> calculates deterministic SHA-256 signatures of public API surfaces. Catches cross-service breaking changes, signature drift, and missing exports in CI with zero network dependencies.
-            </p>
-          </div>
-
-          <div class="glass-card">
-            <div class="badge badge-cyan" style="margin-bottom: var(--space-2);">Zero Stale Queries</div>
-            <h3 style="font-size: 1.25rem; color: var(--color-text-main); margin-bottom: var(--space-2);">MCP Live Reload On External Reindex</h3>
-            <p style="color: var(--color-text-muted); font-size: 0.95rem; line-height: 1.6;">
-              <code style="font-family: var(--font-mono); color: var(--color-primary);">weave serve --mcp</code> detects external database updates via a rate-limited monotonic mtime check. Automatically reopens SQLite connections and rebuilds CSR graphs seamlessly without dropping active sessions.
-            </p>
-          </div>
-
-          <div class="glass-card">
-            <div class="badge badge-purple" style="margin-bottom: var(--space-2);">92% Token Savings</div>
-            <h3 style="font-size: 1.25rem; color: var(--color-text-main); margin-bottom: var(--space-2);">3-Tier Progressive Token Budgeting</h3>
-            <p style="color: var(--color-text-muted); font-size: 0.95rem; line-height: 1.6;">
-              All MCP tools accept <code style="font-family: var(--font-mono); color: var(--color-primary);">max_tokens</code>. When output exceeds budget, tools shed detail across Level-of-Detail (LOD) tiers: module summary &rarr; file boundaries &rarr; symbol wiring cards, keeping LLMs focused and within context limits.
-            </p>
-          </div>
-
-          <div class="glass-card">
-            <div class="badge badge-cyan" style="margin-bottom: var(--space-2);">PR Safety Gate</div>
-            <h3 style="font-size: 1.25rem; color: var(--color-text-main); margin-bottom: var(--space-2);">Blast Radius Impact Graph</h3>
-            <p style="color: var(--color-text-muted); font-size: 0.95rem; line-height: 1.6;">
-              <code style="font-family: var(--font-mono); color: var(--color-primary);">weave blast --base &lt;git-ref&gt;</code> analyzes git diffs, traverses call hierarchies, and reports affected downstream callers, affected public interfaces, and risk scores formatted as PR comments.
-            </p>
-          </div>
-
-          <div class="glass-card">
-            <div class="badge badge-purple" style="margin-bottom: var(--space-2);">Visual Intelligence</div>
-            <h3 style="font-size: 1.25rem; color: var(--color-text-main); margin-bottom: var(--space-2);">Obsidian Canvas Architecture Exporter</h3>
-            <p style="color: var(--color-text-muted); font-size: 0.95rem; line-height: 1.6;">
-              <code style="font-family: var(--font-mono); color: var(--color-primary);">weave report --format canvas</code> exports interactive 2D graph architectures directly into JSON Canvas (<code style="font-size: 0.85rem;">.canvas</code>) specification with Louvain community cluster layouts.
+              Composite federation graphs are persisted to <code style="font-family: var(--font-mono); color: var(--color-primary);">.weave/federation/&lt;partner&gt;.db</code> with atomic rename. <code style="font-family: var(--font-mono); color: var(--color-primary);">weave query-federated</code> and <code style="font-family: var(--font-mono); color: var(--color-primary);">weave report-federated</code> query cross-repository graphs directly instead of recomputing on every call.
             </p>
           </div>
         </div>
 
         <!-- Packaging Tiers Breakdown -->
         <div style="margin-top: var(--space-8);">
-          <h3 style="font-size: 1.4rem; font-weight: 700; margin-bottom: var(--space-4);">Packaging Tiers & Measured Binaries</h3>
+          <h3 style="font-size: 1.4rem; font-weight: 700; margin-bottom: var(--space-4);">Corrected, Measured Binary Sizes</h3>
+          <p style="color: var(--color-text-muted); font-size: 0.9rem; margin-bottom: 1rem;">
+            The <code style="font-size: 0.85rem;">lang-extended</code> Cargo feature (on by default) now makes 21 of the 29 Tree-sitter grammars opt-in, so <code style="font-size: 0.85rem;">--no-default-features</code> produces a genuinely smaller core binary. Sizes below are from a stripped <code style="font-size: 0.85rem;">cargo build --release</code>.
+          </p>
           <div class="table-responsive">
             <table class="compare-table">
               <thead>
                 <tr>
                   <th>Packaging Tier</th>
-                  <th>Flag / Target</th>
+                  <th>Flag</th>
                   <th>Measured Size</th>
-                  <th>Storage Engine</th>
-                  <th>Features Included</th>
+                  <th>Languages</th>
                 </tr>
               </thead>
               <tbody>
                 <tr>
-                  <td><strong>Minimal Core</strong></td>
+                  <td><strong>Core</strong></td>
                   <td><code style="font-size: 0.85rem;">--no-default-features</code></td>
-                  <td><strong style="color: #34d399;">9.6 MB</strong></td>
-                  <td>SQLite WAL</td>
-                  <td>8 core languages, BFS traversal, SQLite store</td>
+                  <td><strong style="color: #34d399;">9.67 MiB</strong></td>
+                  <td>8 core grammars</td>
                 </tr>
                 <tr>
-                  <td><strong>Standard Normal Mode</strong></td>
-                  <td>Default GA release</td>
-                  <td><strong>41.1 MB</strong></td>
-                  <td>SQLite WAL</td>
-                  <td>All 29 language grammars, MCP server, full CLI</td>
+                  <td><strong>Default / <code style="font-size: 0.85rem;">team</code></strong></td>
+                  <td><code style="font-size: 0.85rem;">--features team</code></td>
+                  <td><strong>41.16 MiB</strong></td>
+                  <td>29 grammars (8 core + 21 <code style="font-size: 0.85rem;">lang-extended</code>)</td>
                 </tr>
                 <tr>
-                  <td><strong>Vector Feature Mode</strong></td>
-                  <td><code style="font-size: 0.85rem;">--features vector</code></td>
-                  <td><strong>41.2 MB</strong></td>
-                  <td>SQLite + sqlite-vec</td>
-                  <td>Vector embeddings, cosine similarity, semantic search</td>
-                </tr>
-                <tr>
-                  <td><strong>Turso Mode</strong></td>
-                  <td><code style="font-size: 0.85rem;">--features turso</code></td>
-                  <td><strong>41.1 MB</strong></td>
-                  <td>libSQL Embedded Replica</td>
-                  <td>Turso cloud replication, distributed query backend</td>
-                </tr>
-                <tr>
-                  <td><strong>Custom Enterprise Tier</strong></td>
-                  <td><code style="font-size: 0.85rem;">--features custom</code></td>
-                  <td><strong>41.6–42.0 MB</strong></td>
-                  <td>SQLite + Ext</td>
-                  <td>RBAC, Hub Client, Provenance, Vector, FTS, Policy-Lint</td>
+                  <td><strong>Custom, core languages</strong></td>
+                  <td><code style="font-size: 0.85rem;">--features custom --no-default-features</code></td>
+                  <td><strong>10.25 MiB</strong></td>
+                  <td>8 core grammars + RBAC, Hub, provenance, policy-lint</td>
                 </tr>
                 <tr>
                   <td><strong>Standalone WASM</strong></td>
                   <td><code style="font-size: 0.85rem;">weave-graph-wasm</code></td>
                   <td><strong style="color: #34d399;">155.6 KB</strong></td>
-                  <td>In-Memory CSR</td>
-                  <td>Zero-runtime browser & WASM agent execution</td>
+                  <td>In-memory CSR, browser-only, experimental crate</td>
                 </tr>
               </tbody>
             </table>
@@ -276,14 +219,14 @@
           <div class="glass-card">
             <h3 style="font-size: 1.25rem; color: var(--color-text-main); margin-bottom: var(--space-2);">1. Pure Rust 2024 Deterministic Graph Core</h3>
             <p style="color: var(--color-text-muted); font-size: 0.95rem; line-height: 1.6;">
-              Engineered with zero runtime dependencies (no Node.js, no Python, no JVM). Executes 100% deterministically with sub-millisecond point lookups and zero cloud leaks.
+              Engineered with zero runtime dependencies (no Node.js, no Python, no JVM). Deterministic point lookups run in single-digit microseconds, with no network calls in the default build.
             </p>
           </div>
 
           <div class="glass-card">
             <h3 style="font-size: 1.25rem; color: var(--color-text-main); margin-bottom: var(--space-2);">2. Integer-Compacted CSR Matrix Traversal</h3>
             <p style="color: var(--color-text-muted); font-size: 0.95rem; line-height: 1.6;">
-              Adjacency traversals leverage contiguous 32-bit CSR matrices and Roaring bitmaps. Consumes only <strong>~12.0 bytes/node</strong> and <strong>~4.0 bytes/edge</strong> forward (<41MB peak RSS for 500k symbols).
+              Adjacency traversals leverage contiguous 32-bit CSR matrices and Roaring bitmaps. Consumes only <strong>~12.0 bytes/node</strong> and <strong>~4.0 bytes/edge</strong> forward — see <a href="performance.html">Performance</a> for measured RAM figures at scale.
             </p>
           </div>
 
@@ -304,14 +247,14 @@
           <div class="glass-card">
             <h3 style="font-size: 1.25rem; color: var(--color-text-main); margin-bottom: var(--space-2);">5. Multi-Repo & Monorepo Federation Mode</h3>
             <p style="color: var(--color-text-muted); font-size: 0.95rem; line-height: 1.6;">
-              Enables multi-repo federations to be declared via <code style="font-family: var(--font-mono); color: var(--color-primary);">weave repo add</code>, resolving dependencies across workspace boundaries with virtual schemas.
+              Enables multi-repo federations to be declared via <code style="font-family: var(--font-mono); color: var(--color-primary);">weave link &lt;repo-a&gt; &lt;repo-b&gt;</code>, resolving dependencies across workspace boundaries with virtual schemas.
             </p>
           </div>
 
           <div class="glass-card">
             <h3 style="font-size: 1.25rem; color: var(--color-text-main); margin-bottom: var(--space-2);">6. Local SLM Linking & Intent Routing (--features slm)</h3>
             <p style="color: var(--color-text-muted); font-size: 0.95rem; line-height: 1.6;">
-              Optional on-device SLM linking (<code style="font-family: var(--font-mono); color: var(--color-primary);">weave ask</code>) for zero-cloud terminal queries. Strictly grounds natural language inputs against AST symbols to prevent hallucinations, downloads checksummed GGUF models (<code style="font-family: var(--font-mono); color: var(--color-primary);">weave slm pull</code>), extracts ADR rules (<code style="font-family: var(--font-mono); color: var(--color-primary);">weave slm review-rules</code>), and maintains 0MB idle RAM.
+              <strong>Experimental.</strong> Optional on-device SLM linking (<code style="font-family: var(--font-mono); color: var(--color-primary);">weave ask</code>) for terminal queries with no network call. Grounds natural-language inputs against indexed AST symbols before acting on them, and downloads checksummed GGUF models via <code style="font-family: var(--font-mono); color: var(--color-primary);">weave slm pull</code>. Not part of the core value proposition — real-model latency/accuracy figures depend on a downloaded model and are not yet published.
             </p>
           </div>
         </div>
@@ -370,8 +313,8 @@ cargo build --release -p weave-graph-cli
             <li><a href="self-hosted.html">Self-Hosted</a></li>
             <li><a href="visualisation.html">Visualisation</a></li>
             <li><a href="comparison.html">Market Comparison</a></li>
-            <li><a href="performance.html">Performance Metrics 5.4</a></li>
-            <li><a href="roadmap.html">Interactive Roadmap</a></li>
+            <li><a href="performance.html">Performance</a></li>
+            <li><a href="roadmap.html">Roadmap</a></li>
           </ul>
         </div>
 
@@ -379,7 +322,7 @@ cargo build --release -p weave-graph-cli
           <div class="footer-col-title">Releases</div>
           <ul class="footer-links">
             <li><a href="release-notes.html">Release Notes</a></li>
-            <li><a href="release-notes.html#v1.0.1">v1.0.1 Notes</a></li>
+            <li><a href="release-notes.html#unreleased">Unreleased Notes</a></li>
             <li><a href="release-notes.html#v1.0.0">v1.0.0 Archive</a></li>
             <li><a href="https://github.com/ragubaran/weave-graph/releases" target="_blank" rel="noopener noreferrer">GitHub Releases</a></li>
           </ul>
@@ -390,17 +333,17 @@ cargo build --release -p weave-graph-cli
           <ul class="footer-links">
             <li><a href="https://github.com/ragubaran/weave-graph" target="_blank" rel="noopener noreferrer">GitHub Repository</a></li>
             <li><a href="https://github.com/ragubaran/weave-graph/issues" target="_blank" rel="noopener noreferrer">Issue Tracker</a></li>
-            <li><a href="https://github.com/ragubaran/weave-graph/blob/main/LICENSE" target="_blank" rel="noopener noreferrer">Apache-2.0 / MIT License</a></li>
+            <li><a href="https://github.com/ragubaran/weave-graph/blob/main/LICENSE" target="_blank" rel="noopener noreferrer">MIT License</a></li>
           </ul>
         </div>
       </div>
     </div>
     <div class="container footer-bottom">
       <div>© 2026 Weave Graph Contributors. Pure Rust Deterministic Engine.</div>
-      <div>Zero Telemetry • Zero Network Calls</div>
+      <div>Zero Telemetry • Zero network calls in the default build</div>
     </div>
   </footer>
 
-  <script src="/assets/js/main.js?v=1.0.4"></script>
+  <script src="/assets/js/main.js?v=1.0.7"></script>
 </body>
 </html>

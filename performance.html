@@ -3,12 +3,12 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Performance Metrics 5.4 | Weave Graph Empirical Benchmarks</title>
-  <meta name="description" content="Empirical performance benchmarks, Target SLO validation, and hardware registry for Weave Graph (Section 5.4). Sub-millisecond queries, <41MB RAM at 500k symbols, and zero-overhead feature isolation.">
+  <title>Performance | Weave Graph Benchmarks</title>
+  <meta name="description" content="Measured benchmarks for Weave Graph on one Intel Mac: binary sizes, memory at 500k symbols, query latency and parser throughput, including the targets it misses.">
 
   <!-- Open Graph -->
-  <meta property="og:title" content="Weave Graph — Empirical Performance Metrics & SLO Registry">
-  <meta property="og:description" content="Verified Criterion benchmarks and real hardware measurements: 30µs graph traversals, 8µs point lookups, 40.7MB peak RAM on 500k symbols, 36.5k nodes/sec batch ingestion.">
+  <meta property="og:title" content="Weave Graph — Performance Measurements">
+  <meta property="og:description" content="Measured on one Intel Mac: 9.67 MiB core-only binary, ~28 µs 3-hop traversal, ~8 µs point lookup. Missed targets are listed too.">
   <meta property="og:type" content="article">
   <meta property="og:image" content="/assets/img/favicon.svg">
 
@@ -17,10 +17,10 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet">
 
-  <link rel="stylesheet" href="/assets/css/variables.css?v=1.0.4">
-  <link rel="stylesheet" href="/assets/css/animations.css?v=1.0.4">
-  <link rel="stylesheet" href="/assets/css/main.css?v=1.0.4">
-  <link rel="stylesheet" href="/assets/css/components.css?v=1.0.4">
+  <link rel="stylesheet" href="/assets/css/variables.css?v=1.0.7">
+  <link rel="stylesheet" href="/assets/css/animations.css?v=1.0.7">
+  <link rel="stylesheet" href="/assets/css/main.css?v=1.0.7">
+  <link rel="stylesheet" href="/assets/css/components.css?v=1.0.7">
   <style>
     .status-badge {
       display: inline-flex;
@@ -138,10 +138,10 @@
     <div class="container">
 
       <div style="text-align: center; max-width: 860px; margin: 0 auto var(--space-10);">
-        <span class="badge badge-cyan" style="margin-bottom: var(--space-2);">Empirical Benchmark Registry • Section 5.4</span>
-        <h1 style="font-size: 2.85rem; font-weight: 800; letter-spacing: -0.02em;">Empirical Performance Metrics & SLO Registry</h1>
+        <span class="badge badge-cyan" style="margin-bottom: var(--space-2);">Benchmarks</span>
+        <h1 style="font-size: 2.85rem; font-weight: 800; letter-spacing: -0.02em;">Performance Measurements</h1>
         <p style="color: var(--color-text-muted); font-size: 1.15rem; margin-top: var(--space-3); line-height: 1.6;">
-          Every performance claim in Weave Graph is held to our <strong>Measurement Policy & Invariant #9 (Ground Truth & Zero Invention)</strong>. Empirical Criterion runs and stripped binary releases on real hardware verify target SLOs transparently.
+          Numbers on this page come from the benchmarks and scripts in the repository, run on one machine. They are not release gates, and results vary between runs. Targets we miss are listed alongside the ones we meet.
         </p>
 
         <div style="margin-top: var(--space-6); display: flex; justify-content: center; gap: 0.75rem; flex-wrap: wrap;">
@@ -163,59 +163,59 @@
       <!-- Key Metric Highlights -->
       <div class="grid grid-3" style="margin-bottom: var(--space-12);">
         <div class="metric-card">
-          <span class="status-badge status-met">✅ Met with 2× Margin</span>
-          <div class="metric-val">40.7 MB</div>
-          <div style="font-weight: 600; color: var(--color-text-main); margin-bottom: 0.25rem;">Core RAM (500k Symbols)</div>
-          <p class="metric-sub">Peak RSS during full graph load. Bounded by integer-compacted CSR (<code style="color: var(--color-primary);">uint32</code>) vs &lt;80MB target ceiling.</p>
+          <span class="status-badge status-met">✅ Met (&lt; 15 MiB)</span>
+          <div class="metric-val">9.67 MiB</div>
+          <div style="font-weight: 600; color: var(--color-text-main); margin-bottom: 0.25rem;">Core-Only Binary</div>
+          <p class="metric-sub"><code style="color: var(--color-primary);">--no-default-features</code> build with the 8 core languages. The default build, with all 29 grammars, is 41.16 MiB.</p>
         </div>
 
         <div class="metric-card">
-          <span class="status-badge status-met">✅ Met by >160×</span>
-          <div class="metric-val">~30 µs</div>
+          <span class="status-badge status-met">✅ Met (&lt; 5 ms)</span>
+          <div class="metric-val">~28 µs</div>
           <div style="font-weight: 600; color: var(--color-text-main); margin-bottom: 0.25rem;">3-Hop Call Traversal</div>
-          <p class="metric-sub">Multi-hop recursive BFS traversal across SQLite & CSR (<code style="color: var(--color-primary);">query_path_3_hops</code>: 29.5–30.8 µs vs &lt;5ms SLO).</p>
+          <p class="metric-sub"><code style="color: var(--color-primary);">sqlite/query_path_3_hops</code> benchmark: 27.4–27.8 µs on the test machine.</p>
         </div>
 
         <div class="metric-card">
-          <span class="status-badge status-met">✅ Met by >60×</span>
-          <div class="metric-val">8.05–8.28 µs</div>
+          <span class="status-badge status-met">✅ Met (&lt; 0.5 ms)</span>
+          <div class="metric-val">~8 µs</div>
           <div style="font-weight: 600; color: var(--color-text-main); margin-bottom: 0.25rem;">Point Lookup (get_node)</div>
-          <p class="metric-sub">Single-symbol resolution over SQLite index. Target was &lt;0.5ms; delivers microsecond resolution under concurrency.</p>
+          <p class="metric-sub"><code style="color: var(--color-primary);">sqlite/get_node</code> benchmark: 8.2–8.3 µs for one symbol lookup.</p>
         </div>
 
         <div class="metric-card">
-          <span class="status-badge status-met">✅ High Throughput</span>
-          <div class="metric-val">~36.5k/s</div>
-          <div style="font-weight: 600; color: var(--color-text-main); margin-bottom: 0.25rem;">Batch Insert Rate</div>
-          <p class="metric-sub">10,000 nodes inserted in 271.6–277.7 ms (SQLite) / 312.4–328.8 ms (Turso libSQL) in transactional batches.</p>
+          <span class="status-badge status-met">✅ Met (&lt; 80 MiB)</span>
+          <div class="metric-val">24 MiB</div>
+          <div style="font-weight: 600; color: var(--color-text-main); margin-bottom: 0.25rem;">Storage + Graph at 500k Symbols</div>
+          <p class="metric-sub">Peak memory of the storage and in-memory graph test alone (<code style="color: var(--color-primary);">mem_500k</code>, macOS). Linux rerun still open.</p>
         </div>
 
         <div class="metric-card">
-          <span class="status-badge status-met">✅ Met (&lt; 15 MB)</span>
-          <div class="metric-val">9.6 MB</div>
-          <div style="font-weight: 600; color: var(--color-text-main); margin-bottom: 0.25rem;">Minimal Core Binary</div>
-          <p class="metric-sub"><code style="color: var(--color-primary);">--no-default-features</code> builds an ultra-lean 9.6 MB static binary (41.1 MB for full 29 grammars).</p>
+          <span class="status-badge status-missed">❌ Missed (&lt; 80 MiB)</span>
+          <div class="metric-val">244 MiB</div>
+          <div style="font-weight: 600; color: var(--color-text-main); margin-bottom: 0.25rem;">Full Index Run at 500k Symbols</div>
+          <p class="metric-sub">Peak memory of a complete <code style="color: var(--color-primary);">weave init &amp;&amp; weave index</code> run (<code style="color: var(--color-primary);">scripts/pipeline_rss.sh</code>). 80 MiB is a target, not yet met.</p>
         </div>
 
         <div class="metric-card">
-          <span class="status-badge status-met">✅ Zero RSS Overhead</span>
-          <div class="metric-val">0 MB</div>
-          <div style="font-weight: 600; color: var(--color-text-main); margin-bottom: 0.25rem;">Feature Idle Overhead</div>
-          <p class="metric-sub">Compiling optional features (<code style="font-size: 0.85rem;">slm</code>, <code style="font-size: 0.85rem;">docs</code>, <code style="font-size: 0.85rem;">federation</code>, <code style="font-size: 0.85rem;">rbac</code>, <code style="font-size: 0.85rem;">otel</code>) causes zero idle memory delta.</p>
+          <span class="status-badge status-info">ℹ️ Container-aware</span>
+          <div class="metric-val">¼ of limit</div>
+          <div style="font-weight: 600; color: var(--color-text-main); margin-bottom: 0.25rem;">Indexing Memory Budget</div>
+          <p class="metric-sub">Indexing reads the cgroup (or host) memory limit and shrinks batch sizes when a quarter of it is less than 512 MiB. <a href="#resource-budget">How it works</a>.</p>
         </div>
       </div>
 
-      <!-- Section 5.4 Live Table -->
+      <!-- Measurement Table -->
       <section style="margin-bottom: var(--space-12);">
         <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: var(--space-4); flex-wrap: wrap; gap: 1rem;">
           <div>
-            <h2 style="font-size: 1.85rem; font-weight: 700;">Section 5.4 Empirical Measurement Registry</h2>
+            <h2 style="font-size: 1.85rem; font-weight: 700;">Measurements</h2>
             <p style="color: var(--color-text-muted); font-size: 0.95rem; margin-top: 0.25rem;">
-              Full ground-truth reproduction recorded in <code style="font-family: var(--font-mono); color: var(--color-primary);">docs/product_compare.md</code>.
+              Reproduce with <code style="font-family: var(--font-mono); color: var(--color-primary);">scripts/verify_envelope.sh</code> (binary sizes, 500k-symbol memory), <code style="font-family: var(--font-mono); color: var(--color-primary);">scripts/pipeline_rss.sh</code> (full index run) and <code style="font-family: var(--font-mono); color: var(--color-primary);">cargo bench</code> (benches in <code style="font-family: var(--font-mono); color: var(--color-primary);">crates/*/benches/</code>).
             </p>
           </div>
           <div style="font-family: var(--font-mono); font-size: 0.85rem; color: var(--color-text-muted);">
-            Last Verified: <strong style="color: #fff;">Release v1.0.1 / Latest Build</strong>
+            Benchmarks run: <strong style="color: #fff;">2026-09-22, unreleased main branch</strong>
           </div>
         </div>
 
@@ -232,142 +232,114 @@
             </thead>
             <tbody>
               <tr>
-                <td><strong>Core RAM (500k symbols)</strong></td>
-                <td>&lt; 80 MB</td>
-                <td class="highlight-col"><strong>39.5–41.4 MB</strong> (40.7 MB peak RSS, 3 runs)</td>
-                <td>Intel i7-1068NG7 / macOS</td>
-                <td><span class="status-badge status-met">✅ Met (2× Margin)</span></td>
-              </tr>
-              <tr>
-                <td><strong>Binary Size (<code style="font-size: 0.85rem;">weave</code> CLI)</strong></td>
-                <td>&lt; 15 MB</td>
-                <td class="highlight-col"><strong>9.6 MB</strong> (minimal core) / <strong>41.1 MB</strong> (29 grammars)</td>
-                <td>Intel i7-1068NG7 / macOS</td>
-                <td><span class="status-badge status-met">✅ Met (Core 9.6 MB &lt; 15 MB)</span></td>
-              </tr>
-              <tr>
-                <td><strong>3-Hop Call Traversal</strong></td>
-                <td>&lt; 5 ms</td>
-                <td class="highlight-col"><strong>29.5 µs – 30.8 µs</strong> (<code style="font-size: 0.85rem;">query_path_3_hops</code> ~30 µs)</td>
-                <td>Intel i7-1068NG7 / macOS</td>
-                <td><span class="status-badge status-met">✅ Met (>160×)</span></td>
-              </tr>
-              <tr>
-                <td><strong>Point Lookup (<code style="font-size: 0.85rem;">get_node</code>)</strong></td>
-                <td>&lt; 0.5 ms</td>
-                <td class="highlight-col"><strong>8.05 µs – 8.28 µs</strong> (direct SQLite lookup)</td>
-                <td>Intel i7-1068NG7 / macOS</td>
-                <td><span class="status-badge status-met">✅ Met (>60×)</span></td>
-              </tr>
-              <tr>
-                <td><strong>CSR Memory per Node</strong></td>
-                <td>&lt;= 24 bytes</td>
-                <td class="highlight-col"><strong>~12.0 bytes/node</strong> forward; <strong>~24.0 bytes/node</strong> bidirectional</td>
+                <td><strong>Binary size, core-only (<code style="font-size: 0.85rem;">--no-default-features</code>)</strong></td>
+                <td>&lt; 15 MiB</td>
+                <td class="highlight-col"><strong>9.67 MiB</strong> (10,141,152 bytes, 8 core languages)</td>
                 <td>Intel i7-1068NG7 / macOS</td>
                 <td><span class="status-badge status-met">✅ Met</span></td>
               </tr>
               <tr>
-                <td><strong>CSR Memory per Edge</strong></td>
-                <td>&lt;= 8 bytes</td>
-                <td class="highlight-col"><strong>~4.0 bytes/edge</strong> forward (common path); <strong>~8.0 bytes/edge</strong> bidirectional (lazy reverse)</td>
+                <td><strong>Binary size, default build</strong></td>
+                <td>No target</td>
+                <td class="highlight-col"><strong>41.16 MiB</strong> (all 29 grammars; the &lt; 15 MiB target covers the core-only build only)</td>
                 <td>Intel i7-1068NG7 / macOS</td>
-                <td><span class="status-badge status-met">✅ Met (&le;8 B target)</span></td>
+                <td><span class="status-badge status-info">ℹ️ Informational</span></td>
               </tr>
               <tr>
-                <td><strong>1-File Delta Patch</strong></td>
-                <td>&lt; 20 ms</td>
-                <td class="highlight-col"><strong>~13 ms</strong> (extrapolated 25µs/row for 500-symbol file)</td>
+                <td><strong>Storage + graph memory, 500k symbols (<code style="font-size: 0.85rem;">mem_500k</code>)</strong></td>
+                <td>&lt; 80 MiB</td>
+                <td class="highlight-col"><strong>24 MiB</strong> peak (storage and in-memory graph only, 2026-09-16)</td>
                 <td>Intel i7-1068NG7 / macOS</td>
-                <td><span class="status-badge status-met">✅ Met</span></td>
+                <td><span class="status-badge status-met">✅ Met (macOS only)</span></td>
               </tr>
               <tr>
-                <td><strong>Batch Insert (1,000 nodes)</strong></td>
-                <td>Unspecified</td>
-                <td class="highlight-col"><strong>33.0 ms – 33.8 ms</strong> (SQLite) vs <strong>39.1 ms – 40.2 ms</strong> (Turso)</td>
-                <td>Intel i7-1068NG7 / macOS</td>
-                <td><span class="status-badge status-met">✅ ~30k nodes/sec</span></td>
-              </tr>
-              <tr>
-                <td><strong>Batch Insert (10,000 nodes)</strong></td>
-                <td>Unspecified</td>
-                <td class="highlight-col"><strong>271.6 ms – 277.7 ms</strong> (SQLite) vs <strong>312.4 ms – 328.8 ms</strong> (Turso)</td>
-                <td>Intel i7-1068NG7 / macOS</td>
-                <td><span class="status-badge status-met">✅ ~36.5k nodes/sec</span></td>
-              </tr>
-              <tr>
-                <td><strong>CSR Graph Load (200k nodes)</strong></td>
-                <td>&lt; 100 ms</td>
-                <td class="highlight-col"><strong>76.5 ms</strong> (<code style="font-size: 0.85rem;">csr_load</code> 200k nodes / 199,999 edges)</td>
-                <td>Intel i7-1068NG7 / macOS</td>
-                <td><span class="status-badge status-met">✅ Met</span></td>
-              </tr>
-              <tr>
-                <td><strong>Idle RSS w/ <code style="font-size: 0.85rem;">slm</code> compiled</strong></td>
-                <td>0 MB delta</td>
-                <td class="highlight-col"><strong>No measurable delta</strong> (identical 770 KB floor)</td>
-                <td>Intel i7-1068NG7 / macOS</td>
-                <td><span class="status-badge status-met">✅ Met</span></td>
-              </tr>
-              <tr>
-                <td><strong>Deterministic latency w/ <code style="font-size: 0.85rem;">slm</code></strong></td>
-                <td>No change</td>
-                <td class="highlight-col"><strong>0.01s real</strong> across both default & slm builds</td>
-                <td>Intel i7-1068NG7 / macOS</td>
-                <td><span class="status-badge status-met">✅ Met</span></td>
-              </tr>
-              <tr>
-                <td><strong>SLM Tool-Selection Accuracy</strong></td>
-                <td>&gt; 95%</td>
-                <td class="highlight-col"><strong>100%</strong> (8/8 held-out prompts aced)</td>
-                <td>Intel i7-1068NG7 / macOS</td>
-                <td><span class="status-badge status-met">✅ Met</span></td>
-              </tr>
-              <tr>
-                <td><strong>SLM Parameter Grounding</strong></td>
-                <td>&gt; 98%</td>
-                <td class="highlight-col"><strong>100%</strong> (8/8 held-out prompts aced)</td>
-                <td>Intel i7-1068NG7 / macOS</td>
-                <td><span class="status-badge status-met">✅ Met</span></td>
-              </tr>
-              <tr>
-                <td><strong>AST Parser Speed (Rust)</strong></td>
-                <td>&gt; 25 MB/s/core</td>
-                <td class="highlight-col"><strong>~4.77 MiB/s</strong> (253 µs / 1k loops, AST + wiring cards)</td>
+                <td><strong>Full index run memory, 500k symbols</strong></td>
+                <td>&lt; 80 MiB</td>
+                <td class="highlight-col"><strong>244 MiB</strong> peak (<code style="font-size: 0.85rem;">scripts/pipeline_rss.sh</code>, down from 381 MiB)</td>
                 <td>Intel i7-1068NG7 / macOS</td>
                 <td><span class="status-badge status-missed">❌ Missed</span></td>
               </tr>
               <tr>
-                <td><strong>AST Parser Speed (Java)</strong></td>
-                <td>Informational</td>
-                <td class="highlight-col"><strong>~4.33 MiB/s</strong> (257 µs / 1k loops)</td>
+                <td><strong>MCP session memory, 500k-symbol graph</strong></td>
+                <td>&lt; 80 MiB</td>
+                <td class="highlight-col"><strong>11 MiB</strong> peak over 200 <code style="font-size: 0.85rem;">weave_impact_radius</code> calls, ~16 ms average per call</td>
+                <td>Intel i7-1068NG7 / macOS</td>
+                <td><span class="status-badge status-met">✅ Met</span></td>
+              </tr>
+              <tr>
+                <td><strong>3-Hop Call Traversal</strong></td>
+                <td>&lt; 5 ms</td>
+                <td class="highlight-col"><strong>27.4–27.8 µs</strong> (<code style="font-size: 0.85rem;">sqlite/query_path_3_hops</code>)</td>
+                <td>Intel i7-1068NG7 / macOS</td>
+                <td><span class="status-badge status-met">✅ Met</span></td>
+              </tr>
+              <tr>
+                <td><strong>Point Lookup (<code style="font-size: 0.85rem;">get_node</code>)</strong></td>
+                <td>&lt; 0.5 ms</td>
+                <td class="highlight-col"><strong>8.2–8.3 µs</strong> (<code style="font-size: 0.85rem;">sqlite/get_node</code>)</td>
+                <td>Intel i7-1068NG7 / macOS</td>
+                <td><span class="status-badge status-met">✅ Met</span></td>
+              </tr>
+              <tr>
+                <td><strong>Graph memory per node</strong></td>
+                <td>&lt;= 24 bytes</td>
+                <td class="highlight-col"><strong>12 bytes</strong> forward only; <strong>24 bytes</strong> once caller lookups build the reverse index</td>
+                <td>Intel i7-1068NG7 / macOS</td>
+                <td><span class="status-badge status-met">✅ Met</span></td>
+              </tr>
+              <tr>
+                <td><strong>Graph memory per edge</strong></td>
+                <td>&lt;= 8 bytes</td>
+                <td class="highlight-col"><strong>4 bytes</strong> forward only; <strong>8 bytes</strong> with the reverse index</td>
+                <td>Intel i7-1068NG7 / macOS</td>
+                <td><span class="status-badge status-met">✅ Met</span></td>
+              </tr>
+              <tr>
+                <td><strong>1-File Delta Patch</strong></td>
+                <td>&lt; 20 ms</td>
+                <td class="highlight-col">Not measured directly. Estimated at <strong>~13 ms</strong> for a 500-symbol file from the insert rate</td>
+                <td>Intel i7-1068NG7 / macOS</td>
+                <td><span class="status-badge status-info">ℹ️ Estimate</span></td>
+              </tr>
+              <tr>
+                <td><strong>Full reindex, 500 files</strong></td>
+                <td>No target</td>
+                <td class="highlight-col"><strong>342–357 ms</strong> (<code style="font-size: 0.85rem;">index_full_reindex/500_files</code>)</td>
                 <td>Intel i7-1068NG7 / macOS</td>
                 <td><span class="status-badge status-info">ℹ️ Informational</span></td>
               </tr>
               <tr>
-                <td><strong>AST Parser Speed (Python)</strong></td>
-                <td>Informational</td>
-                <td class="highlight-col"><strong>~3.77 MiB/s</strong> (301 µs / 1k loops)</td>
+                <td><strong>Batch insert, 1,000 nodes</strong></td>
+                <td>No target</td>
+                <td class="highlight-col"><strong>46.0–48.5 ms</strong> (~21k nodes/sec)</td>
                 <td>Intel i7-1068NG7 / macOS</td>
                 <td><span class="status-badge status-info">ℹ️ Informational</span></td>
               </tr>
               <tr>
-                <td><strong>AST Parser Speed (TypeScript)</strong></td>
-                <td>Informational</td>
-                <td class="highlight-col"><strong>~3.76 MiB/s</strong> (262 µs / 1k loops)</td>
+                <td><strong>Batch insert, 10,000 nodes</strong></td>
+                <td>No target</td>
+                <td class="highlight-col"><strong>372–382 ms</strong> (~26.5k nodes/sec)</td>
                 <td>Intel i7-1068NG7 / macOS</td>
                 <td><span class="status-badge status-info">ℹ️ Informational</span></td>
               </tr>
               <tr>
-                <td><strong>AST Parser Speed (JavaScript)</strong></td>
-                <td>Informational</td>
-                <td class="highlight-col"><strong>~3.70 MiB/s</strong> (322 µs / 1k loops)</td>
+                <td><strong>Graph load, 200k nodes</strong></td>
+                <td>No target</td>
+                <td class="highlight-col"><strong>155–159 ms</strong> (<code style="font-size: 0.85rem;">csr_load/load/200000</code>)</td>
                 <td>Intel i7-1068NG7 / macOS</td>
                 <td><span class="status-badge status-info">ℹ️ Informational</span></td>
               </tr>
               <tr>
-                <td><strong>AST Parser Speed (C# / C++ / C)</strong></td>
-                <td>Informational</td>
-                <td class="highlight-col"><strong>~3.32 MiB/s</strong> (C#), <strong>~3.29 MiB/s</strong> (C++), <strong>~3.08 MiB/s</strong> (C)</td>
+                <td><strong>Parser throughput (Rust)</strong></td>
+                <td>&gt; 25 MB/s/core</td>
+                <td class="highlight-col"><strong>~3.2 MiB/s</strong> (200 KB fixture, full symbol and call extraction)</td>
+                <td>Intel i7-1068NG7 / macOS</td>
+                <td><span class="status-badge status-missed">❌ Missed</span></td>
+              </tr>
+              <tr>
+                <td><strong>Parser throughput (other languages)</strong></td>
+                <td>No target</td>
+                <td class="highlight-col"><strong>2.3–2.8 MiB/s</strong> (Java, Python, TypeScript, JavaScript, C#, C++, C)</td>
                 <td>Intel i7-1068NG7 / macOS</td>
                 <td><span class="status-badge status-info">ℹ️ Informational</span></td>
               </tr>
@@ -499,7 +471,7 @@
                 <td><code style="font-family: var(--font-mono); color: var(--color-primary);">csr_load (1k)</code></td>
                 <td>1,000 nodes, 999 edges</td>
                 <td class="highlight-col"><strong>317 µs</strong></td>
-                <td>Sub-millisecond instant cold start</td>
+                <td>Well under 1 ms cold start</td>
               </tr>
               <tr>
                 <td><code style="font-family: var(--font-mono); color: var(--color-primary);">csr_load (50k)</code></td>
@@ -632,10 +604,10 @@
                 <td><span class="status-badge status-info">ℹ️ Replica Backend</span></td>
               </tr>
               <tr>
-                <td><strong>Custom Enterprise Tier</strong> (<code style="font-size: 0.85rem;">--features custom</code>)</td>
+                <td><strong>Custom Self-Hosted Tier</strong> (<code style="font-size: 0.85rem;">--features custom</code>)</td>
                 <td class="highlight-col"><strong>41.6–42.0 MB</strong></td>
                 <td>RBAC, Hub Client, Provenance, Vector, FTS, Policy-Lint</td>
-                <td><span class="status-badge status-info">ℹ️ Full Enterprise Stack</span></td>
+                <td><span class="status-badge status-info">ℹ️ Full Self-Hosted Stack</span></td>
               </tr>
               <tr>
                 <td><strong>Standalone WASM</strong> (<code style="font-size: 0.85rem;">weave-graph-wasm</code>)</td>
@@ -672,11 +644,11 @@
         </div>
       </section>
 
-      <!-- Section 5.5 Optional-Feature Performance Budgets -->
+      <!-- Optional-Feature Performance Budgets -->
       <section style="margin-bottom: var(--space-12);">
-        <h2 style="font-size: 1.85rem; font-weight: 700; margin-bottom: var(--space-4);">Section 5.5 Feature-Isolation Budget Matrix</h2>
+        <h2 style="font-size: 1.85rem; font-weight: 700; margin-bottom: var(--space-4);">Feature Flag Budget</h2>
         <p style="color: var(--color-text-muted); font-size: 0.95rem; margin-bottom: var(--space-6);">
-          Optional features are isolated behind Cargo feature flags. Core Invariant 8 mandates that enabling any optional feature must not measurably degrade default query latency or idle RSS:
+          Optional features are isolated behind Cargo feature flags: enabling a feature never changes core behavior or measurably degrades default query latency or idle RSS for users who don't enable it.
         </p>
 
         <div class="table-responsive">
@@ -849,7 +821,7 @@
             <li><a href="self-hosted.html">Self-Hosted</a></li>
             <li><a href="visualisation.html">Visualisation</a></li>
             <li><a href="comparison.html">Market Comparison</a></li>
-            <li><a href="performance.html">Performance Metrics 5.4</a></li>
+            <li><a href="performance.html">Performance</a></li>
             <li><a href="roadmap.html">Interactive Roadmap</a></li>
           </ul>
         </div>
@@ -868,7 +840,7 @@
           <ul class="footer-links">
             <li><a href="https://github.com/ragubaran/weave-graph" target="_blank" rel="noopener noreferrer">GitHub Repository</a></li>
             <li><a href="https://github.com/ragubaran/weave-graph/issues" target="_blank" rel="noopener noreferrer">Issue Tracker</a></li>
-            <li><a href="https://github.com/ragubaran/weave-graph/blob/main/LICENSE" target="_blank" rel="noopener noreferrer">Apache-2.0 / MIT License</a></li>
+            <li><a href="https://github.com/ragubaran/weave-graph/blob/main/LICENSE" target="_blank" rel="noopener noreferrer">MIT License</a></li>
           </ul>
         </div>
       </div>
@@ -879,6 +851,6 @@
     </div>
   </footer>
 
-  <script src="/assets/js/main.js?v=1.0.4"></script>
+  <script src="/assets/js/main.js?v=1.0.7"></script>
 </body>
 </html>

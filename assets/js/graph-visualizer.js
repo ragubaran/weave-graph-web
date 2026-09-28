@@ -102,12 +102,12 @@
     },
     3: {
       title: 'Stage 3: Bidirectional Edge Linking & Atomic Reindexing',
-      badge: 'Crash Resilience & Bidirectional Invariant',
+      badge: 'Crash Resilience & Bidirectional Edges',
       description: 'Directed graph edges link source and target symbols in microsecond CSR hops. Incremental reindexing purges both inbound (target_id) AND outbound (source_id) edges to prevent orphaned pointers, and swaps databases atomically.'
     },
     4: {
       title: 'Stage 4: Subgraph Slicing for AI Agents (MCP)',
-      badge: '92% Token Context Reduction',
+      badge: 'Subgraph Slicing for Agents',
       description: 'When Claude Code, Cursor, or Windsurf queries a symbol, Weave Graph extracts only the exact directed sub-graph. The agent receives an 800-token high-density slice instead of a 35,000-token file dump, eliminating attention dilution.'
     },
     5: {
@@ -118,7 +118,7 @@
     6: {
       title: 'Stage 6: Multi-Repo Federation & Cycle Detection',
       badge: 'Virtual Schemas & Tarjan SCC',
-      description: 'Link sibling workspaces via weave repo add. Cross-repository call edges are resolved across workspace boundaries while Tarjan Strongly Connected Components (SCC) algorithms detect circular dependencies between services.'
+      description: 'Link sibling workspaces via weave link <repo-a> <repo-b>. Cross-repository call edges are resolved across workspace boundaries while Tarjan Strongly Connected Components (SCC) algorithms detect circular dependencies between services.'
     }
   };
 
@@ -312,7 +312,7 @@
         mesh.scale.set(0.9, 0.9, 0.9);
       }
       else if (stage === 3) {
-        // Stage 3: Bidirectional Edge Network (Purge Invariants)
+        // Stage 3: Bidirectional Edge Network (dangling-edge purge on reindex)
         const phi = Math.acos(-1 + (2 * index) / nodeMeshes.length);
         const theta = Math.sqrt(nodeMeshes.length * Math.PI) * phi;
         const radius = 80;
@@ -326,7 +326,7 @@
         mesh.scale.set(1.1, 1.1, 1.1);
       }
       else if (stage === 4) {
-        // Stage 4: Subgraph Slicing for Agents (92% Pruning)
+        // Stage 4: Subgraph Slicing for Agents (bounded N-hop pruning)
         const isTarget = targetSymbolIndices.includes(index);
         if (isTarget) {
           mesh.userData.targetPos = new THREE.Vector3(
@@ -556,7 +556,7 @@
     if (intersects.length > 0) {
       const topHit = intersects[0].object;
       if (hoveredNode !== topHit) {
-        if (hoveredNode) hoveredNode.scale.multiplyScalar(0.85);
+        if (hoveredNode) hoveredNode.scale.multiplyScalar(1 / 1.18);
         hoveredNode = topHit;
         hoveredNode.scale.multiplyScalar(1.18);
         updateTooltip(hoveredNode);
@@ -564,7 +564,7 @@
       }
     } else {
       if (hoveredNode) {
-        hoveredNode.scale.multiplyScalar(0.85);
+        hoveredNode.scale.multiplyScalar(1 / 1.18);
         hoveredNode = null;
         updateTooltip(null);
         container.style.cursor = 'grab';

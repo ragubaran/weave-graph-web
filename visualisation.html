@@ -3,12 +3,12 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Visualisation | Weave Graph Interactive 3D Architecture & Features</title>
-  <meta name="description" content="Interactive 3D visualization of all Weave Graph features: Tree-sitter AST syntax extraction, uint32 CSR matrix compaction, bidirectional edge linking, MCP agent subgraph pruning, Local SLM intent routing, and multi-repo federation.">
+  <title>Visualisation | Weave Graph</title>
+  <meta name="description" content="An illustrative 3D walkthrough of how Weave Graph's pipeline works: Tree-sitter AST parsing, CSR matrix compaction, bidirectional edge integrity, MCP subgraph slicing, experimental local SLM routing, and multi-repo federation. The real viewer output is a 2D offline HTML report (weave report --html) or weave viz.">
 
   <!-- Open Graph -->
-  <meta property="og:title" content="Weave Graph Visualisation — Interactive 3D Architecture & Features">
-  <meta property="og:description" content="Explore all 6 operational features of Weave Graph in interactive 3D: AST parsing, CSR compaction, bidirectional edge integrity, MCP agent slicing, Local SLM routing, and workspace federation.">
+  <meta property="og:title" content="Weave Graph Visualisation — How It Works">
+  <meta property="og:description" content="An illustrative 3D explainer of Weave Graph's pipeline: AST parsing, CSR compaction, bidirectional edge integrity, MCP subgraph slicing, experimental local SLM routing, and workspace federation. Not a live rendering — the real viewer is 2D and offline.">
   <meta property="og:type" content="article">
   <meta property="og:image" content="/assets/img/favicon.svg">
 
@@ -17,10 +17,10 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet">
 
-  <link rel="stylesheet" href="/assets/css/variables.css?v=1.0.5">
-  <link rel="stylesheet" href="/assets/css/animations.css?v=1.0.5">
-  <link rel="stylesheet" href="/assets/css/main.css?v=1.0.5">
-  <link rel="stylesheet" href="/assets/css/components.css?v=1.0.6">
+  <link rel="stylesheet" href="/assets/css/variables.css?v=1.0.7">
+  <link rel="stylesheet" href="/assets/css/animations.css?v=1.0.7">
+  <link rel="stylesheet" href="/assets/css/main.css?v=1.0.7">
+  <link rel="stylesheet" href="/assets/css/components.css?v=1.0.7">
 </head>
 <body>
 
@@ -72,10 +72,10 @@
       
       <!-- Page Title -->
       <div style="text-align: center; max-width: 850px; margin: 0 auto var(--space-8);">
-        <span class="badge badge-cyan" style="margin-bottom: var(--space-2);">Interactive 3D Engine</span>
+        <span class="badge badge-cyan" style="margin-bottom: var(--space-2);">How It Works</span>
         <h1 style="font-size: 2.75rem; font-weight: 800; letter-spacing: -0.02em;">Weave Graph Visualisation</h1>
         <p style="color: var(--color-text-muted); font-size: 1.15rem; margin-top: var(--space-2);">
-          Explore all six operational features in real-time 3D: Tree-sitter AST syntax parsing, uint32 CSR integer compaction, bidirectional edge linking, agent MCP subgraph slicing, Local SLM intent routing, and multi-repo federation.
+          An illustrative 3D walkthrough of the pipeline: Tree-sitter AST parsing, uint32 CSR integer compaction, bidirectional edge linking, MCP subgraph slicing, experimental local SLM routing, and multi-repo federation. This scene is a decorative explainer, not a live rendering of your codebase &mdash; the graph reports Weave Graph actually ships are 2D and offline: <code style="font-family: var(--font-mono); color: var(--color-primary);">weave report --html</code> and <code style="font-family: var(--font-mono); color: var(--color-primary);">weave viz</code>.
         </p>
       </div>
 
@@ -103,11 +103,11 @@
         <!-- Overlaid Heads-Up Display (HUD) -->
         <div class="visualizer-hud">
           <div class="hud-item"><span>Engine:</span> <strong>Pure Rust 2024</strong></div>
-          <div class="hud-item"><span>Peak RAM (500k):</span> <strong>&lt;80MB (CSR uint32)</strong></div>
-          <div class="hud-item"><span>Traversal Latency:</span> <strong>1.2ms (Zero Cloud)</strong></div>
-          <div class="hud-item"><span>Agent Savings:</span> <strong>92% Subgraph Slicing</strong></div>
-          <div class="hud-item"><span>Local SLM:</span> <strong>&lt;15ms Grounded</strong></div>
-          <div class="hud-item"><span>Federation:</span> <strong>Zero-Cycle Schemas</strong></div>
+          <div class="hud-item"><span>Storage+CSR RAM (500k):</span> <strong>~24MB measured</strong></div>
+          <div class="hud-item"><span>3-Hop Traversal:</span> <strong>~30&micro;s</strong></div>
+          <div class="hud-item"><span>Agent Context:</span> <strong>2-Hop Subgraph Slicing</strong></div>
+          <div class="hud-item"><span>Local SLM:</span> <strong>Experimental</strong></div>
+          <div class="hud-item"><span>Federation:</span> <strong>Tarjan SCC Detection</strong></div>
         </div>
 
         <!-- Hover Tooltip -->
@@ -139,7 +139,7 @@
               Traditional regex grep indexers miss macro expansions, trait implementations, and language syntax boundaries.
             </p>
             <p style="color: var(--text-secondary); font-size: 0.925rem; line-height: 1.6;">
-              <strong>Weave Graph Invariant:</strong> Native Tree-sitter C/Rust bindings parse millions of lines of code into precise syntax trees with microsecond execution times and zero AST leaks across Rayon thread workers.
+              <strong>How it works:</strong> Native Tree-sitter C/Rust bindings parse source files into precise syntax trees across Rayon thread workers, deterministically and without executing any code.
             </p>
           </div>
 
@@ -153,7 +153,7 @@
               Standard graph databases represent nodes as heap-allocated structs with pointer vectors, blowing RAM into several gigabytes on large repositories.
             </p>
             <p style="color: var(--text-secondary); font-size: 0.925rem; line-height: 1.6;">
-              <strong>Weave Graph Invariant:</strong> All symbol strings and file paths are interned into contiguous <code style="font-family: var(--font-mono); color: var(--accent-cyan);">uint32</code> Compressed Sparse Row arrays. Peak RSS stays under <strong>80MB RAM for 500,000 symbols</strong>.
+              <strong>How it works:</strong> All symbol strings and file paths are interned into contiguous <code style="font-family: var(--font-mono); color: var(--accent-cyan);">uint32</code> Compressed Sparse Row arrays. The storage+CSR layer measures ~24MB peak RSS at 500,000 symbols; &lt;80MB is the target for the full indexing pipeline end-to-end, not yet verified at that scale.
             </p>
           </div>
 
@@ -167,7 +167,7 @@
               Incremental reindexing often purges only outbound edges (<code style="font-family: var(--font-mono); color: var(--accent-cyan);">source_id</code>), leaving dangling incoming edges that corrupt caller traversals.
             </p>
             <p style="color: var(--text-secondary); font-size: 0.925rem; line-height: 1.6;">
-              <strong>Weave Graph Invariant:</strong> Every incremental update purges both <code style="font-family: var(--font-mono); color: var(--accent-cyan);">source_id</code> AND <code style="font-family: var(--font-mono); color: var(--accent-cyan);">target_id</code>, maintaining complete graph integrity. Large rebuilds swap databases atomically via <code style="font-family: var(--font-mono); color: var(--accent-cyan);">rename(2)</code>.
+              <strong>How it works:</strong> Every incremental update purges both <code style="font-family: var(--font-mono); color: var(--accent-cyan);">source_id</code> AND <code style="font-family: var(--font-mono); color: var(--accent-cyan);">target_id</code>, maintaining complete graph integrity. Large rebuilds swap databases atomically via <code style="font-family: var(--font-mono); color: var(--accent-cyan);">rename(2)</code>.
             </p>
           </div>
 
@@ -181,7 +181,7 @@
               Concatenating raw codebases into prompt dumps (Repomix/Gitingest) consumes 50k–100k tokens and causes severe LLM attention degradation.
             </p>
             <p style="color: var(--text-secondary); font-size: 0.925rem; line-height: 1.6;">
-              <strong>Weave Graph Invariant:</strong> Exposes exact 2-hop caller/callee subgraphs via native MCP for Claude Code and Cursor. Agents receive 800 dense tokens instead of 30,000 raw tokens — cutting costs by <strong>92%</strong> and eliminating hallucinations.
+              <strong>How it works:</strong> Exposes exact 2-hop caller/callee subgraphs via native MCP tools for agents. Instead of a raw multi-thousand-line prompt dump, agents get a small, targeted subgraph — cutting token usage substantially and reducing hallucinated references.
             </p>
           </div>
 
@@ -189,13 +189,13 @@
           <div class="glass-card">
             <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: var(--space-3);">
               <span style="display: flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 50%; background: rgba(245, 158, 11, 0.15); color: var(--accent-amber); font-weight: 800;">5</span>
-              <h3 style="font-size: 1.25rem; color: var(--text-primary); margin: 0;">Local SLM Intent Routing (<code style="font-family: var(--font-mono); color: var(--accent-amber);">weave ask</code>)</h3>
+              <h3 style="font-size: 1.25rem; color: var(--text-primary); margin: 0;">Local SLM Intent Routing (<code style="font-family: var(--font-mono); color: var(--accent-amber);">weave ask</code>) <span class="badge badge-purple" style="font-size: 0.7rem; vertical-align: middle; margin-left: 0.4rem;">Experimental</span></h3>
             </div>
             <p style="color: var(--text-secondary); font-size: 0.925rem; line-height: 1.6; margin-bottom: var(--space-3);">
               Cloud LLMs introduce latency, telemetry risks, and high token billing when developers ask quick structural questions in the terminal.
             </p>
             <p style="color: var(--text-secondary); font-size: 0.925rem; line-height: 1.6;">
-              <strong>Weave Graph Invariant:</strong> Optional on-device SLM linking (0.5B–3B GGUF models) executes purely in terminal memory. The SLM translates intents into exact MCP tool calls with strict AST parameter grounding and <strong>0MB idle RAM</strong>.
+              <strong>How it works:</strong> Optional, experimental on-device SLM linking (0.5B–3B GGUF models) executes purely in terminal memory. The SLM translates intents into exact MCP tool calls with AST parameter grounding, with no cloud calls involved.
             </p>
           </div>
 
@@ -209,7 +209,7 @@
               Microservices and multi-repository monorepos have opaque cross-boundary call edges, making API changes prone to silent breaking bugs.
             </p>
             <p style="color: var(--text-secondary); font-size: 0.925rem; line-height: 1.6;">
-              <strong>Weave Graph Invariant:</strong> Link sibling workspaces with <code style="font-family: var(--font-mono); color: var(--accent-cyan);">weave repo add</code>. Virtual schemas resolve cross-repo calls while Tarjan Strongly Connected Components (SCC) algorithms detect circular dependencies between services.
+              <strong>How it works:</strong> Link a pair of sibling workspaces with <code style="font-family: var(--font-mono); color: var(--accent-cyan);">weave link &lt;repo-a&gt; &lt;repo-b&gt;</code>. Virtual schemas resolve cross-repo calls while Tarjan Strongly Connected Components (SCC) algorithms detect circular dependencies between services.
             </p>
           </div>
 
@@ -253,7 +253,7 @@
             <li><a href="getting-started.html#mcp-setup">Claude &amp; Cursor MCP</a></li>
             <li><a href="self-hosted.html#slm">Local SLM Linking</a></li>
             <li><a href="comparison.html">Market Comparison</a></li>
-            <li><a href="performance.html">Performance Metrics 5.4</a></li>
+            <li><a href="performance.html">Performance</a></li>
             <li><a href="roadmap.html">Interactive Roadmap</a></li>
           </ul>
         </div>
@@ -262,7 +262,7 @@
           <div class="footer-col-title">Releases</div>
           <ul class="footer-links">
             <li><a href="release-notes.html">v1.0.1 Release Notes</a></li>
-            <li><a href="release-notes.html#milestones">Deliverable Matrix</a></li>
+            <li><a href="release-notes.html">Deliverable Matrix</a></li>
             <li><a href="https://github.com/ragubaran/weave-graph/releases" target="_blank" rel="noopener noreferrer">GitHub Releases</a></li>
           </ul>
         </div>
@@ -272,7 +272,7 @@
           <ul class="footer-links">
             <li><a href="https://github.com/ragubaran/weave-graph" target="_blank" rel="noopener noreferrer">GitHub Repository</a></li>
             <li><a href="https://github.com/ragubaran/weave-graph/issues" target="_blank" rel="noopener noreferrer">Issue Tracker</a></li>
-            <li><a href="https://github.com/ragubaran/weave-graph/blob/main/LICENSE" target="_blank" rel="noopener noreferrer">Apache-2.0 / MIT License</a></li>
+            <li><a href="https://github.com/ragubaran/weave-graph/blob/main/LICENSE" target="_blank" rel="noopener noreferrer">MIT License</a></li>
           </ul>
         </div>
       </div>
@@ -285,7 +285,7 @@
 
   <!-- Scripts -->
   <script src="/assets/js/vendor/three.min.js"></script>
-  <script src="/assets/js/graph-visualizer.js?v=1.0.5"></script>
-  <script src="/assets/js/main.js?v=1.0.5"></script>
+  <script src="/assets/js/graph-visualizer.js?v=1.0.7"></script>
+  <script src="/assets/js/main.js?v=1.0.7"></script>
 </body>
 </html>

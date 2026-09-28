@@ -12,7 +12,8 @@ function showToast(message) {
   toast.innerHTML = `<span style="color:var(--color-primary)">✓</span> ${message}`;
   toast.classList.add('show');
 
-  setTimeout(() => {
+  clearTimeout(showToast.timer);
+  showToast.timer = setTimeout(() => {
     toast.classList.remove('show');
   }, 2500);
 }
@@ -29,7 +30,7 @@ document.addEventListener('DOMContentLoaded', () => {
       if (button.getAttribute('data-clipboard-text')) {
         textToCopy = button.getAttribute('data-clipboard-text');
       } else if (container) {
-        const activePane = container.querySelector('.code-pane.active, code, pre');
+        const activePane = container.querySelector('.code-pane.active') || container.querySelector('code, pre');
         if (activePane) {
           textToCopy = activePane.innerText.trim();
         }
@@ -39,7 +40,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
       try {
         await navigator.clipboard.writeText(textToCopy);
-        const originalText = button.innerHTML;
+        if (!button.dataset.label) button.dataset.label = button.innerHTML;
+        const originalText = button.dataset.label;
         button.innerHTML = `<span style="color:var(--color-success)">✓</span> Copied`;
         showToast('Command copied to clipboard');
 

@@ -9,7 +9,7 @@
     Referrer-Policy = "strict-origin-when-cross-origin"
     Permissions-Policy = "camera=(), microphone=(), geolocation=()"
     Strict-Transport-Security = "max-age=63072000; includeSubDomains"
-    Content-Security-Policy = "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self'; base-uri 'none'; frame-ancestors 'none'"
+    Content-Security-Policy = "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self'; base-uri 'none'; frame-ancestors 'none'; object-src 'none'; form-action 'self'"
 
 [[headers]]
   for = "/assets/*"
@@ -25,16 +25,19 @@
   from = "/internals.html"
   to = "/visualisation.html"
   status = 301
+  force = true
 
 [[redirects]]
   from = "/visualization"
   to = "/visualisation.html"
-  status = 200
+  status = 301
+  force = true
 
 [[redirects]]
   from = "/visualization.html"
   to = "/visualisation.html"
-  status = 200
+  status = 301
+  force = true
 
 [[redirects]]
   from = "/visualisation"

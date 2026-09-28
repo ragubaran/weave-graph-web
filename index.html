@@ -3,13 +3,13 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Weave Graph | Ultra-Lightweight Code Intelligence Engine</title>
-  <meta name="description" content="Ultra-lightweight (<15MB binary, <80MB RAM), 100% deterministic code intelligence engine in pure Rust with Model Context Protocol (MCP) and Local SLM linking. Cuts AI coding agent context token consumption by 92%.">
-  <meta name="keywords" content="weave-graph, code graph, MCP server, rust, tree-sitter, ast, code intelligence, claude code, cursor, slm, qwen2.5-coder">
+  <title>Weave Graph | Local Code Graph for AI Coding Agents</title>
+  <meta name="description" content="Weave Graph is an offline code graph engine written in Rust. It indexes your repository with Tree-sitter and gives AI coding agents callers, callees, and change impact over MCP (12 tools, stdio or loopback HTTP). MIT licensed.">
+  <meta name="keywords" content="weave-graph, code graph, MCP server, rust, tree-sitter, ast, code intelligence, claude code, blast radius, ci">
 
   <!-- Open Graph -->
-  <meta property="og:title" content="Weave Graph — Zero-Cloud Code Intelligence Engine">
-  <meta property="og:description" content="Sub-millisecond AST symbol graph, Local SLM intent routing, and 92% token reduction for AI coding agents.">
+  <meta property="og:title" content="Weave Graph: a local code graph for AI coding agents">
+  <meta property="og:description" content="Index a repository into a local call graph and give AI coding agents callers, callees, and change impact over MCP. Offline by default, MIT licensed.">
   <meta property="og:type" content="website">
   <meta property="og:image" content="/assets/img/favicon.svg">
 
@@ -18,10 +18,10 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet">
 
-  <link rel="stylesheet" href="/assets/css/variables.css?v=1.0.4">
-  <link rel="stylesheet" href="/assets/css/animations.css?v=1.0.4">
-  <link rel="stylesheet" href="/assets/css/main.css?v=1.0.4">
-  <link rel="stylesheet" href="/assets/css/components.css?v=1.0.4">
+  <link rel="stylesheet" href="/assets/css/variables.css?v=1.0.7">
+  <link rel="stylesheet" href="/assets/css/animations.css?v=1.0.7">
+  <link rel="stylesheet" href="/assets/css/main.css?v=1.0.7">
+  <link rel="stylesheet" href="/assets/css/components.css?v=1.0.7">
 </head>
 <body>
 
@@ -73,55 +73,54 @@
       <div class="container">
         <div class="hero-pill">
           <span class="animate-pulse">⚡</span>
-          <span>Zero Cloud Leaks • Pure Rust • Self-Hosted • MIT License</span>
+          <span>Offline by default • Pure Rust • Self-hostable • MIT License</span>
         </div>
 
         <h1 class="hero-title">
-          Sub-millisecond <span class="gradient-text">Code Intelligence</span><br>
-          for AI Coding Agents.
+          A local <span class="gradient-text">code graph</span><br>
+          for AI coding agents.
         </h1>
 
         <p class="hero-subtitle">
-          Stop dumping 100,000 raw source tokens into LLM prompts. Weave Graph indexes your codebase into Compressed Sparse Row (CSR) bitmasks, exposing callers, callees, blast radiuses, and local SLM intent routing to Claude Code, Cursor, and Windsurf in under <strong>2ms</strong>.
+          Weave Graph indexes your repository into a call graph on your machine and gives coding agents callers, callees, and change impact over MCP, so they read the few symbols that matter instead of whole files.
         </p>
 
         <div class="hero-cta-group">
-          <a href="getting-started.html" class="btn btn-primary btn-lg">Quick Start Guide →</a>
-          <a href="visualisation.html" class="btn btn-secondary btn-lg" style="border-color: rgba(0, 240, 255, 0.4);"><span style="color: var(--accent-cyan);">🔮 3D Visualisation</span></a>
-          <a href="self-hosted.html" class="btn btn-secondary btn-lg">Self-Hosted Tier 🏢</a>
+          <a href="#quick-start" class="btn btn-primary btn-lg">Quick start →</a>
+          <a href="https://github.com/ragubaran/weave-graph" target="_blank" rel="noopener noreferrer" class="btn btn-secondary btn-lg">GitHub</a>
         </div>
 
         <!-- Metric Cards -->
         <div class="stats-grid">
           <div class="stat-card">
-            <span class="stat-badge">&lt; 15 MB</span>
-            <span class="stat-number">13.8MB</span>
-            <div class="stat-label">Standalone Static Binary<br><span style="font-size: 0.75rem; color: var(--color-text-muted); font-weight: 400; display: block; margin-top: 3px;">(core build without additional features)</span></div>
+            <span class="stat-badge">Target &lt; 15 MiB</span>
+            <span class="stat-number">9.67 MiB</span>
+            <div class="stat-label">Core-only binary<br><span style="font-size: 0.75rem; color: var(--color-text-muted); font-weight: 400; display: block; margin-top: 3px;">(<code>--no-default-features</code>, 8 languages). The default build is 41.16 MiB.</span></div>
           </div>
           <div class="stat-card">
-            <span class="stat-badge">&lt; 80 MB RSS</span>
-            <span class="stat-number">54MB</span>
-            <div class="stat-label">RAM for 500k Symbols</div>
+            <span class="stat-badge">Measured</span>
+            <span class="stat-number">11 MiB</span>
+            <div class="stat-label">MCP session peak RSS<br><span style="font-size: 0.75rem; color: var(--color-text-muted); font-weight: 400; display: block; margin-top: 3px;">A full <code>weave index</code> of 500k symbols peaks at 244 MiB, above the 80 MiB target. <a href="performance.html">Details</a></span></div>
           </div>
           <div class="stat-card">
-            <span class="stat-badge">Token Efficiency</span>
-            <span class="stat-number">92%</span>
-            <div class="stat-label">Prompt Token Cost Cut</div>
+            <span class="stat-badge">MCP</span>
+            <span class="stat-number">12</span>
+            <div class="stat-label">Agent tools<br><span style="font-size: 0.75rem; color: var(--color-text-muted); font-weight: 400; display: block; margin-top: 3px;">(7 core + 5 feature-gated)</span></div>
           </div>
           <div class="stat-card">
-            <span class="stat-badge">Zero Network</span>
-            <span class="stat-number">1.2ms</span>
-            <div class="stat-label">Average Graph Traversal</div>
+            <span class="stat-badge">Measured</span>
+            <span class="stat-number">~30 µs</span>
+            <div class="stat-label">3-hop call traversal<br><span style="font-size: 0.75rem; color: var(--color-text-muted); font-weight: 400; display: block; margin-top: 3px;">(27.6 µs Criterion bench on a laptop; <a href="performance.html">details</a>)</span></div>
           </div>
         </div>
 
         <!-- Interactive Terminal Simulator -->
         <div class="playground-box">
           <div class="playground-nav">
-            <button class="playground-btn active" data-query="callers">weave callers</button>
-            <button class="playground-btn" data-query="callees">weave callees</button>
-            <button class="playground-btn" data-query="impact">weave impact</button>
-            <button class="playground-btn" data-query="path">weave path</button>
+            <button class="playground-btn active" data-query="callers">callers()</button>
+            <button class="playground-btn" data-query="callees">callees()</button>
+            <button class="playground-btn" data-query="impact">impact()</button>
+            <button class="playground-btn" data-query="path">path()</button>
           </div>
 
           <div class="playground-view">
@@ -133,13 +132,12 @@
                     <span class="terminal-dot yellow"></span>
                     <span class="terminal-dot green"></span>
                   </div>
-                  <div class="terminal-title">zsh — weave graph query</div>
-                  <span class="badge badge-cyan playground-speed">1.4ms</span>
+                  <div class="terminal-title">weave query (illustrative output)</div>
                 </div>
                 <div class="terminal-body" style="min-height: 200px;">
                   <div class="terminal-line">
                     <span class="terminal-prompt">❯</span>
-                    <span class="terminal-cmd playground-cmd">weave callers Storage::purge_file_edges_bidirectional</span>
+                    <span class="terminal-cmd playground-cmd">weave query "callers(Storage::purge_file_edges_bidirectional)"</span>
                     <span class="cursor-blink"></span>
                   </div>
                   <pre class="terminal-output playground-output" style="margin: 0; padding: 0;"></pre>
@@ -148,14 +146,14 @@
             </div>
 
             <div class="playground-right">
-              <h4 style="margin-bottom: var(--space-3); font-size: 1.1rem; color: var(--color-text-main);">Context Window Impact</h4>
+              <h4 style="margin-bottom: var(--space-3); font-size: 1.1rem; color: var(--color-text-main);">Context window impact</h4>
               <p style="font-size: 0.85rem; color: var(--color-text-muted); margin-bottom: var(--space-4);">
-                Instead of feeding whole files to find symbol callers, Weave extracts the exact sub-graph.
+                Instead of pasting whole files to find a symbol's callers, the agent gets the sub-graph it asked for.
               </p>
 
               <div class="token-comparison-bar">
                 <div class="token-bar-label">
-                  <span>Raw File Concatenation (Repomix/Gitingest)</span>
+                  <span>Raw file concatenation</span>
                   <span class="tokens-raw" style="color: #ff5f56; font-weight: 600;">28,450 tokens</span>
                 </div>
                 <div class="token-bar-outer">
@@ -165,7 +163,7 @@
 
               <div class="token-comparison-bar">
                 <div class="token-bar-label">
-                  <span>Weave Graph MCP Subgraph Slice</span>
+                  <span>Weave Graph sub-graph</span>
                   <span class="tokens-weave" style="color: var(--color-primary); font-weight: 600;">820 tokens</span>
                 </div>
                 <div class="token-bar-outer">
@@ -173,10 +171,9 @@
                 </div>
               </div>
 
-              <div style="margin-top: var(--space-4); padding: 0.75rem; background: rgba(0, 240, 255, 0.06); border: 1px dashed rgba(0, 240, 255, 0.25); border-radius: var(--radius-sm); text-align: center;">
-                <span style="font-size: 0.85rem; color: var(--color-text-muted);">Net Token Savings: </span>
-                <strong class="tokens-reduction" style="color: var(--color-primary); font-size: 1.1rem;">97.1%</strong>
-              </div>
+              <p style="margin-top: var(--space-4); font-size: 0.8rem; color: var(--color-text-muted);">
+                Illustrative example, not a captured run. Output and token counts vary by repository and query.
+              </p>
             </div>
           </div>
         </div>
@@ -188,46 +185,46 @@
     <section class="section" style="background: rgba(13, 17, 23, 0.5); border-top: 1px solid var(--color-border); border-bottom: 1px solid var(--color-border);">
       <div class="container">
         <div style="text-align: center; max-width: 780px; margin: 0 auto var(--space-10);">
-          <span class="badge badge-purple" style="margin-bottom: var(--space-2);">The 3-Tier Intelligence Model</span>
-          <h2 style="font-size: 2.25rem; font-weight: 800; letter-spacing: -0.02em;">Deterministic Core ↔ Local SLM ↔ Frontier LLM</h2>
+          <span class="badge badge-purple" style="margin-bottom: var(--space-2);">Core Engine + MCP</span>
+          <h2 style="font-size: 2.25rem; font-weight: 800; letter-spacing: -0.02em;">A deterministic graph, served over MCP</h2>
           <p style="color: var(--color-text-muted); font-size: 1.05rem;">
-            A unified code intelligence architecture connecting microsecond deterministic graph walks with on-device SLMs and frontier coding agents.
+            The graph engine parses and stores your repository locally, and coding agents query it over MCP. An experimental local-SLM router is also available.
           </p>
         </div>
 
         <div class="grid grid-3">
           <div class="glass-card" style="border-top: 3px solid var(--color-primary);">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--space-3);">
-              <span class="badge badge-cyan">Tier 1: Foundation</span>
-              <span style="font-size: 0.8rem; color: var(--color-text-muted); font-family: var(--font-mono);">&lt; 2ms Latency</span>
+              <span class="badge badge-cyan">Core Engine</span>
+              <span style="font-size: 0.8rem; color: var(--color-text-muted); font-family: var(--font-mono);">~30 µs traversal</span>
             </div>
             <h3 style="font-size: 1.25rem; margin-bottom: var(--space-2);">Zero-LLM Core Engine</h3>
             <p style="color: var(--color-text-muted); font-size: 0.9rem; line-height: 1.6; margin-bottom: var(--space-4);">
-              Microsecond Tree-sitter parsers, SQLite WAL storage, and contiguous uint32 CSR adjacency matrices. 100% offline, zero network dependencies, and &lt;80MB RAM for 500k symbols.
+              Tree-sitter parsers, SQLite WAL storage, and a compact uint32 CSR adjacency matrix. Runs fully offline with no network calls in the default build.
             </p>
-            <div style="font-size: 0.8rem; color: var(--color-primary); font-family: var(--font-mono);">weave index • weave callers • weave check</div>
+            <div style="font-size: 0.8rem; color: var(--color-primary); font-family: var(--font-mono);">weave index • weave query • weave verify</div>
           </div>
 
           <div class="glass-card" style="border-top: 3px solid var(--color-secondary);">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--space-3);">
-              <span class="badge badge-purple">Tier 2: Edge SLM</span>
+              <span class="badge" style="background: rgba(251,113,133,0.15); color: #fb7185; border: 1px solid rgba(251,113,133,0.3);">Experimental</span>
               <span style="font-size: 0.8rem; color: var(--color-text-muted); font-family: var(--font-mono);">0.5B–3B GGUF</span>
             </div>
             <h3 style="font-size: 1.25rem; margin-bottom: var(--space-2);">Local Intent Router (weave ask)</h3>
             <p style="color: var(--color-text-muted); font-size: 0.9rem; line-height: 1.6; margin-bottom: var(--space-4);">
-              Natural language terminal routing with zero cloud data egress. Strictly grounds extracted parameters against AST symbols, mining ADR rules and synthesizing Git changelogs with 0MB idle RAM.
+              A local SLM that routes natural-language terminal queries to graph queries, with no cloud data egress. Not part of the core value proposition &mdash; still experimental.
             </p>
             <div style="font-size: 0.8rem; color: var(--color-secondary); font-family: var(--font-mono);">weave ask • weave slm pull • weave journal</div>
           </div>
 
           <div class="glass-card" style="border-top: 3px solid #27c93f;">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--space-3);">
-              <span class="badge badge-success">Tier 3: Frontier LLM</span>
-              <span style="font-size: 0.8rem; color: var(--color-text-muted); font-family: var(--font-mono);">Native MCP</span>
+              <span class="badge badge-success">MCP</span>
+              <span style="font-size: 0.8rem; color: var(--color-text-muted); font-family: var(--font-mono);">12 tools</span>
             </div>
-            <h3 style="font-size: 1.25rem; margin-bottom: var(--space-2);">Autonomous Agent Linking</h3>
+            <h3 style="font-size: 1.25rem; margin-bottom: var(--space-2);">Agent Integration</h3>
             <p style="color: var(--color-text-muted); font-size: 0.9rem; line-height: 1.6; margin-bottom: var(--space-4);">
-              Direct Stdio & SSE MCP integration for Claude Code, Cursor, Windsurf, and Antigravity. Prunes massive 100k-token file trees into exact 1k-token subgraphs, cutting LLM context bills by 92%.
+              Stdio or loopback HTTP MCP server for Claude Code, Cursor, and other MCP clients. Agents get the sub-graph around a symbol instead of pasting whole files.
             </p>
             <div style="font-size: 0.8rem; color: #27c93f; font-family: var(--font-mono);">weave serve --mcp • Claude • Cursor</div>
           </div>
@@ -240,66 +237,46 @@
       <div class="container">
         <div style="text-align: center; max-width: 700px; margin: 0 auto var(--space-12);">
           <span class="badge badge-purple" style="margin-bottom: var(--space-3);">Engineering Principles</span>
-          <h2 style="font-size: 2.25rem; font-weight: 800; letter-spacing: -0.02em;">Engineered for Hard Invariants</h2>
+          <h2 style="font-size: 2.25rem; font-weight: 800; letter-spacing: -0.02em;">What agents get, and how</h2>
           <p style="color: var(--color-text-muted); font-size: 1.05rem;">
-            Designed from scratch in Rust 2024 with zero cloud dependencies, bounded memory footprints, and 100% deterministic reproducibility.
+            Built from scratch in Rust with no cloud dependencies, a bounded memory footprint, and deterministic queries &mdash; the same input always produces the same graph.
           </p>
         </div>
 
+        <div style="margin-bottom: var(--space-3); font-size: 0.8rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--color-text-muted);">For agents</div>
         <div class="grid grid-3">
           <div class="glass-card">
-            <div style="font-size: 2rem; margin-bottom: var(--space-4);">🔒</div>
-            <h3 style="font-size: 1.25rem; margin-bottom: var(--space-2);">100% Zero-LLM Core</h3>
-            <p style="color: var(--color-text-muted); font-size: 0.95rem; line-height: 1.6;">
-              Graph generation, parsing, persistence, and queries execute deterministically via Tree-sitter. No API keys required, zero telemetry, and zero network calls in the base tier.
-            </p>
-          </div>
-
-          <div class="glass-card">
-            <div style="font-size: 2rem; margin-bottom: var(--space-4);">⚡</div>
-            <h3 style="font-size: 1.25rem; margin-bottom: var(--space-2);">CSR Matrix & Bitmasks</h3>
-            <p style="color: var(--color-text-muted); font-size: 0.95rem; line-height: 1.6;">
-              Adjacency lists use contiguous uint32 Compressed Sparse Row (CSR) layouts with Roaring bitmasks. Peak memory never exceeds 80MB RAM for 500,000 code symbols.
-            </p>
-          </div>
-
-          <div class="glass-card">
-            <div style="font-size: 2rem; margin-bottom: var(--space-4);">🛡️</div>
-            <h3 style="font-size: 1.25rem; margin-bottom: var(--space-2);">Atomic Crash Safety</h3>
-            <p style="color: var(--color-text-muted); font-size: 0.95rem; line-height: 1.6;">
-              Never corrupts your database on crash. Index rebuilds write to <code style="font-family: var(--font-mono); color: var(--color-primary);">.weave/graph.db.rebuild</code> and perform atomic swaps. Incremental updates enforce bidirectional edge purges.
-            </p>
-          </div>
-
-          <div class="glass-card">
             <div style="font-size: 2rem; margin-bottom: var(--space-4);">🤖</div>
-            <h3 style="font-size: 1.25rem; margin-bottom: var(--space-2);">Native MCP Server</h3>
+            <h3 style="font-size: 1.25rem; margin-bottom: var(--space-2);">MCP Server (12 tools)</h3>
             <p style="color: var(--color-text-muted); font-size: 0.95rem; line-height: 1.6;">
-              Implements standard Model Context Protocol (Stdio & Localhost SSE) with <strong>92% token reduction</strong>. Slices precise 2-hop sub-graphs (800 tokens vs 35,000 raw file dumps) for Claude Code, Cursor, and Windsurf.
+              Model Context Protocol over stdio or loopback HTTP for Claude Code, Cursor, and other MCP clients: repo map, file API, call trace, impact radius, and more &mdash; 7 core tools plus 5 feature-gated ones.
             </p>
           </div>
 
           <div class="glass-card">
-            <div style="font-size: 2rem; margin-bottom: var(--space-4);">🌐</div>
-            <h3 style="font-size: 1.25rem; margin-bottom: var(--space-2);">Multi-Repo Federation</h3>
+            <div style="font-size: 2rem; margin-bottom: var(--space-4);">🧭</div>
+            <h3 style="font-size: 1.25rem; margin-bottom: var(--space-2);">Pre-flight Verification (weave verify)</h3>
             <p style="color: var(--color-text-muted); font-size: 0.95rem; line-height: 1.6;">
-              Index multi-repo federations or monorepos with cross-repository call tracing, shared virtual schema layers, and workspace boundaries.
+              Checks a file or range for phantom symbols before an agent's edit is applied, catching hallucinated references early.
             </p>
           </div>
 
           <div class="glass-card">
-            <div style="font-size: 2rem; margin-bottom: var(--space-4);">🏢</div>
-            <h3 style="font-size: 1.25rem; margin-bottom: var(--space-2);">Self-Hosted Version</h3>
+            <div style="font-size: 2rem; margin-bottom: var(--space-4);">📝</div>
+            <h3 style="font-size: 1.25rem; margin-bottom: var(--space-2);">Notes &amp; Search</h3>
             <p style="color: var(--color-text-muted); font-size: 0.95rem; line-height: 1.6;">
-              Full enterprise autonomy for air-gapped VPC clusters: query-layer RBAC, SCIM 2.0 directory sync, centralized snapshot registry (<code style="font-family: var(--font-mono); color: var(--color-primary);">weave-registry</code>), and 100% offline execution.
+              Pin durable notes to symbols (<code style="font-family: var(--font-mono); color: var(--color-primary);">weave note pin</code>, feature: notes) and run full-text search over names, signatures, bodies, and doc comments (<code style="font-family: var(--font-mono); color: var(--color-primary);">weave search</code>, feature: fts).
             </p>
           </div>
+        </div>
 
+        <div style="margin: var(--space-8) 0 var(--space-3); font-size: 0.8rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--color-text-muted);">For PR &amp; CI safety</div>
+        <div class="grid grid-3">
           <div class="glass-card">
-            <div style="font-size: 2rem; margin-bottom: var(--space-4);">📑</div>
-            <h3 style="font-size: 1.25rem; margin-bottom: var(--space-2);">29+ Language Grammars</h3>
+            <div style="font-size: 2rem; margin-bottom: var(--space-4);">🎯</div>
+            <h3 style="font-size: 1.25rem; margin-bottom: var(--space-2);">PR Blast Radius (weave blast)</h3>
             <p style="color: var(--color-text-muted); font-size: 0.95rem; line-height: 1.6;">
-              Native AST extraction for Rust, Python, TS, Go, Java, C/C++, ArkTS, Solidity, CUDA, Metal, Svelte, Vue, Astro, Terraform, Nix, COBOL, Erlang, and more.
+              Three-dot merge-base git diff analysis of transitive callers touched by a PR, written as a ready-to-post Markdown or JSON report.
             </p>
           </div>
 
@@ -307,39 +284,85 @@
             <div style="font-size: 2rem; margin-bottom: var(--space-4);">🛡️</div>
             <h3 style="font-size: 1.25rem; margin-bottom: var(--space-2);">Boundary Contract Verifier</h3>
             <p style="color: var(--color-text-muted); font-size: 0.95rem; line-height: 1.6;">
-              <code style="font-family: var(--font-mono); color: var(--color-primary);">weave check-contracts</code> computes SHA-256 hashes of public interfaces to stop breaking changes and signature drift in CI pipelines.
+              <code style="font-family: var(--font-mono); color: var(--color-primary);">weave check-contracts</code> hashes public interfaces to catch breaking changes and signature drift across linked repos in CI (feature: federation).
             </p>
           </div>
 
           <div class="glass-card">
-            <div style="font-size: 2rem; margin-bottom: var(--space-4);">🎯</div>
-            <h3 style="font-size: 1.25rem; margin-bottom: var(--space-2);">PR Blast Radius (weave blast)</h3>
+            <div style="font-size: 2rem; margin-bottom: var(--space-4);">🪝</div>
+            <h3 style="font-size: 1.25rem; margin-bottom: var(--space-2);">Pre-push Hook (weave hooks)</h3>
             <p style="color: var(--color-text-muted); font-size: 0.95rem; line-height: 1.6;">
-              3-dot merge-base git diff analysis graphing transitive callers across pull requests, generating ready-to-post markdown reports for CI.
-            </p>
-          </div>
-
-          <div class="glass-card">
-            <div style="font-size: 2rem; margin-bottom: var(--space-4);">⚖️</div>
-            <h3 style="font-size: 1.25rem; margin-bottom: var(--space-2);">MIT License</h3>
-            <p style="color: var(--color-text-muted); font-size: 0.95rem; line-height: 1.6;">
-              100% free and open source under the permissive Apache-2.0 / MIT dual license. Zero vendor lock-in, commercial-friendly, and freely embeddable into proprietary developer stacks.
+              <code style="font-family: var(--font-mono); color: var(--color-primary);">weave hooks install</code> writes a local, offline <code style="font-family: var(--font-mono); color: var(--color-primary);">pre-push</code> hook that runs an advisory blast-radius check and a contract check before every push.
             </p>
           </div>
         </div>
 
-        <!-- Self-Hosted & Enterprise Callout Banner -->
+        <div style="margin: var(--space-8) 0 var(--space-3); font-size: 0.8rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--color-text-muted);">For multi-repo codebases</div>
+        <div class="grid grid-3">
+          <div class="glass-card">
+            <div style="font-size: 2rem; margin-bottom: var(--space-4);">🌐</div>
+            <h3 style="font-size: 1.25rem; margin-bottom: var(--space-2);">Multi-Repo Federation</h3>
+            <p style="color: var(--color-text-muted); font-size: 0.95rem; line-height: 1.6;">
+              Link two repositories (<code style="font-family: var(--font-mono); color: var(--color-primary);">weave link</code>) and query, report, or plan a migration across the boundary (feature: federation).
+            </p>
+          </div>
+
+          <div class="glass-card">
+            <div style="font-size: 2rem; margin-bottom: var(--space-4);">📑</div>
+            <h3 style="font-size: 1.25rem; margin-bottom: var(--space-2);">29 Language Grammars</h3>
+            <p style="color: var(--color-text-muted); font-size: 0.95rem; line-height: 1.6;">
+              8 core languages (Rust, Python, JavaScript, TypeScript, Go, Java, C, C++) plus 21 more via <code style="font-family: var(--font-mono); color: var(--color-primary);">lang-extended</code> (on by default), with further languages handled by best-effort surrogate grammars.
+            </p>
+          </div>
+
+          <div class="glass-card">
+            <div style="font-size: 2rem; margin-bottom: var(--space-4);">⚡</div>
+            <h3 style="font-size: 1.25rem; margin-bottom: var(--space-2);">CSR Adjacency Matrix</h3>
+            <p style="color: var(--color-text-muted); font-size: 0.95rem; line-height: 1.6;">
+              A compact uint32 Compressed Sparse Row layout backs the in-memory graph. Storage and graph memory alone stay at 24 MiB at 500k symbols; a full <code style="font-family: var(--font-mono); color: var(--color-primary);">weave index</code> run currently peaks at 244 MiB, above the 80 MiB target &mdash; see <a href="performance.html">Performance</a>.
+            </p>
+          </div>
+        </div>
+
+        <div style="margin: var(--space-8) 0 var(--space-3); font-size: 0.8rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--color-text-muted);">For governance</div>
+        <div class="grid grid-3">
+          <div class="glass-card">
+            <div style="font-size: 2rem; margin-bottom: var(--space-4);">🏢</div>
+            <h3 style="font-size: 1.25rem; margin-bottom: var(--space-2);">Self-Hosted Version</h3>
+            <p style="color: var(--color-text-muted); font-size: 0.95rem; line-height: 1.6;">
+              Query-layer RBAC with path scoping, SCIM 2.0 provisioning, and a centralized snapshot registry (<code style="font-family: var(--font-mono); color: var(--color-primary);">weave-registry</code>) for air-gapped or VPC deployments.
+            </p>
+          </div>
+
+          <div class="glass-card">
+            <div style="font-size: 2rem; margin-bottom: var(--space-4);">📋</div>
+            <h3 style="font-size: 1.25rem; margin-bottom: var(--space-2);">Policy Lint</h3>
+            <p style="color: var(--color-text-muted); font-size: 0.95rem; line-height: 1.6;">
+              <code style="font-family: var(--font-mono); color: var(--color-primary);">weave policy lint</code> enforces declarative architectural boundary rules from <code style="font-family: var(--font-mono); color: var(--color-primary);">.weave/policy.yaml</code> in CI (feature: policy-lint).
+            </p>
+          </div>
+
+          <div class="glass-card">
+            <div style="font-size: 2rem; margin-bottom: var(--space-4);">🛠️</div>
+            <h3 style="font-size: 1.25rem; margin-bottom: var(--space-2);">Zero-LLM Core</h3>
+            <p style="color: var(--color-text-muted); font-size: 0.95rem; line-height: 1.6;">
+              Graph generation, parsing, persistence, and queries all run deterministically through Tree-sitter. No API keys, no telemetry, and no network calls in the default build.
+            </p>
+          </div>
+        </div>
+
+        <!-- Self-Hosted Callout Banner -->
         <div class="glass-card" style="margin-top: var(--space-8); padding: var(--space-6) var(--space-8); border-color: rgba(168, 85, 247, 0.4); background: linear-gradient(135deg, rgba(168, 85, 247, 0.08) 0%, rgba(0, 240, 255, 0.04) 100%); display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: var(--space-4);">
           <div style="max-width: 680px;">
             <div style="display: flex; align-items: center; gap: var(--space-2); margin-bottom: var(--space-2);">
               <span class="badge badge-purple">Self-Hosted Tier</span>
-              <span class="badge badge-cyan">Custom Mode</span>
+              <span class="badge badge-cyan">Custom Build</span>
             </div>
             <h3 style="font-size: 1.35rem; font-weight: 700; margin-bottom: var(--space-1); color: var(--color-text-main);">
-              Deploying in VPCs, Monorepos, or Air-Gapped Clusters?
+              Deploying in a VPC, monorepo, or air-gapped cluster?
             </h3>
             <p style="color: var(--color-text-muted); font-size: 0.95rem; line-height: 1.6; margin: 0;">
-              Explore Custom Mode (<code style="font-family: var(--font-mono); color: var(--color-primary);">--features custom</code>): Query-Layer RBAC, SCIM 2.0 directory sync with Okta &amp; Azure AD, centralized snapshot registry (<code style="font-family: var(--font-mono); color: var(--color-primary);">weave-registry</code>), OTel traces, and CI policy enforcement.
+              Build with <code style="font-family: var(--font-mono); color: var(--color-primary);">--features custom</code> for query-layer RBAC, SCIM 2.0 provisioning compatible with Okta, Azure AD, and other standard identity providers, a centralized snapshot registry (<code style="font-family: var(--font-mono); color: var(--color-primary);">weave-registry</code>), JSON trace import, and CI policy enforcement.
             </p>
           </div>
           <div>
@@ -377,14 +400,19 @@
               <span>Copy</span>
             </button>
           </div>
-          <pre id="inst-source" class="code-pane active"><code>git clone https://github.com/ragubaran/weave-graph.git && cd weave-graph
-cargo build --release -p weave-graph-cli --features slm</code></pre>
-          <pre id="inst-brew" class="code-pane"><code>brew install ragubaran/tap/weave-graph</code></pre>
-          <pre id="inst-cargo" class="code-pane"><code>cargo install weave-graph-cli --features slm --locked</code></pre>
-          <pre id="inst-npx" class="code-pane"><code>npx @weave-graph/cli init</code></pre>
-          <pre id="inst-pypi" class="code-pane"><code>uv tool install weave-graph</code></pre>
+          <pre id="inst-source" class="code-pane active"><code>cargo install --git https://github.com/ragubaran/weave-graph.git weave-graph-cli --features team
+
+# Or clone and build directly
+git clone https://github.com/ragubaran/weave-graph.git && cd weave-graph
+cargo build --release -p weave-graph-cli --features team</code></pre>
+          <pre id="inst-brew" class="code-pane"><code># Not published yet. Build from source until a release ships.</code></pre>
+          <pre id="inst-cargo" class="code-pane"><code># weave-graph-cli is not on crates.io yet.
+# Use "cargo install --git ..." under Source.</code></pre>
+          <pre id="inst-npx" class="code-pane"><code># Not published yet. No npm package exists today.</code></pre>
+          <pre id="inst-pypi" class="code-pane"><code># A future wheel will contain the Python bindings only,
+# not the weave CLI.</code></pre>
         </div>
-        <p style="color: var(--color-text-muted); font-size: 0.85rem; margin-top: 0.75rem;">Homebrew, crates.io, npm, and PyPI packages ship with the first tagged release — build from source today.</p>
+        <p style="color: var(--color-text-muted); font-size: 0.85rem; margin-top: 0.75rem;">Building from source is the only install path today. Homebrew, crates.io, npm, and PyPI packages are planned for a future release.</p>
       </div>
     </section>
 
@@ -431,13 +459,13 @@ cargo build --release -p weave-graph-cli --features slm</code></pre>
         <div class="footer-col">
           <div class="footer-col-title">Documentation</div>
           <ul class="footer-links">
-            <li><a href="getting-started.html">Getting Started</a>
-        <a href="self-hosted.html">Self-Hosted</a></li>
+            <li><a href="getting-started.html">Getting Started</a></li>
+            <li><a href="self-hosted.html">Self-Hosted</a></li>
             <li><a href="visualisation.html">Visualisation</a></li>
             <li><a href="comparison.html">Market Comparison</a></li>
-            <li><a href="performance.html">Performance Metrics 5.4</a></li>
+            <li><a href="performance.html">Performance</a></li>
             <li><a href="getting-started.html#mcp-setup">Claude & Cursor MCP</a></li>
-            <li><a href="self-hosted.html#slm">Local SLM Linking</a></li>
+            <li><a href="self-hosted.html#slm">Local SLM (Experimental)</a></li>
             <li><a href="roadmap.html">Interactive Roadmap</a></li>
           </ul>
         </div>
@@ -445,7 +473,7 @@ cargo build --release -p weave-graph-cli --features slm</code></pre>
         <div class="footer-col">
           <div class="footer-col-title">Releases</div>
           <ul class="footer-links">
-            <li><a href="release-notes.html">v1.0.1 Release Notes</a></li>
+            <li><a href="release-notes.html">Release Notes</a></li>
             <li><a href="release-notes.html#v1.0.0">v1.0.0 Archive</a></li>
             <li><a href="https://github.com/ragubaran/weave-graph/releases" target="_blank" rel="noopener noreferrer">GitHub Releases</a></li>
           </ul>
@@ -456,20 +484,20 @@ cargo build --release -p weave-graph-cli --features slm</code></pre>
           <ul class="footer-links">
             <li><a href="https://github.com/ragubaran/weave-graph" target="_blank" rel="noopener noreferrer">GitHub Repository</a></li>
             <li><a href="https://github.com/ragubaran/weave-graph/issues" target="_blank" rel="noopener noreferrer">Issue Tracker</a></li>
-            <li><a href="https://github.com/ragubaran/weave-graph/blob/main/LICENSE" target="_blank" rel="noopener noreferrer">Apache-2.0 / MIT License</a></li>
+            <li><a href="https://github.com/ragubaran/weave-graph/blob/main/LICENSE" target="_blank" rel="noopener noreferrer">MIT License</a></li>
           </ul>
         </div>
       </div>
     </div>
     <div class="container footer-bottom">
       <div>© 2026 Weave Graph Contributors. Pure Rust Deterministic Engine.</div>
-      <div>Zero Telemetry • Zero Network Calls</div>
+      <div>Zero Telemetry • Zero network calls in the default build</div>
     </div>
   </footer>
 
-  <script src="/assets/js/main.js?v=1.0.4"></script>
-  <script src="/assets/js/tabs.js?v=1.0.4"></script>
-  <script src="/assets/js/copy.js?v=1.0.4"></script>
-  <script src="/assets/js/playground.js?v=1.0.4"></script>
+  <script src="/assets/js/main.js?v=1.0.7"></script>
+  <script src="/assets/js/tabs.js?v=1.0.7"></script>
+  <script src="/assets/js/copy.js?v=1.0.7"></script>
+  <script src="/assets/js/playground.js?v=1.0.7"></script>
 </body>
 </html>

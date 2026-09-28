@@ -3,12 +3,12 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Self-Hosted Tier & Custom Mode Guide | Weave Graph</title>
-  <meta name="description" content="Comprehensive enterprise and self-hosted deployment guide for Weave Graph: Custom Mode, Query-Layer RBAC, SCIM 2.0 Directory Sync, Graph Hub & Registry, OpenTelemetry Traces, Policy Linting, and Local SLMs.">
+  <title>Self-Hosted Deployment Guide | Weave Graph</title>
+  <meta name="description" content="Self-hosted deployment guide for Weave Graph: the --features custom build, query-layer RBAC, SCIM 2.0 directory sync, Graph Hub & Registry, OpenTelemetry traces, policy linting, and the experimental local SLM.">
 
   <!-- Open Graph -->
-  <meta property="og:title" content="Self-Hosted Tier & Custom Mode Guide - Weave Graph">
-  <meta property="og:description" content="Deploy Weave Graph on self-hosted enterprise infrastructure with query-layer RBAC, SCIM directory sync, centralized hub snapshots, OTel tracing, and CI policy linter.">
+  <meta property="og:title" content="Self-Hosted Deployment Guide - Weave Graph">
+  <meta property="og:description" content="Deploy Weave Graph on self-hosted infrastructure with query-layer RBAC, SCIM directory sync, centralized hub snapshots, OTel tracing, and a CI policy linter.">
   <meta property="og:type" content="article">
   <meta property="og:image" content="/assets/img/favicon.svg">
 
@@ -17,10 +17,10 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet">
 
-  <link rel="stylesheet" href="/assets/css/variables.css?v=1.0.4">
-  <link rel="stylesheet" href="/assets/css/animations.css?v=1.0.4">
-  <link rel="stylesheet" href="/assets/css/main.css?v=1.0.4">
-  <link rel="stylesheet" href="/assets/css/components.css?v=1.0.4">
+  <link rel="stylesheet" href="/assets/css/variables.css?v=1.0.7">
+  <link rel="stylesheet" href="/assets/css/animations.css?v=1.0.7">
+  <link rel="stylesheet" href="/assets/css/main.css?v=1.0.7">
+  <link rel="stylesheet" href="/assets/css/components.css?v=1.0.7">
 </head>
 <body>
 
@@ -49,17 +49,19 @@
         <a href="index.html">Overview</a>
         <a href="getting-started.html">Getting Started</a>
         <a href="self-hosted.html" class="active">Self-Hosted</a>
+        <a href="visualisation.html">Visualisation</a>
         <a href="comparison.html">Comparison</a>
         <a href="performance.html">Performance</a>
-        <a href="roadmap.html">Roadmap</a>
         <a href="release-notes.html">Release Notes</a>
-        <a href="visualization.html">Visualizer</a>
+        <a href="roadmap.html">Roadmap</a>
       </nav>
 
       <div class="nav-actions">
-        <a href="https://github.com/ragubaran/weave-graph" target="_blank" rel="noopener noreferrer" class="btn btn-secondary btn-sm" aria-label="GitHub Repository">
+        <a href="https://github.com/ragubaran/weave-graph" target="_blank" rel="noopener noreferrer" class="btn btn-secondary" style="padding: 0.5rem 0.85rem;" title="GitHub Repository">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
         </a>
+        <a href="getting-started.html" class="btn btn-primary">Install CLI</a>
+        <button class="mobile-menu-toggle" aria-label="Toggle Navigation">☰</button>
       </div>
     </div>
   </header>
@@ -67,18 +69,18 @@
   <!-- Hero Header -->
   <section class="page-hero">
     <div class="container text-center">
-      <span class="badge badge-purple" style="margin-bottom: var(--space-2);">Self-Hosted Tier &amp; Custom Mode</span>
+      <span class="badge badge-purple" style="margin-bottom: var(--space-2);">Self-Hosted</span>
       <h1 class="hero-title" style="font-size: 3rem; margin-top: var(--space-2);">
-        Self-Hosted & <span class="gradient-text">Custom Mode</span>
+        Self-Hosted <span class="gradient-text">Deployment</span>
       </h1>
       <p style="color: var(--color-text-muted); font-size: 1.15rem; max-width: 780px; margin: var(--space-4) auto 0; line-height: 1.7;">
-        Run Weave Graph in air-gapped environments, VPC clusters, and high-security enterprise developer platforms. 
-        Zero outbound cloud egress, query-layer RBAC, SCIM 2.0 directory sync, centralized snapshot registry, OpenTelemetry tracing, and CI boundary policy enforcement.
+        Run Weave Graph in air-gapped environments and private VPC clusters.
+        Zero outbound cloud egress in the default build, query-layer RBAC, SCIM 2.0 directory sync, a centralized snapshot registry, OpenTelemetry tracing, and CI boundary policy enforcement.
       </p>
 
       <!-- Jump Anchors -->
       <div style="display: flex; gap: var(--space-2); justify-content: center; flex-wrap: wrap; margin-top: var(--space-6);">
-        <a href="#custom-mode" class="btn btn-secondary btn-sm">Custom Mode</a>
+        <a href="#custom-mode" class="btn btn-secondary btn-sm">Feature Bundle</a>
         <a href="#rbac" class="btn btn-secondary btn-sm">Query RBAC & SCIM</a>
         <a href="#hub" class="btn btn-secondary btn-sm">Graph Hub Registry</a>
         <a href="#otel" class="btn btn-secondary btn-sm">OpenTelemetry Spans</a>
@@ -98,44 +100,44 @@
       <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: var(--space-4); margin-bottom: var(--space-4);">
         <div>
           <span class="badge badge-cyan" style="margin-bottom: var(--space-2);">Packaging Tier</span>
-          <h2 style="font-size: 1.85rem; font-weight: 700; margin: 0;">1. Custom Mode Architecture</h2>
+          <h2 style="font-size: 1.85rem; font-weight: 700; margin: 0;">1. Self-Hosted Feature Bundle</h2>
         </div>
         <span class="badge badge-purple" style="font-family: var(--font-mono);">--features custom</span>
       </div>
 
       <p style="color: var(--color-text-muted); line-height: 1.6; margin-bottom: var(--space-4);">
-        Weave Graph is distributed in two compile-time tiers: the ultra-lightweight <strong>Standard Tier</strong> (<code style="color: var(--color-primary);">weave</code>, ~13.8 MB) for individual developers and CI PR runners, and the <strong>Self-Hosted Tier</strong> (<code style="color: var(--color-primary);">weave-custom</code>, ~41.6 MB) for private VPCs, compliance deployments, and multi-team microservice meshes with centralized Hub sync, query-layer RBAC, SCIM directory synchronization, and architectural policy enforcement.
+        <code style="color: var(--color-primary);">custom</code> is a Cargo feature flag, not a separate product: it bundles <code style="color: var(--color-primary);">team</code>, <code style="color: var(--color-primary);">hub</code>, <code style="color: var(--color-primary);">hub-provenance</code>, <code style="color: var(--color-primary);">provenance</code>, <code style="color: var(--color-primary);">rbac</code>, <code style="color: var(--color-primary);">otel</code>, and <code style="color: var(--color-primary);">policy-lint</code> (which pulls in <code style="color: var(--color-primary);">fts</code> and <code style="color: var(--color-primary);">vector</code> transitively) into one binary for private VPCs, compliance deployments, and multi-repo workspaces that need centralized Hub sync, query-layer RBAC, SCIM directory sync, and architectural policy enforcement. It does <strong>not</strong> include <code style="color: var(--color-primary);">notes</code>, <code style="color: var(--color-primary);">watch</code>, <code style="color: var(--color-primary);">viz</code>, or the experimental <code style="color: var(--color-primary);">slm</code> feature &mdash; those need an explicit build, e.g. <code style="color: var(--color-primary);">--features custom,notes,watch,viz</code>.
       </p>
 
       <div class="grid grid-3" style="gap: var(--space-4); margin-bottom: var(--space-6);">
         <div style="background: rgba(255,255,255,0.03); border: 1px solid var(--color-border); border-radius: var(--radius-md); padding: var(--space-4);">
           <div style="font-weight: 600; color: var(--color-primary); margin-bottom: var(--space-1);">Feature Bundle</div>
-          <div style="font-size: 0.85rem; color: var(--color-text-muted);">Bundles <code style="color: var(--color-primary);">team</code>, <code style="color: var(--color-primary);">hub</code>, <code style="color: var(--color-primary);">rbac</code>, <code style="color: var(--color-primary);">otel</code>, <code style="color: var(--color-primary);">policy-lint</code>, <code style="color: var(--color-primary);">fts</code>, and <code style="color: var(--color-primary);">vector</code>.</div>
+          <div style="font-size: 0.85rem; color: var(--color-text-muted);">Bundles <code style="color: var(--color-primary);">team</code>, <code style="color: var(--color-primary);">hub</code>, <code style="color: var(--color-primary);">hub-provenance</code>, <code style="color: var(--color-primary);">rbac</code>, <code style="color: var(--color-primary);">otel</code>, and <code style="color: var(--color-primary);">policy-lint</code>.</div>
         </div>
         <div style="background: rgba(255,255,255,0.03); border: 1px solid var(--color-border); border-radius: var(--radius-md); padding: var(--space-4);">
-          <div style="font-weight: 600; color: var(--color-success); margin-bottom: var(--space-1);">Zero Cloud Leaks</div>
-          <div style="font-size: 0.85rem; color: var(--color-text-muted);">Core Invariant 1 preserved: all parsers, queries, and RBAC guards execute 100% locally with zero third-party cloud egress.</div>
+          <div style="font-weight: 600; color: var(--color-success); margin-bottom: var(--space-1);">Zero Network Calls</div>
+          <div style="font-size: 0.85rem; color: var(--color-text-muted);">Parsing, queries, and RBAC guards all run locally in the default build; nothing here calls out to a third-party cloud service.</div>
         </div>
         <div style="background: rgba(255,255,255,0.03); border: 1px solid var(--color-border); border-radius: var(--radius-md); padding: var(--space-4);">
           <div style="font-weight: 600; color: #f59e0b; margin-bottom: var(--space-1);">Feature Isolation</div>
-          <div style="font-size: 0.85rem; color: var(--color-text-muted);">Zero idle RSS delta: optional features are decoupled behind conditional compilation, keeping inactive memory footprint at 0 MB.</div>
+          <div style="font-size: 0.85rem; color: var(--color-text-muted);">Optional features are gated behind conditional compilation, so a build without them doesn't link or run that code.</div>
         </div>
       </div>
 
-      <h3 style="font-size: 1.15rem; font-weight: 600; margin-bottom: var(--space-3); color: var(--color-text-main);">Compiling & Installing Custom Mode</h3>
+      <h3 style="font-size: 1.15rem; font-weight: 600; margin-bottom: var(--space-3); color: var(--color-text-main);">Building the Self-Hosted Binary</h3>
       <div class="code-block" style="margin-bottom: var(--space-4);">
-        <pre><code class="language-bash"># Build from source with the complete custom enterprise feature bundle
-cargo install --locked --git https://github.com/ragubaran/weave-graph weave-graph-cli --features custom
+        <pre><code class="language-bash"># Build from source with the self-hosted feature bundle
+cargo install --git https://github.com/ragubaran/weave-graph.git weave-graph-cli --features custom
 
-# Initialize a repository with custom enterprise configuration
-weave init --mode custom
+# Initialize a repository
+weave init --mode single
 
-# Check active features and compiled subsystems
+# Print graph status
 weave status</code></pre>
       </div>
 
       <div style="background: rgba(0, 240, 255, 0.04); border-left: 3px solid var(--color-primary); padding: var(--space-3) var(--space-4); border-radius: 0 var(--radius-sm) var(--radius-sm) 0; font-size: 0.9rem; color: var(--color-text-muted);">
-        <strong>Prebuilt Binary:</strong> Enterprise deployments can distribute the pre-compiled <code style="color: var(--color-primary);">weave-custom</code> binary (~41.6 MB stripped release) containing all enterprise modules, or <code style="color: var(--color-primary);">weave</code> (~13.8 MB core build) for standard developer workstations.
+        <strong>Binary size:</strong> a core-only build (<code style="color: var(--color-primary);">--no-default-features</code>, 8 languages) is 9.67&nbsp;MiB; <code style="color: var(--color-primary);">--features custom --no-default-features</code> is 10.25&nbsp;MiB. The default build (<code style="color: var(--color-primary);">lang-extended</code> on, 29 languages, no self-hosted features) is 41.16&nbsp;MiB &mdash; there is no separately published size for <code style="color: var(--color-primary);">custom</code> with <code style="color: var(--color-primary);">lang-extended</code> left on, but expect it close to that 41&nbsp;MiB figure since the language grammars dominate the delta. GitHub Release binaries: coming with v1.0.1; today the only supported install path is building from source.
       </div>
     </section>
 
@@ -149,57 +151,59 @@ weave status</code></pre>
         <span class="badge badge-cyan" style="font-family: var(--font-mono);">feature: rbac</span>
       </div>
 
-      <div style="background: rgba(239, 68, 68, 0.08); border: 1px solid rgba(239, 68, 68, 0.3); border-radius: var(--radius-md); padding: var(--space-4); margin-bottom: var(--space-6);">
-        <strong style="color: #f87171;">Core Invariant Rule §1.7:</strong>
+      <div style="background: rgba(0, 240, 255, 0.06); border: 1px solid rgba(0, 240, 255, 0.25); border-radius: var(--radius-md); padding: var(--space-4); margin-bottom: var(--space-6);">
+        <strong style="color: var(--color-primary);">One shared guard, not export-only filtering:</strong>
         <span style="color: var(--color-text-muted); font-size: 0.9rem;">
-          RBAC is enforced at the query and storage layer (<code style="font-family: var(--font-mono); color: var(--color-primary);">weave_graph_core::rbac::RbacGuard</code>), never export-only. When a restricted subject queries the graph, masked internal nodes and edges are filtered at traversal time. CLI, <code style="font-family: var(--font-mono); color: var(--color-primary);">weave report</code>, exports, and MCP all inherit the exact same security guard.
+          Masking is enforced once, at the query layer. When a masked subject queries the graph, internal nodes and edges are filtered at traversal time &mdash; not stripped after the fact. CLI <code style="font-family: var(--font-mono); color: var(--color-primary);">query</code>/<code style="font-family: var(--font-mono); color: var(--color-primary);">report</code>/<code style="font-family: var(--font-mono); color: var(--color-primary);">export</code>, and the MCP server, all route through the same guard, so none of them can drift from the others.
         </span>
       </div>
 
       <h3 style="font-size: 1.15rem; font-weight: 600; margin-bottom: var(--space-3); color: var(--color-text-main);">1. User & Role Configuration (<code style="font-family: var(--font-mono); font-size: 1rem;">.weave/config.toml</code>)</h3>
       <p style="color: var(--color-text-muted); font-size: 0.95rem; margin-bottom: var(--space-3);">
-        Map identities to roles directly in configuration. Internal symbols with private/internal visibility rules are automatically hidden from external or contractor roles:
+        Map identities to role names directly in configuration. Only the <code style="color: var(--color-primary);">internal</code> role bypasses masking; every other role name (yours to define) gets the same masked view &mdash; public/exported symbols only. <code style="color: var(--color-primary);">path_scope</code> narrows an <code style="color: var(--color-primary);">internal</code> identity's bypass to specific path prefixes instead of the whole graph:
       </p>
       <div class="code-block" style="margin-bottom: var(--space-4);">
         <pre><code class="language-toml">[rbac]
-enabled = true
+require_identity = true   # weave serve --mcp refuses to start without --as
 
 [rbac.users]
-alice = ["admin", "core-team"]
-bob = ["internal-dev"]
-external-contractor = ["external"]
+alice = ["internal"]
+bob = ["engineer"]
+contractor_vendor = ["contractor"]
+ci_auditor = ["auditor"]
+release_bot = ["allow-drift"]
 
-[rbac.roles]
-# External roles only see public API boundaries and exported interfaces
-external = { allow_internal_symbols = false, allow_unexported_contracts = false }
-core-team = { allow_internal_symbols = true, allow_unexported_contracts = true }</code></pre>
+[rbac.users.hub_oncall]
+roles = ["internal"]
+path_scope = ["crates/weave-graph-hub"]</code></pre>
       </div>
 
       <h3 style="font-size: 1.15rem; font-weight: 600; margin-bottom: var(--space-3); color: var(--color-text-main);">2. Executing Queries with Subject Identity</h3>
       <div class="code-block" style="margin-bottom: var(--space-4);">
-        <pre><code class="language-bash"># Internal engineer query: returns complete call graph
+        <pre><code class="language-bash"># Internal role: returns complete call graph
 weave query "callers(AuthService.validateSecret)" --as alice
 
-# Contractor query: internal helpers and sensitive AST nodes are automatically masked
-weave query "callers(AuthService.validateSecret)" --as external-contractor
+# Contractor role: internal helpers and sensitive AST nodes are automatically masked
+weave query "callers(AuthService.validateSecret)" --as contractor_vendor
 
 # Run MCP server bound to a specific identity context
-weave serve --mcp --as external-contractor</code></pre>
+weave serve --mcp --as contractor_vendor</code></pre>
       </div>
 
       <h3 style="font-size: 1.15rem; font-weight: 600; margin-bottom: var(--space-3); color: var(--color-text-main);">3. SCIM 2.0 Identity Directory Server (<code style="font-family: var(--font-mono); font-size: 1rem;">weave rbac serve-scim</code>)</h3>
       <p style="color: var(--color-text-muted); font-size: 0.95rem; margin-bottom: var(--space-3);">
-        Integrate with corporate enterprise IdPs (Okta, Microsoft Entra / Azure AD, Google Workspace) without outbound network requests. IdPs push provisioning events directly to Weave's loopback SCIM endpoint, which snapshots state to <code style="color: var(--color-primary); font-family: var(--font-mono);">.weave/rbac-directory.toml</code>:
+        A generic SCIM 2.0 endpoint &mdash; any IdP that speaks the protocol can push provisioning events to it (Okta, Microsoft Entra / Azure AD, and Google Workspace payload shapes are all accepted; there's no vendor-specific integration). Loopback-only, no outbound network requests. Provisioning events land in <code style="color: var(--color-primary); font-family: var(--font-mono);">.weave/rbac-directory.toml</code>:
       </p>
       <div class="code-block" style="margin-bottom: var(--space-4);">
-        <pre><code class="language-bash"># Launch the loopback-only SCIM 2.0 provisioning daemon on port 8080
-weave rbac serve-scim --port 8080
+        <pre><code class="language-bash"># Launch the loopback-only SCIM 2.0 provisioning daemon (default port 9292)
+weave rbac serve-scim
 
 # The server provides standard SCIM endpoints:
 #   GET  /Users        - Enumerate provisioned users
 #   GET  /Users/{id}   - Fetch user roles and metadata
 #   POST /Users        - Provision new user identity
-#   DELETE /Users/{id} - Deprovision user (revokes query access on next sync)</code></pre>
+#   DELETE /Users/{id} - Deprovision user (revokes query access on next sync)
+#   POST /sync         - Force the directory to refresh from disk</code></pre>
       </div>
     </section>
 
@@ -342,7 +346,7 @@ weave sync push</code></pre>
         <div style="font-weight: 600; color: var(--color-secondary); margin-bottom: var(--space-1);">Snapshot Provenance & Required Proxy Response Headers</div>
         <div style="font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.6;">
           When running behind TLS reverse proxies (Nginx, Envoy, ALB, Cloud Load Balancer), ensure these response headers are forwarded:
-          <br/>• <code style="color: var(--color-primary); font-family: var(--font-mono);">X-Weave-Signature</code>: Carries cryptographic Merkle signature sidecar on <code>pull</code>.
+          <br/>• <code style="color: var(--color-primary); font-family: var(--font-mono);">X-Weave-Signature</code>: Carries an HMAC-SHA-256 signature (hex-encoded), checked against the operator-supplied secret set via <code>weave-registry</code>'s <code>--provenance-key</code> flag and matched client-side with <code>weave sync push</code>'s <code>--provenance-key-file</code> flag.
           <br/>• <code style="color: var(--color-primary); font-family: var(--font-mono);">Upload-Offset</code>: Enables resumable chunked upload recovery on <code>HEAD</code>.
           <br/>• <code style="color: var(--color-primary); font-family: var(--font-mono);">Retry-After</code>: Delivers adaptive backoff signals when push rate limits are reached.
         </div>
@@ -463,8 +467,8 @@ weave slm doctor</code></pre>
         <pre><code class="language-bash"># Terminal question -> automatically grounded against AST symbol table -> runs callers()
 weave ask "Which services depend on the authentication token validation?"
 
-# Scan ADRs and markdown documentation for architectural invariants ("must", "should never")
-weave slm review-rules --confirm
+# Scan ADRs and markdown documentation for candidate rules ("must", "should never")
+weave slm review-rules --confirm 1,3
 
 # Synthesize commit changelog correlated with graph blast radius
 weave journal --since main</code></pre>
@@ -482,17 +486,17 @@ weave journal --since main</code></pre>
       </div>
 
       <p style="color: var(--color-text-muted); line-height: 1.6; margin-bottom: var(--space-4);">
-        For enterprises organized into microservices or distributed multi-repo workspaces, Weave Graph links distinct repositories into a unified composite graph without requiring a centralized monolithic database.
+        For teams organized into microservices or distributed multi-repo workspaces, Weave Graph links repositories into a composite graph without requiring a centralized monolithic database. <code style="color: var(--color-primary);">weave link</code> takes exactly two repository paths at a time:
       </p>
 
       <div class="code-block" style="margin-bottom: var(--space-4);">
-        <pre><code class="language-bash"># Link sibling microservice repositories into a composite graph
-weave link ../auth-service ../payment-gateway ../notification-service
+        <pre><code class="language-bash"># Link a pair of sibling repositories
+weave link ../auth-service ../payment-gateway
 
 # Verify public API contract signatures across repository boundaries in CI
 weave check-contracts
 
-# Generate multi-repo visual architecture report with Louvain community clustering
+# Generate a visual architecture report across the same two repos
 weave report-federated ../auth-service ../payment-gateway</code></pre>
       </div>
     </section>
@@ -508,7 +512,7 @@ weave report-federated ../auth-service ../payment-gateway</code></pre>
       </div>
 
       <p style="color: var(--color-text-muted); line-height: 1.6; margin-bottom: var(--space-4);">
-        In enterprise clusters with ephemeral containers or network filesystems (NFS, SMB, EFS), SQLite WAL mode can fail due to lack of shared memory (<code style="font-family: var(--font-mono);">/dev/shm</code>). Weave Graph solves this with dedicated vault paths and non-WAL read-only snapshot exports:
+        In self-hosted clusters with ephemeral containers or network filesystems (NFS, SMB, EFS), SQLite WAL mode can fail due to lack of shared memory (<code style="font-family: var(--font-mono);">/dev/shm</code>). Weave Graph detects this and refuses to run rather than risk corruption &mdash; the only way past the refusal is relocating the database off the network mount:
       </p>
 
       <h3 style="font-size: 1.15rem; font-weight: 600; margin-bottom: var(--space-3); color: var(--color-text-main);">1. Central Storage Vault Configuration</h3>
@@ -520,16 +524,16 @@ weave config set storage.home /var/weave-vault/repo-payments
 export WEAVE_HOME=/var/weave-vault</code></pre>
       </div>
 
-      <h3 style="font-size: 1.15rem; font-weight: 600; margin-bottom: var(--space-3); color: var(--color-text-main);">2. Shared Network Snapshot Export (Non-WAL Mode)</h3>
+      <h3 style="font-size: 1.15rem; font-weight: 600; margin-bottom: var(--space-3); color: var(--color-text-main);">2. Sharing a Point-in-Time Snapshot</h3>
       <p style="color: var(--color-text-muted); font-size: 0.95rem; margin-bottom: var(--space-3);">
-        Export pre-indexed databases into clean non-WAL snapshots mounted read-only across thousands of worker containers:
+        There's no shared read-only SQLite mount feature. To hand a subgraph to another worker or paste it into an agent's context, export a static JSON snapshot instead &mdash; no shared memory or WAL semantics involved:
       </p>
       <div class="code-block" style="margin-bottom: var(--space-4);">
-        <pre><code class="language-bash"># Export snapshot using standard rollback journal (NFS-compatible, no shared memory required)
-weave export --format sqlite --readonly /mnt/nfs/snapshots/graph.db
+        <pre><code class="language-bash"># Export a symbol's N-hop neighborhood as JSON (prints to stdout; redirect to save)
+weave export --symbol OrderProcessor --depth 3
 
-# Querying nodes automatically detects read-only mounts and applies PRAGMA query_only = ON
-weave query "impact(OrderProcessor)" --db /mnt/nfs/snapshots/graph.db</code></pre>
+# Query the locally indexed graph directly
+weave query "impact(OrderProcessor)"</code></pre>
       </div>
     </section>
 
@@ -568,7 +572,7 @@ weave query "impact(OrderProcessor)" --db /mnt/nfs/snapshots/graph.db</code></pr
             <li><a href="self-hosted.html">Self-Hosted Guide</a></li>
             <li><a href="visualisation.html">Visualisation</a></li>
             <li><a href="comparison.html">Market Comparison</a></li>
-            <li><a href="performance.html">Performance Metrics 5.4</a></li>
+            <li><a href="performance.html">Performance</a></li>
             <li><a href="roadmap.html">Interactive Roadmap</a></li>
           </ul>
         </div>
@@ -577,7 +581,7 @@ weave query "impact(OrderProcessor)" --db /mnt/nfs/snapshots/graph.db</code></pr
           <div class="footer-col-title">Releases</div>
           <ul class="footer-links">
             <li><a href="release-notes.html">v1.0.1 Release Notes</a></li>
-            <li><a href="release-notes.html#milestones">Deliverable Matrix</a></li>
+            <li><a href="release-notes.html">Deliverable Matrix</a></li>
             <li><a href="https://github.com/ragubaran/weave-graph/releases" target="_blank" rel="noopener noreferrer">GitHub Releases</a></li>
           </ul>
         </div>
@@ -587,7 +591,7 @@ weave query "impact(OrderProcessor)" --db /mnt/nfs/snapshots/graph.db</code></pr
           <ul class="footer-links">
             <li><a href="https://github.com/ragubaran/weave-graph" target="_blank" rel="noopener noreferrer">GitHub Repository</a></li>
             <li><a href="https://github.com/ragubaran/weave-graph/issues" target="_blank" rel="noopener noreferrer">Issue Tracker</a></li>
-            <li><a href="https://github.com/ragubaran/weave-graph/blob/main/LICENSE" target="_blank" rel="noopener noreferrer">Apache-2.0 / MIT License</a></li>
+            <li><a href="https://github.com/ragubaran/weave-graph/blob/main/LICENSE" target="_blank" rel="noopener noreferrer">MIT License</a></li>
           </ul>
         </div>
       </div>
@@ -598,7 +602,7 @@ weave query "impact(OrderProcessor)" --db /mnt/nfs/snapshots/graph.db</code></pr
     </div>
   </footer>
 
-  <script src="/assets/js/main.js?v=1.0.4"></script>
-  <script src="/assets/js/copy.js?v=1.0.4"></script>
+  <script src="/assets/js/main.js?v=1.0.7"></script>
+  <script src="/assets/js/copy.js?v=1.0.7"></script>
 </body>
 </html>

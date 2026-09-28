@@ -12,6 +12,7 @@
   font-family: var(--font-mono);
   font-size: 0.9rem;
   margin: var(--space-6) 0;
+  min-width: 0;
   transition: border-color var(--transition-normal);
 }
 
@@ -125,14 +126,16 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.5rem;
   background: rgba(13, 17, 23, 0.8);
   border-bottom: 1px solid var(--color-border);
   padding: 0.5rem 1rem;
-  overflow-x: auto;
 }
 
 .code-tabs-nav {
   display: flex;
+  flex-wrap: wrap;
   gap: 0.5rem;
 }
 
@@ -194,6 +197,11 @@
 
 .code-pane.active {
   display: block;
+}
+
+.code-snippet-box pre {
+  overflow-x: auto;
+  max-width: 100%;
 }
 
 /* 3. Hero & Stat Counters */
@@ -558,16 +566,17 @@
 
 .playground-view {
   display: grid;
-  grid-template-columns: 1fr;
+  grid-template-columns: minmax(0, 1fr);
 }
 
 @media (min-width: 900px) {
   .playground-view {
-    grid-template-columns: 1.2fr 1fr;
+    grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
   }
 }
 
 .playground-left {
+  min-width: 0;
   padding: 1.5rem;
   border-bottom: 1px solid var(--color-border);
 }

@@ -65,3 +65,11 @@
   transform: translateY(-4px);
   box-shadow: var(--shadow-lg), var(--shadow-glow-cyan);
 }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation: none !important;
+    transition: none !important;
+    scroll-behavior: auto !important;
+  }
+}

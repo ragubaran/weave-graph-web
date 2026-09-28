@@ -4,11 +4,11 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Market Comparison | Weave Graph vs Alternatives</title>
-  <meta name="description" content="Technical comparison of Weave Graph versus Sourcegraph/SCIP, Neo4j CodeGraphs, Python AST graphers, Repomix dumpers, and ctags. Hardware footprints, RAM usage, and token efficiency.">
+  <meta name="description" content="How Weave Graph compares with CodeGraph, Sourcegraph/SCIP, Neo4j-based graphs, Python graph tools, Repomix and ctags, including where the alternatives are better.">
 
   <!-- Open Graph -->
-  <meta property="og:title" content="Weave Graph vs The Market — Comprehensive Comparison">
-  <meta property="og:description" content="Compare Weave Graph against Sourcegraph, Neo4j, Repomix, and Ctags across memory, binary size, and agent token economics.">
+  <meta property="og:title" content="Weave Graph Comparison">
+  <meta property="og:description" content="Architecture trade-offs between Weave Graph and other code indexing tools, with sourced numbers only.">
   <meta property="og:type" content="article">
   <meta property="og:image" content="/assets/img/favicon.svg">
 
@@ -17,10 +17,10 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet">
 
-  <link rel="stylesheet" href="/assets/css/variables.css?v=1.0.4">
-  <link rel="stylesheet" href="/assets/css/animations.css?v=1.0.4">
-  <link rel="stylesheet" href="/assets/css/main.css?v=1.0.4">
-  <link rel="stylesheet" href="/assets/css/components.css?v=1.0.4">
+  <link rel="stylesheet" href="/assets/css/variables.css?v=1.0.7">
+  <link rel="stylesheet" href="/assets/css/animations.css?v=1.0.7">
+  <link rel="stylesheet" href="/assets/css/main.css?v=1.0.7">
+  <link rel="stylesheet" href="/assets/css/components.css?v=1.0.7">
 </head>
 <body>
 
@@ -69,13 +69,17 @@
   <!-- Main Comparison Content -->
   <main class="section">
     <div class="container">
-      
+
       <div style="text-align: center; max-width: 800px; margin: 0 auto var(--space-10);">
-        <span class="badge badge-purple" style="margin-bottom: var(--space-2);">Benchmark & Architecture Matrix</span>
-        <h1 style="font-size: 2.75rem; font-weight: 800; letter-spacing: -0.02em;">Architected Different By Design</h1>
+        <span class="badge badge-purple" style="margin-bottom: var(--space-2);">Architecture Comparison</span>
+        <h1 style="font-size: 2.75rem; font-weight: 800; letter-spacing: -0.02em;">How Weave Graph Compares</h1>
         <p style="color: var(--color-text-muted); font-size: 1.15rem; margin-top: var(--space-3);">
-          Most code indexing solutions were designed for massive enterprise cloud servers or human code search web browsers. Weave Graph was purpose-built for the hardware constraints of local developer workstations and AI coding agents.
+          Weave Graph is a local code graph for AI coding agents: one binary, one SQLite file per repo, queried in-process. Other tools make different trade-offs, and some of them do things Weave Graph does not.
         </p>
+      </div>
+
+      <div style="background: rgba(0, 240, 255, 0.04); border-left: 3px solid var(--color-primary); padding: var(--space-3) var(--space-4); border-radius: 0 var(--radius-sm) var(--radius-sm) 0; font-size: 0.9rem; color: var(--color-text-muted); max-width: 900px; margin: 0 auto var(--space-8);">
+        <strong>How to read this table:</strong> Weave Graph numbers come from the product's own benchmarks (criterion benches and <code>scripts/verify_envelope.sh</code>, one machine; see <a href="performance.html" style="color: var(--color-primary); text-decoration: underline;">Performance</a>). CodeGraph cells are vendor-reported, taken from its README and benchmark docs (retrieved 2026-09-12) and not reproduced by us. The other columns describe the general approach of each tool. We have not benchmarked them, so they contain no numbers.
       </div>
 
       <!-- Comparison Table -->
@@ -85,94 +89,114 @@
             <tr>
               <th>Feature / Metric</th>
               <th class="highlight-col">Weave Graph</th>
+              <th>CodeGraph (vendor-reported)</th>
               <th>Sourcegraph / SCIP</th>
-              <th>Neo4j / CodeGraph</th>
-              <th>Graphify (Python/MCP)</th>
-              <th>Repomix / Dumps</th>
+              <th>Neo4j-based code graphs</th>
+              <th>In-memory Python graphs (e.g. Graphify)</th>
+              <th>Repomix / file dumps</th>
               <th>Universal Ctags</th>
             </tr>
           </thead>
           <tbody>
             <tr>
+              <td><strong>Runtime</strong></td>
+              <td class="highlight-col">Single Rust binary with bundled SQLite</td>
+              <td>Rust parsing kernel inside a bundled Node.js runtime</td>
+              <td>Server deployment (self-hosted or cloud)</td>
+              <td>Separate graph database server (JVM)</td>
+              <td>Python process</td>
+              <td>Node.js CLI</td>
+              <td>Single C binary</td>
+            </tr>
+            <tr>
               <td><strong>Binary Size</strong></td>
-              <td class="highlight-col"><span class="check-yes">&lt; 15 MB (only core)</span></td>
-              <td>&gt; 250 MB</td>
-              <td>Docker (~2 GB)</td>
-              <td>Python + deps (~120 MB)</td>
-              <td>N/A (Node/CLI)</td>
-              <td>&lt; 5 MB</td>
+              <td class="highlight-col">9.67 MiB core-only build (8 languages); 41.16 MiB default build (29 grammars)</td>
+              <td>npm bundle; no published size</td>
+              <td>Multi-service install</td>
+              <td>Database install plus loader</td>
+              <td>Python package plus dependencies</td>
+              <td>npm package</td>
+              <td>Small</td>
             </tr>
             <tr>
-              <td><strong>Peak RAM (500k Symbols)</strong></td>
-              <td class="highlight-col"><span class="check-yes">&lt; 80 MB (CSR Compact)</span></td>
-              <td>&gt; 2.5 GB</td>
-              <td>&gt; 1.5 GB</td>
-              <td>500 MB - 1.5 GB (JSON dicts)</td>
-              <td>High (Buffer alloc)</td>
-              <td>&lt; 40 MB</td>
+              <td><strong>Memory at 500k Symbols</strong></td>
+              <td class="highlight-col">24 MiB peak for storage + graph (macOS). A full <code>weave index</code> run peaks at 244 MiB, which misses the 80 MiB target.</td>
+              <td>No published figure</td>
+              <td>Not measured here</td>
+              <td>Not measured here</td>
+              <td>Whole graph held in Python objects</td>
+              <td>Not applicable (no graph)</td>
+              <td>Not measured here</td>
             </tr>
             <tr>
-              <td><strong>Query Traversal Latency</strong></td>
-              <td class="highlight-col"><span class="check-yes">&lt; 2 ms (In-memory CSR)</span></td>
-              <td>40 - 180 ms</td>
-              <td>90 - 450 ms</td>
-              <td>25 - 120 ms</td>
-              <td>N/A (No query)</td>
-              <td>10 - 50 ms</td>
+              <td><strong>Graph Traversal Latency</strong></td>
+              <td class="highlight-col">~30 µs for a 3-hop traversal (27.6 µs, criterion, one machine)</td>
+              <td>No published figure</td>
+              <td>Network round trip to the server</td>
+              <td>Network round trip to the database</td>
+              <td>In-process</td>
+              <td>No queries</td>
+              <td>Tag lookup only, no call graph</td>
             </tr>
             <tr>
-              <td><strong>LLM Context Token Efficiency</strong></td>
-              <td class="highlight-col"><span class="check-yes">92% Token Reduction</span></td>
-              <td>Varies (HTTP API)</td>
-              <td>Varies (Cypher)</td>
-              <td>70 - 85% (JSON subgraphs)</td>
-              <td><span class="check-no">0% (Blows context)</span></td>
-              <td>Poor (Unstructured)</td>
+              <td><strong>Agent Integration (MCP)</strong></td>
+              <td class="highlight-col"><span class="check-yes">stdio &amp; loopback HTTP; 7 core tools + 5 feature-gated</span></td>
+              <td><span class="check-yes">One dense call (<code style="font-size: 0.85rem;">codegraph_explore</code>)</span></td>
+              <td>See vendor docs</td>
+              <td>Not built in</td>
+              <td>Varies by tool</td>
+              <td>Packs files; no graph</td>
+              <td><span class="check-no">None</span></td>
             </tr>
             <tr>
-              <td><strong>MCP Native Protocol</strong></td>
-              <td class="highlight-col"><span class="check-yes">Native Stdio & SSE</span></td>
-              <td><span class="check-partial">Via Community Adapter</span></td>
-              <td><span class="check-no">No Native MCP</span></td>
-              <td><span class="check-yes">Native Stdio (Python)</span></td>
-              <td><span class="check-no">No Graph MCP</span></td>
-              <td><span class="check-no">No MCP</span></td>
-            </tr>
-            <tr>
-              <td><strong>Zero Cloud / Air-Gapped</strong></td>
-              <td class="highlight-col"><span class="check-yes">100% Offline Local</span></td>
-              <td><span class="check-partial">Self-host or Cloud</span></td>
-              <td>Local Docker</td>
-              <td>Local Python</td>
-              <td>Local File Dump</td>
+              <td><strong>Network Use</strong></td>
+              <td class="highlight-col">None in the default build. Opt-in features (hub sync, <code>github-auth</code>, SLM model download) do use the network.</td>
+              <td>Local; anonymous usage telemetry on by default (opt-out)</td>
+              <td>Self-hosted or cloud</td>
+              <td>Local or remote server</td>
+              <td>Local</td>
+              <td>Local</td>
               <td>Local</td>
             </tr>
             <tr>
-              <td><strong>Atomic Crash Resilience</strong></td>
-              <td class="highlight-col"><span class="check-yes">Atomic Swap + WAL</span></td>
-              <td>Enterprise Postgres</td>
-              <td>Neo4j WAL</td>
-              <td><span class="check-no">Corruptible graph.json</span></td>
-              <td>N/A</td>
-              <td><span class="check-no">Corruptible Tagfile</span></td>
+              <td><strong>Crash Safety</strong></td>
+              <td class="highlight-col">Full rebuilds write a new file and swap it in atomically; SQLite WAL otherwise</td>
+              <td>SQLite in WAL mode</td>
+              <td>Database-backed</td>
+              <td>Database transactions</td>
+              <td>Depends on the tool; often one JSON file</td>
+              <td>Not applicable</td>
+              <td>Tag file is rewritten on each run</td>
             </tr>
             <tr>
-              <td><strong>Bidirectional Edge Purge</strong></td>
-              <td class="highlight-col"><span class="check-yes">Rigid Invariant</span></td>
-              <td>Full Rebuild</td>
-              <td>Cypher Cascade</td>
-              <td><span class="check-no">Full Rebuild Required</span></td>
-              <td>N/A</td>
-              <td>No Directed Edges</td>
+              <td><strong>Incremental Updates</strong></td>
+              <td class="highlight-col"><code>weave index --incremental</code> re-parses changed files and switches to a full rebuild above 10% changed</td>
+              <td>Debounced file watcher</td>
+              <td>Depends on the indexer</td>
+              <td>Depends on your loader</td>
+              <td>Often a full rebuild</td>
+              <td>Re-pack each time</td>
+              <td>Per-file append supported</td>
             </tr>
             <tr>
-              <td><strong>Multi-Repo Federation</strong></td>
-              <td class="highlight-col"><span class="check-yes">Virtual Schema Layer</span></td>
-              <td>Enterprise Tier</td>
-              <td><span class="check-partial">Manual Stitch</span></td>
-              <td><span class="check-no">Single Repo Only</span></td>
-              <td>Manual concat</td>
-              <td><span class="check-no">No Federation</span></td>
+              <td><strong>Multi-Repo</strong></td>
+              <td class="highlight-col"><code>weave link</code> (two repos), <code>query-federated</code>, <code>check-contracts</code></td>
+              <td>Not covered in the vendor docs we checked</td>
+              <td>Cross-repo search and navigation</td>
+              <td>Possible, but you model it yourself</td>
+              <td>Usually one repo</td>
+              <td>Manual concatenation</td>
+              <td>One tag file per tree</td>
+            </tr>
+            <tr>
+              <td><strong>Where Others Are Better</strong></td>
+              <td class="highlight-col">Weave Graph gaps: parsing runs at ~2.3–3.2 MiB/s, below target; no framework route edges; Windows untested; 29 grammars</td>
+              <td>Route/navigation edges for 17 web frameworks; interactive browser viewer with flow tracing; FTS5 on by default</td>
+              <td>Mature org-scale code search, precise SCIP navigation, web UI</td>
+              <td>General-purpose graph query language (Cypher) over any schema</td>
+              <td>Easy to script and extend in Python</td>
+              <td>No setup; whole-file context works well for small repos</td>
+              <td>Tiny, widely supported by editors, covers many languages</td>
             </tr>
           </tbody>
         </table>
@@ -180,57 +204,67 @@
 
       <!-- Deep Dive Comparison Cards -->
       <div style="margin-top: var(--space-12);">
-        <h2 style="font-size: 2rem; font-weight: 800; margin-bottom: var(--space-8); text-align: center;">Why Not Other Alternatives?</h2>
+        <h2 style="font-size: 2rem; font-weight: 800; margin-bottom: var(--space-8); text-align: center;">When to Pick What</h2>
 
         <div class="grid grid-2">
-          
+
           <div class="glass-card">
             <h3 style="font-size: 1.35rem; margin-bottom: var(--space-3); color: var(--color-primary);">Vs. Repomix / File Concatenation</h3>
             <p style="color: var(--color-text-muted); font-size: 0.95rem; line-height: 1.6; margin-bottom: var(--space-3);">
-              Dumping raw codebases into an LLM context window is expensive, noisy, and hits attention degradation ("lost in the middle").
+              Packing a whole repo into the context window is simple and works well when the repo is small. On larger repos it costs tokens, and the model gets a lot of text that has nothing to do with the task.
             </p>
             <p style="color: var(--color-text-muted); font-size: 0.95rem; line-height: 1.6;">
-              <strong>The Weave Difference:</strong> Weave Graph only extracts the exact sub-graph relevant to the task (the symbol, its direct callers, callees, and type dependencies). Instead of 35,000 raw tokens, agents receive 1,200 precise tokens — saving over 90% in inference costs and latency.
+              <strong>Weave Graph:</strong> The agent asks for a symbol and gets back only that symbol's neighbourhood: its callers, callees and impact radius. Results are capped by a token budget.
             </p>
           </div>
 
           <div class="glass-card">
-            <h3 style="font-size: 1.35rem; margin-bottom: var(--space-3); color: var(--color-primary);">Vs. Sourcegraph & SCIP</h3>
+            <h3 style="font-size: 1.35rem; margin-bottom: var(--space-3); color: var(--color-primary);">Vs. Sourcegraph &amp; SCIP</h3>
             <p style="color: var(--color-text-muted); font-size: 0.95rem; line-height: 1.6; margin-bottom: var(--space-3);">
-              Sourcegraph is a phenomenal enterprise search tool, but running it locally requires massive Go/PostgreSQL processes consuming gigabytes of system memory.
+              Sourcegraph is built for code search and navigation across an organisation, with a web UI and precise SCIP indexes. Running it means running a server deployment.
             </p>
             <p style="color: var(--color-text-muted); font-size: 0.95rem; line-height: 1.6;">
-              <strong>The Weave Difference:</strong> A sub-15MB standalone binary (only core) with bundled SQLite and contiguous CSR matrices that lives seamlessly in any repository under <code style="font-family: var(--font-mono); color: var(--color-primary);">.weave/</code>, consuming less than 80MB RAM even on massive repos.
+              <strong>Weave Graph:</strong> A single binary that keeps its graph under <code style="font-family: var(--font-mono); color: var(--color-primary);">.weave/</code> in each repo, with no server to run. The core-only build is 9.67 MiB; the default build is 41.16 MiB.
             </p>
           </div>
 
           <div class="glass-card">
-            <h3 style="font-size: 1.35rem; margin-bottom: var(--space-3); color: var(--color-primary);">Vs. Neo4j & Graph Databases</h3>
+            <h3 style="font-size: 1.35rem; margin-bottom: var(--space-3); color: var(--color-primary);">Vs. Neo4j &amp; Graph Databases</h3>
             <p style="color: var(--color-text-muted); font-size: 0.95rem; line-height: 1.6; margin-bottom: var(--space-3);">
-              Setting up Neo4j for code indexing requires Docker containers, JVM heaps, and complex Cypher query orchestration with high network query hops.
+              A graph database gives you a general query language over any schema. For code indexing, you also run the database, write a loader, and send every query over the network.
             </p>
             <p style="color: var(--color-text-muted); font-size: 0.95rem; line-height: 1.6;">
-              <strong>The Weave Difference:</strong> Graph traversal happens directly in-process via uint32 CSR arrays and Roaring bitmasks. Hop traversals execute in microseconds rather than hundreds of milliseconds.
+              <strong>Weave Graph:</strong> Traversal runs in-process over compact CSR arrays. A 3-hop traversal takes about 30 µs on the benchmark machine. The query language is small and fixed: <code>callers</code>, <code>callees</code>, <code>impact</code>, <code>path</code> and <code>latency</code>.
             </p>
           </div>
 
           <div class="glass-card">
             <h3 style="font-size: 1.35rem; margin-bottom: var(--space-3); color: var(--color-primary);">Vs. Universal Ctags</h3>
             <p style="color: var(--color-text-muted); font-size: 0.95rem; line-height: 1.6; margin-bottom: var(--space-3);">
-              Ctags produces flat, line-oriented tag files using regex. It has no awareness of call hierarchies, caller/callee graphs, or type resolution.
+              Ctags is tiny, fast and supported everywhere. It records where symbols are defined, but it has no caller/callee graph.
             </p>
             <p style="color: var(--color-text-muted); font-size: 0.95rem; line-height: 1.6;">
-              <strong>The Weave Difference:</strong> Weave Graph parses AST syntax trees with Tree-sitter, constructing full directed acyclic call graphs, blast radius calculations, and shortest path traversals.
+              <strong>Weave Graph:</strong> Parses with Tree-sitter and builds directed call graphs, which may contain cycles; <code>weave policy drift</code> reports them via strongly-connected-component detection. On top of that graph it computes blast radius and shortest paths.
             </p>
           </div>
 
-            <div class="glass-card">
-            <h3 style="font-size: 1.35rem; margin-bottom: var(--space-3); color: var(--color-primary);">Vs. Graphify (Python / MCP)</h3>
+          <div class="glass-card">
+            <h3 style="font-size: 1.35rem; margin-bottom: var(--space-3); color: var(--color-primary);">Vs. CodeGraph</h3>
             <p style="color: var(--color-text-muted); font-size: 0.95rem; line-height: 1.6; margin-bottom: var(--space-3);">
-              Graphify is a commendable Python tool that extracts knowledge graphs and exposes tools via MCP. However, running on Python means relying on heavy heap-allocated dicts and large monolithic <code style="font-family: var(--font-mono); color: var(--color-primary);">graph.json</code> files that consume 500MB–1.5GB RAM and lack transactional crash resilience.
+              CodeGraph is the closest tool in this category: a Rust-kernel, SQLite-backed, MCP-served local code graph. According to its own docs, it supports route edges for 17 web frameworks, an interactive viewer, and anonymous telemetry that is on by default.
             </p>
             <p style="color: var(--color-text-muted); font-size: 0.95rem; line-height: 1.6;">
-              <strong>The Weave Difference:</strong> Weave Graph is a zero-dependency &lt;15MB pure Rust binary (only core). It compacts symbols into contiguous uint32 CSR arrays bounded to &lt;80MB RAM for 500,000 symbols, traverses edges in &lt;2ms, enforces bidirectional edge integrity on incremental saves, and provides multi-repo virtual schema federation.
+              <strong>Weave Graph:</strong> No second runtime. The default build contains no network code, and agents get tiered, token-budgeted tools instead of one dense payload. Weave Graph has no framework-route awareness.
+            </p>
+          </div>
+
+          <div class="glass-card">
+            <h3 style="font-size: 1.35rem; margin-bottom: var(--space-3); color: var(--color-primary);">Vs. In-Memory Python Graphs (e.g. Graphify)</h3>
+            <p style="color: var(--color-text-muted); font-size: 0.95rem; line-height: 1.6; margin-bottom: var(--space-3);">
+              Python tools are easy to extend and can expose the graph over MCP. They usually hold the whole graph in Python objects and save it as one file.
+            </p>
+            <p style="color: var(--color-text-muted); font-size: 0.95rem; line-height: 1.6;">
+              <strong>Weave Graph:</strong> Stores the graph in SQLite and loads it into compact arrays: 24 MiB for storage + graph at 500k symbols. A full index run peaks at 244 MiB. It removes edges in both directions on incremental saves, and it can link two repos for cross-repo queries.
             </p>
           </div>
 
@@ -268,12 +302,12 @@
         <div class="footer-col">
           <div class="footer-col-title">Documentation</div>
           <ul class="footer-links">
-            <li><a href="getting-started.html">Getting Started</a>
-        <a href="self-hosted.html">Self-Hosted</a></li>
+            <li><a href="getting-started.html">Getting Started</a></li>
+            <li><a href="self-hosted.html">Self-Hosted</a></li>
             <li><a href="visualisation.html">Visualisation</a></li>
             <li><a href="getting-started.html#mcp-setup">Claude & Cursor MCP</a></li>
             <li><a href="comparison.html">Market Comparison</a></li>
-            <li><a href="performance.html">Performance Metrics 5.4</a></li>
+            <li><a href="performance.html">Performance</a></li>
             <li><a href="roadmap.html">Interactive Roadmap</a></li>
           </ul>
         </div>
@@ -281,8 +315,8 @@
         <div class="footer-col">
           <div class="footer-col-title">Releases</div>
           <ul class="footer-links">
-            <li><a href="release-notes.html">v1.0.1 Release Notes</a></li>
-            <li><a href="release-notes.html#milestones">Deliverable Matrix</a></li>
+            <li><a href="release-notes.html">Release Notes</a></li>
+            <li><a href="release-notes.html">Deliverable Matrix</a></li>
             <li><a href="https://github.com/ragubaran/weave-graph/releases" target="_blank" rel="noopener noreferrer">GitHub Releases</a></li>
           </ul>
         </div>
@@ -292,17 +326,17 @@
           <ul class="footer-links">
             <li><a href="https://github.com/ragubaran/weave-graph" target="_blank" rel="noopener noreferrer">GitHub Repository</a></li>
             <li><a href="https://github.com/ragubaran/weave-graph/issues" target="_blank" rel="noopener noreferrer">Issue Tracker</a></li>
-            <li><a href="https://github.com/ragubaran/weave-graph/blob/main/LICENSE" target="_blank" rel="noopener noreferrer">Apache-2.0 / MIT License</a></li>
+            <li><a href="https://github.com/ragubaran/weave-graph/blob/main/LICENSE" target="_blank" rel="noopener noreferrer">MIT License</a></li>
           </ul>
         </div>
       </div>
     </div>
     <div class="container footer-bottom">
       <div>© 2026 Weave Graph Contributors. Pure Rust Deterministic Engine.</div>
-      <div>Zero Telemetry • Zero Network Calls</div>
+      <div>Zero telemetry • Zero network calls in the default build</div>
     </div>
   </footer>
 
-  <script src="/assets/js/main.js?v=1.0.4"></script>
+  <script src="/assets/js/main.js?v=1.0.7"></script>
 </body>
 </html>

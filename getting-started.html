@@ -4,11 +4,11 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Getting Started | Weave Graph Documentation</title>
-  <meta name="description" content="Quick start guide for Weave Graph: Installation via Homebrew, Cargo, npx, PyPI, repository indexing, Model Context Protocol (MCP) setup with Claude and Cursor, multi-repo linking, architectural notes, contract verification, and PR blast radius.">
+  <meta name="description" content="Quick start guide for Weave Graph: build from source, index a repository, connect Claude Code or Cursor over MCP, and use multi-repo linking, notes, contract checks, pre-push hooks and PR blast radius.">
 
   <!-- Open Graph -->
   <meta property="og:title" content="Getting Started with Weave Graph">
-  <meta property="og:description" content="Install in seconds, index your codebase, attach Weave Graph MCP to Claude Code or Cursor, and explore multi-repo linking, architectural notes, and blast radius analysis.">
+  <meta property="og:description" content="Build weave from source, index your codebase, connect it to Claude Code or Cursor over MCP, and add contract checks and blast radius to pushes and pull requests.">
   <meta property="og:type" content="article">
   <meta property="og:image" content="/assets/img/favicon.svg">
 
@@ -17,10 +17,10 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet">
 
-  <link rel="stylesheet" href="/assets/css/variables.css?v=1.0.4">
-  <link rel="stylesheet" href="/assets/css/animations.css?v=1.0.4">
-  <link rel="stylesheet" href="/assets/css/main.css?v=1.0.4">
-  <link rel="stylesheet" href="/assets/css/components.css?v=1.0.4">
+  <link rel="stylesheet" href="/assets/css/variables.css?v=1.0.7">
+  <link rel="stylesheet" href="/assets/css/animations.css?v=1.0.7">
+  <link rel="stylesheet" href="/assets/css/main.css?v=1.0.7">
+  <link rel="stylesheet" href="/assets/css/components.css?v=1.0.7">
 </head>
 <body>
 
@@ -75,7 +75,7 @@
         <span class="badge badge-cyan" style="margin-bottom: var(--space-2);">Documentation</span>
         <h1 style="font-size: 2.75rem; font-weight: 800; letter-spacing: -0.02em;">Getting Started</h1>
         <p style="color: var(--color-text-muted); font-size: 1.15rem; margin-top: var(--space-2);">
-          Install the <code style="font-family: var(--font-mono); color: var(--color-primary);">weave</code> binary, index your repository, attach AI coding agents via MCP, and leverage multi-repo linking, notes, and PR blast radius.
+          Build the <code style="font-family: var(--font-mono); color: var(--color-primary);">weave</code> binary, index a repository, connect your coding agent over MCP, and add checks for pushes and pull requests.
         </p>
       </div>
 
@@ -83,59 +83,58 @@
       <section id="installation" style="margin-bottom: var(--space-12);">
         <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: var(--space-4);">
           <span style="display: flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 50%; background: var(--color-primary); color: #000; font-weight: 800;">1</span>
-          <h2 style="font-size: 1.75rem; font-weight: 700;">Install the CLI Binary</h2>
+          <h2 style="font-size: 1.75rem; font-weight: 700;">Install the CLI</h2>
         </div>
-        <p style="color: var(--color-text-muted); margin-bottom: var(--space-4);">
-          Select your package manager. All prebuilt binaries are statically linked with bundled SQLite and zero external runtime dependencies.
+        <p style="color: var(--color-text-muted); margin-bottom: var(--space-4); line-height: 1.6;">
+          Building from source is the only install path today. You need a Rust toolchain; SQLite is bundled, so there is nothing else to install. Package-manager releases and GitHub Release binaries are not published yet &mdash; they are planned for v1.0.1, which is still in development.
         </p>
 
         <div class="code-tabs-wrapper">
           <div class="code-tabs-header">
             <div class="code-tabs-nav">
               <button class="tab-btn active" data-target="get-source">Build from Source</button>
-              <button class="tab-btn" data-target="get-brew">Homebrew (soon)</button>
-              <button class="tab-btn" data-target="get-cargo">Cargo (soon)</button>
-              <button class="tab-btn" data-target="get-npm">npm / npx (soon)</button>
-              <button class="tab-btn" data-target="get-pypi">PyPI (soon)</button>
+              <button class="tab-btn" data-target="get-brew" style="opacity: 0.55;">Homebrew (coming soon)</button>
+              <button class="tab-btn" data-target="get-cargo" style="opacity: 0.55;">crates.io (coming soon)</button>
+              <button class="tab-btn" data-target="get-npm" style="opacity: 0.55;">npm (coming soon)</button>
+              <button class="tab-btn" data-target="get-pypi" style="opacity: 0.55;">PyPI (coming soon)</button>
             </div>
             <button class="copy-btn">
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
               <span>Copy</span>
             </button>
           </div>
-          <pre id="get-source" class="code-pane active"><code># Clone repository
+          <pre id="get-source" class="code-pane active"><code># Recommended: the team bundle (docs, federation, fts, vector)
+cargo install --git https://github.com/ragubaran/weave-graph.git weave-graph-cli --features team
+
+# Add notes, the file watcher and the HTML viewer (not part of the team bundle)
+cargo install --git https://github.com/ragubaran/weave-graph.git weave-graph-cli --features team,notes,watch,viz
+
+# Or clone and build
 git clone https://github.com/ragubaran/weave-graph.git
 cd weave-graph
-
-# Build optimized production release
 cargo build --release -p weave-graph-cli --features team
-cp target/release/weave /usr/local/bin/</code></pre>
-          <pre id="get-brew" class="code-pane"><code># Tap and install the official formula
-brew tap ragubaran/tap
-brew install weave-graph
+cp target/release/weave ~/.local/bin/
 
-# Verify installation
 weave --version</code></pre>
-          <pre id="get-cargo" class="code-pane"><code># Compile from crates.io with locked dependencies
-cargo install weave-graph-cli --locked
+          <pre id="get-brew" class="code-pane"><code># Not published yet. No Homebrew formula exists today.
+# Use "Build from Source" until a release ships.</code></pre>
+          <pre id="get-cargo" class="code-pane"><code># Not published yet. weave-graph-cli is not on crates.io today.
+# Use the "cargo install --git" command under "Build from Source".</code></pre>
+          <pre id="get-npm" class="code-pane"><code># Not published yet. No npm package exists today.
+# Use "Build from Source" until a release ships.</code></pre>
+          <pre id="get-pypi" class="code-pane"><code># Not published yet. A future wheel will contain the Python
+# bindings (weave-graph-python) only; it will not install the weave CLI.
+# Use "Build from Source" for the CLI.</code></pre>
+        </div>
 
-# Or compile with optional local SLM support enabled
-cargo install weave-graph-cli --features slm --locked
-
-# Verify installation
-weave --version</code></pre>
-          <pre id="get-npm" class="code-pane"><code># Run without global install
-npx @weave-graph/cli init
-
-# Or install globally
-npm install -g @weave-graph/cli
-weave --version</code></pre>
-          <pre id="get-pypi" class="code-pane"><code># Install via uv (recommended)
-uv tool install weave-graph
-
-# Or standard pip
-pip install weave-graph
-weave --version</code></pre>
+        <div class="glass-card" style="margin-top: var(--space-6);">
+          <div style="font-weight: 600; color: var(--color-text-main); margin-bottom: var(--space-2);">Which features to build</div>
+          <ul style="font-size: 0.9rem; color: var(--color-text-muted); line-height: 1.7; margin: 0; padding-left: 1.2rem;">
+            <li><code style="color: var(--color-primary);">--features team</code>: multi-repo linking, contract checks, <code>weave verify</code>, Markdown/Obsidian ingestion, <code>weave search</code>.</li>
+            <li><code style="color: var(--color-primary);">notes</code>, <code style="color: var(--color-primary);">watch</code>, <code style="color: var(--color-primary);">viz</code>: add them explicitly; neither <code>team</code> nor <code>custom</code> includes them.</li>
+            <li><code style="color: var(--color-primary);">--features custom</code>: <code>team</code> plus hub sync, snapshot signing, RBAC, trace import and policy lint. See <a href="self-hosted.html">Self-Hosted</a>.</li>
+            <li>Binary size: the default and <code>team</code> builds are about 41 MB. The core-only build (<code style="color: var(--color-primary);">--no-default-features</code>, 8 languages) is about 9.7 MiB. Windows builds are untested.</li>
+          </ul>
         </div>
       </section>
 
@@ -143,52 +142,58 @@ weave --version</code></pre>
       <section id="indexing" style="margin-bottom: var(--space-12);">
         <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: var(--space-4);">
           <span style="display: flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 50%; background: var(--color-primary); color: #000; font-weight: 800;">2</span>
-          <h2 style="font-size: 1.75rem; font-weight: 700;">Initialize and Index Repository</h2>
+          <h2 style="font-size: 1.75rem; font-weight: 700;">Initialize and Index a Repository</h2>
         </div>
-        <p style="color: var(--color-text-muted); margin-bottom: var(--space-4);">
-          Weave Graph supports both single repository mode and multi-repo / monorepo federations.
+        <p style="color: var(--color-text-muted); margin-bottom: var(--space-4); line-height: 1.6;">
+          <code style="font-family: var(--font-mono); color: var(--color-primary);">weave init</code> does three things: writes <code>.weave/config.toml</code>, adds a <code>weave</code> server entry to <code>.mcp.json</code> at the repo root (merging with any servers already there), and updates <code>.gitignore</code> / <code>.ignore</code> so the database stays out of Git while <code>config.toml</code> stays tracked. It is safe to run more than once.
         </p>
 
         <div class="code-tabs-wrapper">
           <div class="code-tabs-header">
             <div class="code-tabs-nav">
-              <button class="tab-btn active" data-target="mode-single">Single Repository Mode</button>
-              <button class="tab-btn" data-target="mode-multi">Multi-Repo Federation Mode</button>
-              <button class="tab-btn" data-target="mode-custom">Custom Mode (Self-Hosted Tier)</button>
+              <button class="tab-btn active" data-target="mode-single">Single Repository</button>
+              <button class="tab-btn" data-target="mode-multi">Multiple Repositories</button>
+              <button class="tab-btn" data-target="mode-custom">Self-Hosted Build</button>
             </div>
             <button class="copy-btn">
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
               <span>Copy</span>
             </button>
           </div>
-          <pre id="mode-single" class="code-pane active"><code># 1. Initialize inside project root (creates .weave/config.toml)
+          <pre id="mode-single" class="code-pane active"><code># 1. Initialize in the project root (single is the default mode)
 weave init --mode single
 
-# 2. Build full AST index (parallel Tree-sitter parse across CPU cores)
+# 2. Build the index
 weave index
 
-# 3. Verify SQLite graph integrity and stats
-weave check</code></pre>
-          <pre id="mode-multi" class="code-pane"><code># 1. Initialize multi-repo federation
-weave init --mode multiple
+# 3. Show file, symbol and edge counts, database size and pending markers
+weave status
 
-# 2. Add sibling workspace repositories
-weave repo add core ../backend-core
-weave repo add api ../gateway-api
+# Later: re-parse only files changed since the last index
+weave index --incremental</code></pre>
+          <pre id="mode-multi" class="code-pane"><code># 1. Initialize and index each repository on its own
+cd ../backend-core &amp;&amp; weave init --mode multiple &amp;&amp; weave index
+cd ../gateway-api  &amp;&amp; weave init --mode multiple &amp;&amp; weave index
 
-# 3. Index all repositories in parallel with cross-repo edge resolution
-weave index --parallel</code></pre>
-          <pre id="mode-custom" class="code-pane"><code># 1. Initialize custom mode for self-hosted tier (enables RBAC, Hub, and Policy gates)
-weave init --mode custom
+# 2. Link two repositories (feature: federation, in the team bundle).
+#    Each repo is added to the other's [federation] linked_repos.
+weave link ../backend-core ../gateway-api
 
-# 2. Configure internal hub registry & storage vault
+# From inside a repo, one path is enough: the current repo is linked to it.
+# With no path, the partner is read from [federation] linked_repos.
+weave link ../backend-core</code></pre>
+          <pre id="mode-custom" class="code-pane"><code># Requires a build with --features custom
+weave init --mode single
+
+# Point at your weave-registry and, optionally, move the database off the repo tree
 weave config set hub.url "http://hub.internal.corp:8080"
-weave config set storage.home "/var/weave-vault/my-project"
+weave config set storage.home "/var/weave-vault"
 
-# 3. Pull latest pre-indexed snapshot or build locally
+# Pull the snapshot for the merge-base commit, falling back to the hub's latest,
+# or build locally if the hub has none
 weave sync pull --fallback-latest || weave index
 
-# See the full guide: https://weavegraph.dev/self-hosted.html</code></pre>
+# Full guide: self-hosted.html</code></pre>
         </div>
       </section>
 
@@ -198,31 +203,33 @@ weave sync pull --fallback-latest || weave index
           <span style="display: flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 50%; background: var(--color-primary); color: #000; font-weight: 800;">3</span>
           <h2 style="font-size: 1.75rem; font-weight: 700;">Connect AI Agents (Claude Code, Cursor, Windsurf)</h2>
         </div>
-        <p style="color: var(--color-text-muted); margin-bottom: var(--space-4);">
-          Weave Graph embeds a native Model Context Protocol (MCP) server that runs over standard I/O (stdio) or localhost HTTP/SSE. It cuts agent context consumption by <strong>92%</strong> by feeding exact sub-graphs instead of raw source code dumps.
+        <p style="color: var(--color-text-muted); margin-bottom: var(--space-4); line-height: 1.6;">
+          <code style="font-family: var(--font-mono); color: var(--color-primary);">weave serve --mcp</code> runs a Model Context Protocol server over stdio (default) or loopback HTTP. Clients that read a project-level <code>.mcp.json</code>, such as Claude Code, pick it up after <code>weave init</code> with no further setup. Other clients need their own config entry pointing at <code>weave serve --mcp</code>.
         </p>
 
         <div class="code-tabs-wrapper">
           <div class="code-tabs-header">
             <div class="code-tabs-nav">
-              <button class="tab-btn active" data-target="mcp-claude">Claude Code CLI</button>
-              <button class="tab-btn" data-target="mcp-cursor">Cursor IDE</button>
-              <button class="tab-btn" data-target="mcp-windsurf">Windsurf / Antigravity</button>
+              <button class="tab-btn active" data-target="mcp-claude">Claude Code</button>
+              <button class="tab-btn" data-target="mcp-cursor">Cursor</button>
+              <button class="tab-btn" data-target="mcp-windsurf">Windsurf</button>
+              <button class="tab-btn" data-target="mcp-http">Loopback HTTP</button>
             </div>
             <button class="copy-btn">
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
               <span>Copy</span>
             </button>
           </div>
-          <pre id="mcp-claude" class="code-pane active"><code># Run one command to register Weave Graph in Claude Code:
-claude mcp add weave-graph weave serve --mcp
+          <pre id="mcp-claude" class="code-pane active"><code># weave init already registered the server in .mcp.json.
+# To register it yourself instead:
+claude mcp add weave -- weave serve --mcp
 
 # Verify registration
 claude mcp list</code></pre>
-          <pre id="mcp-cursor" class="code-pane"><code>// Add to ~/.cursor/mcp.json or workspace .cursor/mcp.json:
+          <pre id="mcp-cursor" class="code-pane"><code>// Add to ~/.cursor/mcp.json or the workspace's .cursor/mcp.json:
 {
   "mcpServers": {
-    "weave-graph": {
+    "weave": {
       "command": "weave",
       "args": ["serve", "--mcp"]
     }
@@ -231,12 +238,37 @@ claude mcp list</code></pre>
           <pre id="mcp-windsurf" class="code-pane"><code>// Add to ~/.codeium/windsurf/mcp_config.json:
 {
   "mcpServers": {
-    "weave-graph": {
+    "weave": {
       "command": "weave",
       "args": ["serve", "--mcp"]
     }
   }
 }</code></pre>
+          <pre id="mcp-http" class="code-pane"><code># HTTP transport, bound to 127.0.0.1 by default
+weave serve --mcp --transport http --port 8080
+
+# Binding beyond loopback needs an explicit opt-in (exposes code structure)
+weave serve --mcp --transport http --host 0.0.0.0 --allow-remote
+
+# RBAC builds: refuse to start unless an identity is given
+weave serve --mcp --require-as --as alice</code></pre>
+        </div>
+
+        <div class="glass-card" style="margin-top: var(--space-6);">
+          <div style="font-weight: 600; color: var(--color-text-main); margin-bottom: var(--space-2);">MCP tools: 7 core + 5 feature-gated</div>
+          <div class="grid grid-2" style="gap: var(--space-2) var(--space-6); font-size: 0.86rem; color: var(--color-text-muted); line-height: 1.5;">
+            <div><code style="color: var(--color-primary);">weave_repo_map</code> &mdash; overview of the repository's structure</div>
+            <div><code style="color: var(--color-primary);">weave_file_api</code> &mdash; compact wiring summary per file</div>
+            <div><code style="color: var(--color-primary);">weave_trace_calls</code> &mdash; incoming/outgoing call chains up to N hops</div>
+            <div><code style="color: var(--color-primary);">weave_impact_radius</code> &mdash; blast radius of a proposed change</div>
+            <div><code style="color: var(--color-primary);">weave_explore</code> &mdash; map, file API, call trace, impact and source excerpt in one token budget</div>
+            <div><code style="color: var(--color-primary);">weave_check_freshness</code> &mdash; whether the index is behind HEAD or uncommitted edits</div>
+            <div><code style="color: var(--color-primary);">weave_verify</code> &mdash; checks one file for phantom symbols before an edit is presented</div>
+            <div><code style="color: var(--color-primary);">weave_find_all</code> &mdash; exhaustive text search over symbol bodies and doc comments (<code>fts</code>)</div>
+            <div><code style="color: var(--color-primary);">weave_pin_note</code>, <code style="color: var(--color-primary);">weave_recall_notes</code> &mdash; symbol notes (<code>notes</code>)</div>
+            <div><code style="color: var(--color-primary);">weave_policy_lint</code> &mdash; boundary rules (<code>policy-lint</code>)</div>
+            <div><code style="color: var(--color-primary);">weave_search_semantic</code> &mdash; experimental, mock embeddings (<code>vector</code>)</div>
+          </div>
         </div>
       </section>
 
@@ -244,19 +276,21 @@ claude mcp list</code></pre>
       <section id="developer-workflows" style="margin-bottom: var(--space-12);">
         <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: var(--space-4);">
           <span style="display: flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 50%; background: var(--color-primary); color: #000; font-weight: 800;">4</span>
-          <h2 style="font-size: 1.75rem; font-weight: 700;">Developer Workflows: Linking, Notes, Blast Radius &amp; Contracts</h2>
+          <h2 style="font-size: 1.75rem; font-weight: 700;">Developer Workflows</h2>
         </div>
-        <p style="color: var(--color-text-muted); margin-bottom: var(--space-4);">
-          Accelerate your day-to-day engineering workflows with multi-repo workspace linking, architectural decision pinning, pull-request blast radius analysis, and automated boundary contract verification.
+        <p style="color: var(--color-text-muted); margin-bottom: var(--space-4); line-height: 1.6;">
+          Multi-repo linking, notes on symbols, PR blast radius, contract checks, a pre-flight check for agent edits, a local pre-push hook, and the file watcher.
         </p>
 
         <div class="code-tabs-wrapper">
           <div class="code-tabs-header">
             <div class="code-tabs-nav">
-              <button class="tab-btn active" data-target="workflow-linking">Multi-Repo Linking (weave link)</button>
-              <button class="tab-btn" data-target="workflow-notes">Architectural Notes (weave note)</button>
-              <button class="tab-btn" data-target="workflow-blast">PR Blast Radius (weave blast)</button>
-              <button class="tab-btn" data-target="workflow-contracts">Contract Checks (weave check-contracts)</button>
+              <button class="tab-btn active" data-target="workflow-linking">Multi-Repo (weave link)</button>
+              <button class="tab-btn" data-target="workflow-notes">Notes (weave note)</button>
+              <button class="tab-btn" data-target="workflow-blast">Blast Radius (weave blast)</button>
+              <button class="tab-btn" data-target="workflow-contracts">Contracts &amp; Verify</button>
+              <button class="tab-btn" data-target="workflow-hooks">Pre-push Hook (weave hooks)</button>
+              <button class="tab-btn" data-target="workflow-watch">Watch (weave index --watch)</button>
             </div>
             <button class="copy-btn">
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
@@ -264,53 +298,105 @@ claude mcp list</code></pre>
             </button>
           </div>
 
-          <pre id="workflow-linking" class="code-pane active"><code># Link sibling repositories into a unified multi-repo composite graph
-weave link ../backend-service ../api-gateway ../auth-service
+          <pre id="workflow-linking" class="code-pane active"><code># Feature: federation (in the team bundle). Index both repos first.
 
-# Detect cross-repository circular dependency cycles via Tarjan's SCC
-weave query "cycles()"
+# Compose two repo graphs; also runs Tarjan SCC cycle detection and records contract hashes
+weave link ../backend-service ../api-gateway
 
-# Resolve cross-boundary function and type calls across repositories
-weave query "callers(AuthService.verifyToken)" --direction in
+# Query the linked graph across the repo boundary
+weave query-federated ../backend-service ../api-gateway "callers(AuthService.verifyToken)"
 
-# Generate a federated multi-repo visual architecture report with Louvain clustering
-weave report-federated ../backend-service ../api-gateway</code></pre>
+# One .canvas architecture map spanning both repos
+weave report-federated ../backend-service ../api-gateway --out architecture.canvas
 
-          <pre id="workflow-notes" class="code-pane"><code># 1. Pin an ephemeral session note to a code symbol (24h TTL)
-weave note pin AuthService.verify "Rate-limited per RFC 6238 §3; do not remove jitter."
+# Every consumer file and line that must change before a symbol is removed
+weave plan-migration AuthService.verifyToken</code></pre>
 
-# 2. Pin a permanent architectural decision note (--keep, content-hash staleness tracking)
-weave note pin --keep --kind arch_decision PaymentQueue "Single-writer by design — see ADR-014."
+          <pre id="workflow-notes" class="code-pane"><code># Feature: notes (build with --features team,notes)
 
-# 3. List active notes, author tags, and staleness status
+# Pin a note to a symbol; expires after 24 hours by default
+weave note pin AuthService.verify "Rate-limited per RFC 6238 section 3; do not remove jitter."
+
+# --keep: never expires, and is flagged stale when the symbol's content changes
+weave note pin --keep --kind arch_decision PaymentQueue "Single-writer by design, see ADR-014."
+
+# List notes and their status
 weave note list
 
-# Notes persist across reindexes by moniker; AI agents recall them automatically via MCP!</code></pre>
+# Notes reattach to their symbol across reindexes. If the symbol is deleted,
+# the note is marked [orphaned]. Agents read them via weave_recall_notes.</code></pre>
 
-          <pre id="workflow-blast" class="code-pane"><code># Calculate exact transitive blast radius of a PR against the base branch
+          <pre id="workflow-blast" class="code-pane"><code># What does this branch's diff touch? (three-dot merge-base against --base, no network)
 weave blast --base main
 
-# Output structured markdown report ready for CI/CD comments (e.g. GitHub Actions)
-weave blast --base main --format markdown > blast_report.md
+# Markdown (default) written to a file, ready for gh pr comment
+weave blast --base origin/main --format md --out pr-blast.md
 
-# Inspect JSON format for automated CI risk scoring
-weave blast --base main --format json
+# JSON for scripts
+weave blast --base origin/main --format json
 
-# Automatically folds touched symbols by architectural module and caller depth</code></pre>
+# Hops and direction: --depth N (default 2, or all), --direction callers|callees|both
+weave blast --base origin/main --depth all --direction both
 
-          <pre id="workflow-contracts" class="code-pane"><code># Check public API contracts across repo boundaries to prevent breaking changes
+# Waive the check; --reason is required and recorded in the output
+weave blast --base origin/main --skip --reason "Docs-only change"</code></pre>
+
+          <pre id="workflow-contracts" class="code-pane"><code># Feature: federation. Compare exported-API contract hashes against linked repos.
+# Exit code follows [federation] staleness_policy: strict | warn | ignore
 weave check-contracts
 
-# Generates cryptographic SHA-256 signatures of public exported types & functions
-# Fails in CI with non-zero exit code if exported signatures drift without bumping versions:
-#   [ERROR] Contract broken: AuthService::verifyToken signature changed
-#   Expected: fn(token: &str) -> Result<User, AuthError>
-#   Actual:   fn(token: &str, tenant: &str) -> Result<User, AuthError></code></pre>
+# Show added / removed / changed symbols when drift is found
+weave check-contracts --diff
+
+# Fail only on provider symbols this repo actually imports
+weave check-contracts --diff --scoped
+
+# Report drift but always exit 0
+weave check-contracts --warn-only
+
+# Waive drift for all linked repos or one peer (--reason required)
+weave check-contracts --allow-drift-for api-gateway --reason "Coordinated release"
+
+# Check registered Git submodules instead of linked repos
+weave check-contracts --submodules
+
+# Pre-flight check for agent edits: phantom symbols, submodule encapsulation
+# violations, stale submodule references
+weave verify
+weave verify --file src/auth.rs --range 100:180 --format json
+weave verify --submodules</code></pre>
+
+          <pre id="workflow-hooks" class="code-pane"><code># Install a local, offline pre-push hook (no Cargo feature needed)
+weave hooks install
+
+# The hook runs:
+#   weave blast --base &lt;base&gt; || true     (advisory, never blocks the push)
+#   weave check-contracts --submodules     (no-op when no submodules are registered)
+
+# --base defaults to origin/HEAD, else local main/master
+weave hooks install --base origin/main
+
+# Replace an existing pre-push hook that weave did not create
+weave hooks install --force
+
+# Remove it (only removes a hook weave installed)
+weave hooks uninstall</code></pre>
+
+          <pre id="workflow-watch" class="code-pane"><code># Feature: watch (build with --features team,watch)
+
+# Foreground watcher: debounce edits, then reindex incrementally
+weave index --watch
+
+# Large edits (more than [watch] blast_radius_ceiling symbols affected) are
+# deferred behind a marker shown by weave status instead of reindexing.
+
+# To run the watcher inside weave serve --mcp, set it in config:
+weave config set watch.enabled true</code></pre>
         </div>
 
         <div class="grid grid-2" style="margin-top: var(--space-6); gap: var(--space-4);">
           <div class="glass-card" style="border-top: 2px solid var(--color-primary);">
-            <h3 style="font-size: 1.05rem; margin-bottom: var(--space-2); color: var(--color-text-main);">Zero Cloud Leak Guarantee</h3>
+            <h3 style="font-size: 1.05rem; margin-bottom: var(--space-2); color: var(--color-text-main);">Fully Local Workflows</h3>
             <p style="font-size: 0.88rem; color: var(--color-text-muted); line-height: 1.5; margin: 0;">
               Linking, contract checking, notes, and blast radius analysis run 100% locally on your machine with zero network calls and zero telemetry.
             </p>
@@ -348,13 +434,13 @@ weave check-contracts
             </button>
           </div>
 
-          <pre id="hub-pull" class="code-pane active"><code># 1. Hydrate pre-computed graph snapshot for current commit (instantaneous!)
+          <pre id="hub-pull" class="code-pane active"><code># 1. Hydrate the pre-computed graph snapshot for the current commit
 weave sync pull
 
 # 2. Fall back to the hub's latest default-branch snapshot if current commit isn't indexed yet
 weave sync pull --fallback-latest
 
-# Writes atomically via .rebuild swap (Core Invariant 2: crash-resilient!)</code></pre>
+# Writes atomically via a .rebuild swap, so a crash mid-pull can't corrupt the database</code></pre>
 
           <pre id="hub-push" class="code-pane"><code># Publish current graph snapshot to the hub (typically executed in CI post-merge)
 weave sync push
@@ -366,27 +452,29 @@ weave sync push
 
           <pre id="hub-config" class="code-pane"><code># Point repository to your internal hub registry (via CLI or .weave/config.toml)
 weave config set hub.url "http://hub.internal.corp:8080"
-weave config set hub.retention_snapshots 10
+weave config set hub.snapshot_retention 10
 
 # In .weave/config.toml:
 # [hub]
 # url = "http://hub.internal.corp:8080"
-# retention_snapshots = 10</code></pre>
+# snapshot_retention = 10</code></pre>
 
-          <pre id="hub-server" class="code-pane"><code># Launch the standalone lightweight weave-registry daemon on a central server/container
+          <pre id="hub-server" class="code-pane"><code># Launch the standalone weave-registry daemon on a central server/container
 weave-registry \
   --bind 0.0.0.0:8080 \
   --data-dir /var/weave-hub/data \
   --max-queue-depth-per-repo 50 \
-  --max-pushes-per-minute-per-repo 10
+  --max-pushes-per-minute-per-repo 10 \
+  --max-snapshot-bytes 50000000 \
+  --auth-token "$WEAVE_REGISTRY_TOKEN"
 
-# Dedicated worker thread per repository drains pushes sequentially without lock contention</code></pre>
+# One worker thread per repository drains pushes sequentially, no lock contention</code></pre>
         </div>
 
         <div class="glass-card" style="margin-top: var(--space-6); border-color: rgba(0, 240, 255, 0.25);">
-          <div style="font-weight: 600; color: var(--color-primary); margin-bottom: var(--space-1);">Tamper-Resistant Cryptographic Verification (<code style="font-family: var(--font-mono);">hub-provenance</code>)</div>
+          <div style="font-weight: 600; color: var(--color-primary); margin-bottom: var(--space-1);">Snapshot Signature Verification (<code style="font-family: var(--font-mono);">hub-provenance</code>)</div>
           <p style="font-size: 0.9rem; color: var(--color-text-muted); line-height: 1.6; margin: 0;">
-            Enable <code style="color: var(--color-primary); font-family: var(--font-mono);">--features hub-provenance</code> to enforce HMAC-SHA256 or hardware-backed signatures (<code style="color: var(--color-primary); font-family: var(--font-mono);">X-Weave-Signature</code>) on every snapshot. Untrusted, modified, or corrupt snapshot blobs are rejected before hydration.
+            Enable <code style="color: var(--color-primary); font-family: var(--font-mono);">--features hub-provenance</code> to require hex-encoded HMAC-SHA-256 signatures (<code style="color: var(--color-primary); font-family: var(--font-mono);">X-Weave-Signature</code>), keyed by an operator-held secret of at least 32 bytes, on every snapshot. Modified or corrupt snapshot blobs are rejected before hydration; without a key file, verification is disabled.
           </p>
         </div>
       </section>
@@ -403,33 +491,50 @@ weave-registry \
 
         <div class="grid grid-2">
           <div class="glass-card">
-            <h3 style="font-size: 1.1rem; color: var(--color-primary); font-family: var(--font-mono); margin-bottom: 0.5rem;">weave callers &lt;symbol&gt;</h3>
+            <h3 style="font-size: 1.1rem; color: var(--color-primary); font-family: var(--font-mono); margin-bottom: 0.5rem;">weave query "callers(X)"</h3>
             <p style="font-size: 0.9rem; color: var(--color-text-muted); line-height: 1.6;">
-              Discovers every inbound call site referencing a given function, method, or struct across all indexed crates.
+              Every inbound call site referencing a given function, method, or struct.
             </p>
           </div>
 
           <div class="glass-card">
-            <h3 style="font-size: 1.1rem; color: var(--color-primary); font-family: var(--font-mono); margin-bottom: 0.5rem;">weave callees &lt;symbol&gt;</h3>
+            <h3 style="font-size: 1.1rem; color: var(--color-primary); font-family: var(--font-mono); margin-bottom: 0.5rem;">weave query "callees(X)"</h3>
             <p style="font-size: 0.9rem; color: var(--color-text-muted); line-height: 1.6;">
-              Extracts all downstream symbols and dependencies invoked inside a target definition.
+              Every symbol called directly from inside a target definition.
             </p>
           </div>
 
           <div class="glass-card">
-            <h3 style="font-size: 1.1rem; color: var(--color-primary); font-family: var(--font-mono); margin-bottom: 0.5rem;">weave impact &lt;path&gt;</h3>
+            <h3 style="font-size: 1.1rem; color: var(--color-primary); font-family: var(--font-mono); margin-bottom: 0.5rem;">weave query "impact(X)"</h3>
             <p style="font-size: 0.9rem; color: var(--color-text-muted); line-height: 1.6;">
-              Calculates blast radius for refactors: transitive dependents, consumer files, and affected crate boundaries.
+              Transitive dependents of a symbol: the blast radius of changing it.
             </p>
           </div>
 
           <div class="glass-card">
-            <h3 style="font-size: 1.1rem; color: var(--color-primary); font-family: var(--font-mono); margin-bottom: 0.5rem;">weave path &lt;from&gt; &lt;to&gt;</h3>
+            <h3 style="font-size: 1.1rem; color: var(--color-primary); font-family: var(--font-mono); margin-bottom: 0.5rem;">weave query "path(A,B)"</h3>
             <p style="font-size: 0.9rem; color: var(--color-text-muted); line-height: 1.6;">
-              Finds the shortest directed call or dependency path connecting two symbols in the CSR graph.
+              Shortest call path connecting two symbols in the graph.
+            </p>
+          </div>
+
+          <div class="glass-card">
+            <h3 style="font-size: 1.1rem; color: var(--color-primary); font-family: var(--font-mono); margin-bottom: 0.5rem;">weave query "latency(X)"</h3>
+            <p style="font-size: 0.9rem; color: var(--color-text-muted); line-height: 1.6;">
+              Latency annotations on a symbol from imported OTel traces (feature: otel).
+            </p>
+          </div>
+
+          <div class="glass-card">
+            <h3 style="font-size: 1.1rem; color: var(--color-primary); font-family: var(--font-mono); margin-bottom: 0.5rem;">weave search &lt;query&gt;</h3>
+            <p style="font-size: 0.9rem; color: var(--color-text-muted); line-height: 1.6;">
+              Full-text search over symbol names, signatures, bodies, and doc comments (add <code style="font-size: 0.85rem;">--semantic</code> for the experimental vector search, feature: vector).
             </p>
           </div>
         </div>
+        <p style="color: var(--color-text-muted); font-size: 0.85rem; margin-top: var(--space-4);">
+          All four graph queries take the same filters: <code style="font-size: 0.85rem;">path:</code>, <code style="font-size: 0.85rem;">lang:</code>, <code style="font-size: 0.85rem;">kind:</code>, <code style="font-size: 0.85rem;">visibility:</code>, <code style="font-size: 0.85rem;">edge:</code>, e.g. <code style="font-size: 0.85rem;">weave query "callers(X) lang:rust visibility:public"</code>.
+        </p>
       </section>
 
       <!-- Step 7: Configuration Guide -->
@@ -502,8 +607,8 @@ lazy_load = true                   # 0MB idle RSS until weave ask is run</code><
             <p style="font-size: 0.85rem; color: var(--color-text-muted);">Reads and prints the current value of any dotted key.</p>
           </div>
           <div class="glass-card">
-            <h4 style="font-size: 0.95rem; font-family: var(--font-mono); color: var(--color-primary); margin-bottom: 0.35rem;">weave repo add &lt;path&gt;</h4>
-            <p style="font-size: 0.85rem; color: var(--color-text-muted);">Appends another repository path into <code style="font-size: 0.8rem;">[federation] linked_repos</code>.</p>
+            <h4 style="font-size: 0.95rem; font-family: var(--font-mono); color: var(--color-primary); margin-bottom: 0.35rem;">weave link &lt;repo_a&gt; [repo_b]</h4>
+            <p style="font-size: 0.85rem; color: var(--color-text-muted);">Links two repositories, adding each to the other's <code style="font-size: 0.8rem;">[federation] linked_repos</code> (feature: federation).</p>
           </div>
         </div>
       </section>
@@ -515,7 +620,7 @@ lazy_load = true                   # 0MB idle RSS until weave ask is run</code><
           <h2 style="font-size: 1.75rem; font-weight: 700;">Complete Feature List & Cargo Flags</h2>
         </div>
         <p style="color: var(--color-text-muted); margin-bottom: var(--space-4); line-height: 1.6;">
-          In accordance with <strong>Core Invariant 5 & 8</strong>, the base build ships zero network code and zero runtime dependencies. All extended capabilities are modular, off-by-default Cargo features with verified 0MB idle RAM overhead:
+          The base build ships zero network code and zero runtime dependencies. Every extended capability is an off-by-default Cargo feature that adds no idle-RAM overhead when it isn't enabled:
         </p>
 
         <div class="table-responsive">
@@ -539,7 +644,7 @@ lazy_load = true                   # 0MB idle RSS until weave ask is run</code><
                 <td><strong>Extended Languages</strong></td>
                 <td><code style="color: var(--color-primary);">--features lang-extended</code></td>
                 <td><span class="badge badge-cyan">Default (29+ Langs)</span></td>
-                <td>Adds ArkTS, Solidity, CUDA, Metal, Svelte, Vue, Astro, Terraform, Nix, COBOL, Erlang, etc.</td>
+                <td>Adds Bash, C#, CSS, Dart, Elixir, Haskell, HTML, JSON, Kotlin, Lua, PHP, PowerShell, Properties/.env, R, Ruby, Scala, SQL, Swift, TOML, YAML, Zig (21 grammars, on by default).</td>
               </tr>
               <tr>
                 <td><strong>Documentation & Notes</strong></td>
@@ -640,7 +745,7 @@ lazy_load = true                   # 0MB idle RSS until weave ask is run</code><
             <li><a href="self-hosted.html">Self-Hosted Guide</a></li>
             <li><a href="visualisation.html">Visualisation</a></li>
             <li><a href="comparison.html">Market Comparison</a></li>
-            <li><a href="performance.html">Performance Metrics 5.4</a></li>
+            <li><a href="performance.html">Performance</a></li>
             <li><a href="getting-started.html#mcp-setup">Claude & Cursor MCP</a></li>
             <li><a href="roadmap.html">Interactive Roadmap</a></li>
           </ul>
@@ -649,8 +754,8 @@ lazy_load = true                   # 0MB idle RSS until weave ask is run</code><
         <div class="footer-col">
           <div class="footer-col-title">Releases</div>
           <ul class="footer-links">
-            <li><a href="release-notes.html">v1.0.0 Release Notes</a></li>
-            <li><a href="release-notes.html#milestones">Deliverable Matrix</a></li>
+            <li><a href="release-notes.html">Release Notes</a></li>
+            <li><a href="release-notes.html#v1.0.0">v1.0.0 Archive</a></li>
             <li><a href="https://github.com/ragubaran/weave-graph/releases" target="_blank" rel="noopener noreferrer">GitHub Releases</a></li>
           </ul>
         </div>
@@ -660,7 +765,7 @@ lazy_load = true                   # 0MB idle RSS until weave ask is run</code><
           <ul class="footer-links">
             <li><a href="https://github.com/ragubaran/weave-graph" target="_blank" rel="noopener noreferrer">GitHub Repository</a></li>
             <li><a href="https://github.com/ragubaran/weave-graph/issues" target="_blank" rel="noopener noreferrer">Issue Tracker</a></li>
-            <li><a href="https://github.com/ragubaran/weave-graph/blob/main/LICENSE" target="_blank" rel="noopener noreferrer">Apache-2.0 / MIT License</a></li>
+            <li><a href="https://github.com/ragubaran/weave-graph/blob/main/LICENSE" target="_blank" rel="noopener noreferrer">MIT License</a></li>
           </ul>
         </div>
       </div>
@@ -671,8 +776,8 @@ lazy_load = true                   # 0MB idle RSS until weave ask is run</code><
     </div>
   </footer>
 
-  <script src="/assets/js/main.js?v=1.0.4"></script>
-  <script src="/assets/js/tabs.js?v=1.0.4"></script>
-  <script src="/assets/js/copy.js?v=1.0.4"></script>
+  <script src="/assets/js/main.js?v=1.0.7"></script>
+  <script src="/assets/js/tabs.js?v=1.0.7"></script>
+  <script src="/assets/js/copy.js?v=1.0.7"></script>
 </body>
 </html>
