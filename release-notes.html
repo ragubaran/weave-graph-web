@@ -154,6 +154,14 @@
               Composite federation graphs are persisted to <code style="font-family: var(--font-mono); color: var(--color-primary);">.weave/federation/&lt;partner&gt;.db</code> with atomic rename. <code style="font-family: var(--font-mono); color: var(--color-primary);">weave query-federated</code> and <code style="font-family: var(--font-mono); color: var(--color-primary);">weave report-federated</code> query cross-repository graphs directly instead of recomputing on every call.
             </p>
           </div>
+
+          <div class="glass-card">
+            <div class="badge badge-cyan" style="margin-bottom: var(--space-2);">Self-Hosted Tier &middot; New</div>
+            <h3 style="font-size: 1.25rem; color: var(--color-text-main); margin-bottom: var(--space-2);"><code style="font-family: var(--font-mono); color: var(--color-primary);">weave pr-review</code></h3>
+            <p style="color: var(--color-text-muted); font-size: 0.95rem; line-height: 1.6;">
+              A new, feature-gated (<code style="font-size: 0.85rem;">pr-review</code>, part of <code style="font-size: 0.85rem;">custom</code> only) risk-scored PR review artifact: reuses <code style="font-size: 0.85rem;">weave blast</code>'s own diff/traversal and adds a deterministic, fixed-threshold <code style="font-size: 0.85rem;">Low</code>/<code style="font-size: 0.85rem;">Medium</code>/<code style="font-size: 0.85rem;">High</code>/<code style="font-size: 0.85rem;">Critical</code> risk header &mdash; no model involved. Early-stage: no per-finding severity, no <code style="font-size: 0.85rem;">--waive</code>/<code style="font-size: 0.85rem;">--fail-on</code>, and no <code style="font-size: 0.85rem;">check-contracts</code>/<code style="font-size: 0.85rem;">policy lint</code>/<code style="font-size: 0.85rem;">weave verify</code> aggregation yet &mdash; today's output is blast-radius-plus-risk-header only.
+            </p>
+          </div>
         </div>
 
         <!-- Packaging Tiers Breakdown -->
