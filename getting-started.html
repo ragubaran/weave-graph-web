@@ -279,7 +279,7 @@ weave serve --mcp --require-as --as alice</code></pre>
           <h2 style="font-size: 1.75rem; font-weight: 700;">Developer Workflows</h2>
         </div>
         <p style="color: var(--color-text-muted); margin-bottom: var(--space-4); line-height: 1.6;">
-          Multi-repo linking, notes on symbols, PR blast radius, contract checks, a pre-flight check for agent edits, a local pre-push hook, and the file watcher.
+          Multi-repo linking, notes on symbols, PR blast radius, contract checks, a pre-flight check for agent edits, a risk-scored PR review artifact, a local pre-push hook, and the file watcher.
         </p>
 
         <div class="code-tabs-wrapper">
@@ -289,6 +289,7 @@ weave serve --mcp --require-as --as alice</code></pre>
               <button class="tab-btn" data-target="workflow-notes">Notes (weave note)</button>
               <button class="tab-btn" data-target="workflow-blast">Blast Radius (weave blast)</button>
               <button class="tab-btn" data-target="workflow-contracts">Contracts &amp; Verify</button>
+              <button class="tab-btn" data-target="workflow-pr-review">PR Review (weave pr-review)</button>
               <button class="tab-btn" data-target="workflow-hooks">Pre-push Hook (weave hooks)</button>
               <button class="tab-btn" data-target="workflow-watch">Watch (weave index --watch)</button>
             </div>
@@ -365,6 +366,22 @@ weave check-contracts --submodules
 weave verify
 weave verify --file src/auth.rs --range 100:180 --format json
 weave verify --submodules</code></pre>
+
+          <pre id="workflow-pr-review" class="code-pane"><code># Feature: pr-review (in the custom bundle). One risk-scored artifact:
+# blast radius + contract drift + policy violations + phantom symbols.
+weave pr-review --base origin/main --format md --fail-on blocker
+
+# Score only this branch's own diff against its stacked-branch parent
+weave pr-review --base origin/main --stack-base auto
+
+# Score one or more parallel refs independently, alongside the main report
+weave pr-review --base origin/main --lane feature/lane-a --lane feature/lane-b
+
+# Waive one finding by its exact printed id (--reason required)
+weave pr-review --base origin/main --waive oversized-blast-radius --reason "follow-up PR"
+
+# Stable JSON contract for an external LLM reviewer or a Checks annotation step
+weave pr-review --base origin/main --format json</code></pre>
 
           <pre id="workflow-hooks" class="code-pane"><code># Install a local, offline pre-push hook (no Cargo feature needed)
 weave hooks install
@@ -659,6 +676,12 @@ lazy_load = true                   # 0MB idle RSS until weave ask is run</code><
                 <td>Cross-repo dependency cycle detection (Tarjan SCC) and boundary contract validation.</td>
               </tr>
               <tr>
+                <td><strong>PR Review Risk Scoring</strong></td>
+                <td><code style="color: var(--color-primary);">--features pr-review</code></td>
+                <td><span class="badge badge-cyan">Available</span></td>
+                <td>Risk-scored <code style="font-size: 0.85rem;">weave pr-review</code> artifact: blast radius, contract drift, policy violations, and phantom symbols in one severity-ranked report, with <code style="font-size: 0.85rem;">--stack-base</code>/<code style="font-size: 0.85rem;">--lane</code> for stacked branches and parallel lanes. Implies <code style="font-size: 0.85rem;">federation</code>.</td>
+              </tr>
+              <tr>
                 <td><strong>File Watcher</strong></td>
                 <td><code style="color: var(--color-primary);">--features watch</code></td>
                 <td><span class="badge badge-cyan">Available</span></td>
@@ -704,7 +727,7 @@ lazy_load = true                   # 0MB idle RSS until weave ask is run</code><
                 <td><strong>Full Team Bundle</strong></td>
                 <td><code style="color: var(--color-primary);">--features team</code></td>
                 <td><span class="badge badge-purple">Recommended</span></td>
-                <td>Convenience bundle activating <code style="font-size: 0.85rem;">docs</code>, <code style="font-size: 0.85rem;">federation</code>, and <code style="font-size: 0.85rem;">notes</code>.</td>
+                <td>Convenience bundle activating <code style="font-size: 0.85rem;">docs</code>, <code style="font-size: 0.85rem;">federation</code>, <code style="font-size: 0.85rem;">fts</code>, and <code style="font-size: 0.85rem;">vector</code> (not <code style="font-size: 0.85rem;">notes</code> &mdash; add that explicitly, e.g. <code style="font-size: 0.85rem;">--features team,notes</code>).</td>
               </tr>
             </tbody>
           </table>

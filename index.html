@@ -295,6 +295,14 @@
               <code style="font-family: var(--font-mono); color: var(--color-primary);">weave hooks install</code> writes a local, offline <code style="font-family: var(--font-mono); color: var(--color-primary);">pre-push</code> hook that runs an advisory blast-radius check and a contract check before every push.
             </p>
           </div>
+
+          <div class="glass-card">
+            <div style="font-size: 2rem; margin-bottom: var(--space-4);">🚦</div>
+            <h3 style="font-size: 1.25rem; margin-bottom: var(--space-2);">Risk-Scored PR Review (weave pr-review)</h3>
+            <p style="color: var(--color-text-muted); font-size: 0.95rem; line-height: 1.6;">
+              Aggregates blast radius, contract drift, policy violations, and phantom-symbol findings into one severity-ranked artifact (<code style="font-family: var(--font-mono); color: var(--color-primary);">blocker</code>/<code style="font-family: var(--font-mono); color: var(--color-primary);">warning</code>/<code style="font-family: var(--font-mono); color: var(--color-primary);">info</code>) with <code style="font-family: var(--font-mono); color: var(--color-primary);">--waive</code>/<code style="font-family: var(--font-mono); color: var(--color-primary);">--fail-on</code>, plus <code style="font-family: var(--font-mono); color: var(--color-primary);">--stack-base</code>/<code style="font-family: var(--font-mono); color: var(--color-primary);">--lane</code> for stacked branches and parallel lanes (feature: pr-review).
+            </p>
+          </div>
         </div>
 
         <div style="margin: var(--space-8) 0 var(--space-3); font-size: 0.8rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--color-text-muted);">For multi-repo codebases</div>
