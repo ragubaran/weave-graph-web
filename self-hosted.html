@@ -88,6 +88,7 @@
         <a href="#slm" class="btn btn-secondary btn-sm">Local SLM Engine</a>
         <a href="#federation" class="btn btn-secondary btn-sm">Schema Federation</a>
         <a href="#storage" class="btn btn-secondary btn-sm">Shared Storage</a>
+        <a href="#pr-review" class="btn btn-secondary btn-sm">PR Review &amp; Pipeline</a>
       </div>
     </div>
   </section>
@@ -106,7 +107,7 @@
       </div>
 
       <p style="color: var(--color-text-muted); line-height: 1.6; margin-bottom: var(--space-4);">
-        <code style="color: var(--color-primary);">custom</code> is a Cargo feature flag, not a separate product: it bundles <code style="color: var(--color-primary);">team</code>, <code style="color: var(--color-primary);">hub</code>, <code style="color: var(--color-primary);">hub-provenance</code>, <code style="color: var(--color-primary);">provenance</code>, <code style="color: var(--color-primary);">rbac</code>, <code style="color: var(--color-primary);">otel</code>, and <code style="color: var(--color-primary);">policy-lint</code> (which pulls in <code style="color: var(--color-primary);">fts</code> and <code style="color: var(--color-primary);">vector</code> transitively) into one binary for private VPCs, compliance deployments, and multi-repo workspaces that need centralized Hub sync, query-layer RBAC, SCIM directory sync, and architectural policy enforcement. It does <strong>not</strong> include <code style="color: var(--color-primary);">notes</code>, <code style="color: var(--color-primary);">watch</code>, <code style="color: var(--color-primary);">viz</code>, or the experimental <code style="color: var(--color-primary);">slm</code> feature &mdash; those need an explicit build, e.g. <code style="color: var(--color-primary);">--features custom,notes,watch,viz</code>.
+        <code style="color: var(--color-primary);">custom</code> is a Cargo feature flag, not a separate product: it bundles <code style="color: var(--color-primary);">team</code>, <code style="color: var(--color-primary);">hub</code>, <code style="color: var(--color-primary);">hub-provenance</code>, <code style="color: var(--color-primary);">provenance</code>, <code style="color: var(--color-primary);">rbac</code>, <code style="color: var(--color-primary);">otel</code>, <code style="color: var(--color-primary);">policy-lint</code> (which pulls in <code style="color: var(--color-primary);">fts</code> and <code style="color: var(--color-primary);">vector</code> transitively), and <code style="color: var(--color-primary);">pr-review</code> into one binary for private VPCs, compliance deployments, and multi-repo workspaces that need centralized Hub sync, query-layer RBAC, SCIM directory sync, architectural policy enforcement, and risk-scored PR review. It does <strong>not</strong> include <code style="color: var(--color-primary);">notes</code>, <code style="color: var(--color-primary);">watch</code>, <code style="color: var(--color-primary);">viz</code>, or the experimental <code style="color: var(--color-primary);">slm</code> feature &mdash; those need an explicit build, e.g. <code style="color: var(--color-primary);">--features custom,notes,watch,viz</code>.
       </p>
 
       <div class="grid grid-3" style="gap: var(--space-4); margin-bottom: var(--space-6);">
@@ -534,6 +535,54 @@ weave export --symbol OrderProcessor --depth 3
 
 # Query the locally indexed graph directly
 weave query "impact(OrderProcessor)"</code></pre>
+      </div>
+    </section>
+
+    <!-- SECTION 9: PR REVIEW RISK SCORING & PRE-PUSH PIPELINE GATE -->
+    <section id="pr-review" class="glass-card" style="margin-bottom: var(--space-8); padding: var(--space-8);">
+      <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: var(--space-4); margin-bottom: var(--space-4);">
+        <div>
+          <span class="badge badge-cyan" style="margin-bottom: var(--space-2);">Governance & CI Gate</span>
+          <h2 style="font-size: 1.85rem; font-weight: 700; margin: 0;">9. PR Review Risk Scoring &amp; Pre-Push Pipeline Gate</h2>
+        </div>
+        <span class="badge badge-purple" style="font-family: var(--font-mono);">feature: pr-review</span>
+      </div>
+
+      <p style="color: var(--color-text-muted); line-height: 1.6; margin-bottom: var(--space-4);">
+        <code style="font-family: var(--font-mono); color: var(--color-primary);">weave pr-review</code> reuses <code style="font-family: var(--font-mono); color: var(--color-primary);">weave blast</code>'s own diff/traversal for a deterministic, fixed-threshold <code style="font-family: var(--font-mono); color: var(--color-primary);">Low</code>/<code style="font-family: var(--font-mono); color: var(--color-primary);">Medium</code>/<code style="font-family: var(--font-mono); color: var(--color-primary);">High</code>/<code style="font-family: var(--font-mono); color: var(--color-primary);">Critical</code> risk header &mdash; no model involved &mdash; then aggregates <code style="font-family: var(--font-mono); color: var(--color-primary);">check-contracts</code>-style contract drift, <code style="font-family: var(--font-mono); color: var(--color-primary);">policy lint</code> violations, and <code style="font-family: var(--font-mono); color: var(--color-primary);">weave verify</code>'s phantom-symbol check into one severity-ranked findings list (<code style="font-family: var(--font-mono); color: var(--color-primary);">blocker</code>/<code style="font-family: var(--font-mono); color: var(--color-primary);">warning</code>/<code style="font-family: var(--font-mono); color: var(--color-primary);">info</code>, mapped to GitHub's own Checks API annotation levels). A local, offline <code style="font-family: var(--font-mono); color: var(--color-primary);">pre-push</code> git hook runs the same deterministic checks before a push ever reaches CI.
+      </p>
+
+      <h3 style="font-size: 1.15rem; font-weight: 600; margin-bottom: var(--space-3); color: var(--color-text-main);">1. One Consolidated Risk-Scored Artifact</h3>
+      <div class="code-block" style="margin-bottom: var(--space-4);">
+        <pre><code class="language-bash"># Risk header + findings, markdown or JSON, wired into a gh pr comment / Checks annotation step
+weave pr-review --base origin/main --format md --fail-on blocker
+
+# Waive one finding by its exact printed id, with an audit reason (RBAC-gated for blocker findings)
+weave pr-review --base origin/main --waive oversized-blast-radius --reason "split into follow-up PR"</code></pre>
+      </div>
+
+      <h3 style="font-size: 1.15rem; font-weight: 600; margin-bottom: var(--space-3); color: var(--color-text-main);">2. Stacked Branches &amp; Parallel Lanes</h3>
+      <p style="color: var(--color-text-muted); font-size: 0.95rem; margin-bottom: var(--space-3);">
+        <code style="font-family: var(--font-mono); color: var(--color-primary);">--stack-base</code> scores a branch's own diff apart from the cumulative diff to its merge target; <code style="font-family: var(--font-mono); color: var(--color-primary);">--lane</code> scores additional refs independently alongside the main report. Both are plain git refs &mdash; no reliance on any particular git client's internal branch representation.
+      </p>
+      <div class="code-block" style="margin-bottom: var(--space-4);">
+        <pre><code class="language-bash"># Score only this branch's own diff against its stacked-branch parent, auto-detected
+weave pr-review --base origin/main --stack-base auto
+
+# Score one or more parallel lanes against the same base, independently of the main report
+weave pr-review --base origin/main --lane feature/lane-a --lane feature/lane-b</code></pre>
+      </div>
+
+      <h3 style="font-size: 1.15rem; font-weight: 600; margin-bottom: var(--space-3); color: var(--color-text-main);">3. Local Pre-Push Pipeline Gate</h3>
+      <p style="color: var(--color-text-muted); font-size: 0.95rem; margin-bottom: var(--space-3);">
+        <code style="font-family: var(--font-mono); color: var(--color-primary);">weave hooks install</code> writes a local, offline <code style="font-family: var(--font-mono); color: var(--color-primary);">pre-push</code> hook &mdash; no Cargo feature, no network wait &mdash; that runs <code style="font-family: var(--font-mono); color: var(--color-primary);">weave blast</code> (advisory) and <code style="font-family: var(--font-mono); color: var(--color-primary);">weave check-contracts --submodules</code> (gating) before a push leaves the machine, catching the same drift CI would, just earlier:
+      </p>
+      <div class="code-block" style="margin-bottom: var(--space-4);">
+        <pre><code class="language-bash"># Install the pre-push hook (refuses to overwrite a hook it didn't write unless --force)
+weave hooks install --base main
+
+# Remove it again (only removes a hook this command installed)
+weave hooks uninstall</code></pre>
       </div>
     </section>
 

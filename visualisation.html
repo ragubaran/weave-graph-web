@@ -125,7 +125,7 @@
 
       <!-- Architectural Deep Dive Cards (All 6 Features) -->
       <div style="margin-top: var(--space-12);">
-        <h2 style="font-size: 2rem; font-weight: 800; text-align: center; margin-bottom: var(--space-8);">The Six Core Architectural Features</h2>
+        <h2 style="font-size: 2rem; font-weight: 800; text-align: center; margin-bottom: var(--space-8);">The Seven Core Architectural Features</h2>
 
         <div class="grid grid-2">
           
@@ -210,6 +210,20 @@
             </p>
             <p style="color: var(--text-secondary); font-size: 0.925rem; line-height: 1.6;">
               <strong>How it works:</strong> Link a pair of sibling workspaces with <code style="font-family: var(--font-mono); color: var(--accent-cyan);">weave link &lt;repo-a&gt; &lt;repo-b&gt;</code>. Virtual schemas resolve cross-repo calls while Tarjan Strongly Connected Components (SCC) algorithms detect circular dependencies between services.
+            </p>
+          </div>
+
+          <!-- Feature 7: PR Review & Pre-Push Pipeline -->
+          <div class="glass-card">
+            <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: var(--space-3);">
+              <span style="display: flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 50%; background: rgba(239, 68, 68, 0.15); color: #ef4444; font-weight: 800;">7</span>
+              <h3 style="font-size: 1.25rem; color: var(--text-primary); margin: 0;">PR Review Risk Scoring &amp; Pre-Push Pipeline Gate</h3>
+            </div>
+            <p style="color: var(--text-secondary); font-size: 0.925rem; line-height: 1.6; margin-bottom: var(--space-3);">
+              By the time an LLM-generated pull request reaches a human reviewer, the blast radius, contract drift, and policy violations it introduces are already knowable &mdash; but usually scattered across three disconnected CI checks with no single risk verdict.
+            </p>
+            <p style="color: var(--text-secondary); font-size: 0.925rem; line-height: 1.6;">
+              <strong>How it works:</strong> <code style="font-family: var(--font-mono); color: var(--accent-cyan);">weave pr-review</code> reuses the same CSR traversal as Stage 2/3 to compute a deterministic <code style="font-family: var(--font-mono); color: var(--accent-cyan);">Low</code>/<code style="font-family: var(--font-mono); color: var(--accent-cyan);">Medium</code>/<code style="font-family: var(--font-mono); color: var(--accent-cyan);">High</code>/<code style="font-family: var(--font-mono); color: var(--accent-cyan);">Critical</code> risk header, aggregates contract drift, policy violations, and phantom-symbol findings into one severity-ranked list, and scores stacked branches (<code style="font-family: var(--font-mono); color: var(--accent-cyan);">--stack-base</code>) or parallel lanes (<code style="font-family: var(--font-mono); color: var(--accent-cyan);">--lane</code>) independently &mdash; plus a local, offline <code style="font-family: var(--font-mono); color: var(--accent-cyan);">pre-push</code> hook (<code style="font-family: var(--font-mono); color: var(--accent-cyan);">weave hooks install</code>) catching the same drift before it ever leaves the machine.
             </p>
           </div>
 
