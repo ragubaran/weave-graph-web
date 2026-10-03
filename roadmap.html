@@ -244,16 +244,162 @@
           <div class="timeline-marker active"></div>
           <div class="timeline-content">
             <div class="timeline-header">
-              <span class="timeline-phase">Phase 4 — Local Intelligence Scaling</span>
-              <span class="badge badge-purple">Exploratory</span>
+              <span class="timeline-phase">Phase 4 — Developer Performance, Evidence-Based Review & CI Gates</span>
+              <span class="badge badge-cyan">Partial — Release Gates Open</span>
             </div>
-            <h3 class="timeline-title">On-Device Multimodal Ingestion & In-Process Model Runtimes</h3>
+            <h3 class="timeline-title">Measured Profile Baselines, Review Evidence & Resource Budgets</h3>
             <p style="color: var(--color-text-muted); font-size: 0.95rem; line-height: 1.6;">
-              Early-stage ideas, deferred rather than in active development: on-device vision model scanning, in-process llama.cpp model execution, and GPU acceleration for the experimental SLM path. Nothing below has code or a Cargo feature flag yet.
+              Deterministic developer-performance and evidence-based review work, no model, no network. Several items are code-complete with their size/RSS/latency measurement explicitly held, not claimed — this phase's release gates remain open pending that measurement, mainly on Linux.
             </p>
             <ul class="timeline-deliverables">
-              <li><strong>On-device vision scanning:</strong> An idea for scanning images and diagrams with a local GGUF vision model, exposed through a future CLI command. Not started.</li>
-              <li><strong>In-process llama.cpp engine:</strong> Native GGUF model execution with lazy weight loading and optional GPU acceleration, to make the experimental SLM path faster once it graduates beyond the deterministic router. Not started.</li>
+              <li><strong>Profile Truth & CI Gates:</strong> Reproducible release-build measurements across every profile (core, basic, extended-language, vector, <code style="font-family: var(--font-mono); color: var(--color-primary);">slm</code>) and a CI check rejecting network/model-downloader dependencies from the core build. Full-pipeline indexing RSS and p50/p95 reindex latency baselines remain held pending measurement.</li>
+              <li><strong>Bounded Indexing & Graph Integrity:</strong> Fixed ordered parse batches, a deterministic 500k-symbol indexing harness (<code style="font-family: var(--font-mono); color: var(--color-primary);">pipeline_rss.sh</code>), and atomic staged-database promotion. Linux-specific RSS verification is still open (measured on macOS so far).</li>
+              <li><strong>Review Evidence (<code style="font-family: var(--font-mono); color: var(--color-primary);">weave blast</code>):</strong> Bounded, deterministic changed-file impact evidence — touched symbols, callers/callees, exported contract surface — feeding directly into PR review.</li>
+              <li><strong>Optional Response Compression:</strong> Opt-in gzip negotiation for MCP HTTP and Hub snapshot transport (<code style="font-family: var(--font-mono); color: var(--color-primary);">feature: http-compression</code>), disabled below a measured size crossover, stdio unaffected.</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Phase 5 -->
+        <div class="timeline-item">
+          <div class="timeline-marker"></div>
+          <div class="timeline-content">
+            <div class="timeline-header">
+              <span class="timeline-phase">Phase 5 — Explicit On-Demand Local Assistant (SLM) & Held Model-Backed Work</span>
+              <span class="badge badge-purple">Held</span>
+            </div>
+            <h3 class="timeline-title">Generative On-Device Assistant & Vision Ingestion</h3>
+            <p style="color: var(--color-text-muted); font-size: 0.95rem; line-height: 1.6;">
+              Model-backed work, deliberately tracked apart from the deterministic core so none of it ships enabled by default. Not started.
+            </p>
+            <ul class="timeline-deliverables">
+              <li><strong>Real generative on-device assistant:</strong> A model-backed <code style="font-family: var(--font-mono); color: var(--color-primary);">weave ask</code> beyond the deterministic intent router Phase 2 already ships. Not started.</li>
+              <li><strong>Vision ingestion:</strong> Scanning images and diagrams with a local GGUF vision model. Not started, held on the same model-backed criteria as the assistant above.</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Phase 6 -->
+        <div class="timeline-item">
+          <div class="timeline-marker"></div>
+          <div class="timeline-content">
+            <div class="timeline-header">
+              <span class="timeline-phase">Phase 6 — Turso Backend Selector</span>
+              <span class="badge badge-purple">Held</span>
+            </div>
+            <h3 class="timeline-title">libSQL/Turso as a CLI-Selectable Storage Backend</h3>
+            <p style="color: var(--color-text-muted); font-size: 0.95rem; line-height: 1.6;">
+              The <code style="font-family: var(--font-mono); color: var(--color-primary);">turso</code> feature already exists as a library-only storage backend (Phase 2); making it selectable from the CLI alongside the default <code style="font-family: var(--font-mono); color: var(--color-primary);">rusqlite</code> backend is held pending demand.
+            </p>
+            <ul class="timeline-deliverables">
+              <li><strong>CLI storage backend selector:</strong> No CLI flag to choose Turso over the default backend yet; the library backend itself is wired and tested. Held, not started.</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Phase 7 -->
+        <div class="timeline-item">
+          <div class="timeline-marker done"></div>
+          <div class="timeline-content">
+            <div class="timeline-header">
+              <span class="timeline-phase">Phase 7 — Search & Storage Tuning (M7.1&ndash;M7.11)</span>
+              <span class="badge badge-success">Done</span>
+            </div>
+            <h3 class="timeline-title">FTS Body/Doc-Comment Indexing, Fuzzy Resolution & Storage Measurement</h3>
+            <p style="color: var(--color-text-muted); font-size: 0.95rem; line-height: 1.6;">
+              10 of 11 planned items implemented and tested; the remaining item is code-complete with its size/RSS measurement explicitly held rather than claimed.
+            </p>
+            <ul class="timeline-deliverables">
+              <li><strong>FTS body & doc-comment coverage:</strong> <code style="font-family: var(--font-mono); color: var(--color-primary);">weave search</code>'s BM25 index now covers a symbol's body and doc comment, not just its name and signature.</li>
+              <li><strong>Fuzzy symbol-resolution fallback:</strong> A deterministic case-insensitive &rarr; short-name &rarr; Levenshtein-distance fallback chain, shared between the CLI and MCP resolvers.</li>
+              <li><strong><code style="font-family: var(--font-mono); color: var(--color-primary);">cache_size</code> investigation:</strong> Benchmarked at 500k- and 50M-row scale &mdash; a real but modest win at 500k, no consistent win at 50M, so no default changed on unproven benefit.</li>
+              <li><strong>Grep fallback & WAL checkpoint valve:</strong> Additional storage-tuning items landed in the same pass.</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Phase 8 -->
+        <div class="timeline-item">
+          <div class="timeline-marker"></div>
+          <div class="timeline-content">
+            <div class="timeline-header">
+              <span class="timeline-phase">Phase 8 — Embedding / Vector Search (BGE Semantic Retrieval)</span>
+              <span class="badge badge-purple">Held &mdash; Product Decision</span>
+            </div>
+            <h3 class="timeline-title">Trained-Model Semantic Search (BAAI/bge-small-en-v1.5)</h3>
+            <p style="color: var(--color-text-muted); font-size: 0.95rem; line-height: 1.6;">
+              The experimental mock-embedding vector path already ships (Phase 3); swapping in a real trained embedding model is held on a product decision, not started.
+            </p>
+            <ul class="timeline-deliverables">
+              <li><strong>Trained BGE embedding model:</strong> Selected candidate (<code style="font-family: var(--font-mono); color: var(--color-primary);">BAAI/bge-small-en-v1.5</code>), installed explicitly and kept outside the core dependency closure. Not started.</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Phase 9 -->
+        <div class="timeline-item">
+          <div class="timeline-marker done"></div>
+          <div class="timeline-content">
+            <div class="timeline-header">
+              <span class="timeline-phase">Phase 9 — Skylos-Style Verification & Submodule Contract Checking</span>
+              <span class="badge badge-success">Done</span>
+            </div>
+            <h3 class="timeline-title">Pre-Flight Verification (<code style="font-family: var(--font-mono); color: var(--color-primary);">weave verify</code>) & Submodule Contract Drift</h3>
+            <p style="color: var(--color-text-muted); font-size: 0.95rem; line-height: 1.6;">
+              All five milestones implemented and tested, feature-gated on the existing <code style="font-family: var(--font-mono); color: var(--color-primary);">rbac</code>/<code style="font-family: var(--font-mono); color: var(--color-primary);">policy-lint</code>/<code style="font-family: var(--font-mono); color: var(--color-primary);">federation</code>/<code style="font-family: var(--font-mono); color: var(--color-primary);">hub</code>/<code style="font-family: var(--font-mono); color: var(--color-primary);">vector</code> tiers &mdash; zero change to the default binary.
+            </p>
+            <ul class="timeline-deliverables">
+              <li><strong><code style="font-family: var(--font-mono); color: var(--color-primary);">weave verify</code>:</strong> Tri-state (pass/fail/incomplete) pre-flight check for phantom symbols, submodule encapsulation violations, and stale submodule references &mdash; never a false pass.</li>
+              <li><strong><code style="font-family: var(--font-mono); color: var(--color-primary);">weave check-contracts --submodules</code>:</strong> Per-submodule boundary contract drift, consumer-scoped so a pointer bump with zero parent-repo callers reports informational, not blocking.</li>
+              <li><strong>Declarative contracts:</strong> <code style="font-family: var(--font-mono); color: var(--color-primary);">.weave/contracts.yml</code> plus a <code style="font-family: var(--font-mono); color: var(--color-primary);">weave_verify</code> MCP tool.</li>
+              <li><strong>Six deferred-capability fixes:</strong> RBAC-scoped policy exemptions, path-scoped identities, policy waivers, opt-in semantic-coupling drift, federated policy lint, and a Hub mesh policy-lint route &mdash; each closed independently.</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Phase 10 -->
+        <div class="timeline-item">
+          <div class="timeline-marker active"></div>
+          <div class="timeline-content">
+            <div class="timeline-header">
+              <span class="timeline-phase">Phase 10 — Competitive Feature Adoption</span>
+              <span class="badge badge-cyan">Mostly Done</span>
+            </div>
+            <h3 class="timeline-title">Budgeted MCP Tools, Edge Provenance & Query Grammar Filters</h3>
+            <p style="color: var(--color-text-muted); font-size: 0.95rem; line-height: 1.6;">
+              Recommendations from an internal competitive review; most items done and tested. Two are honestly left partial &mdash; a real mechanism shipped, with a benchmark or Linux-verification half needing infrastructure this project doesn't have yet &mdash; and one is deliberately not started.
+            </p>
+            <ul class="timeline-deliverables">
+              <li><strong><code style="font-family: var(--font-mono); color: var(--color-primary);">weave_explore</code>:</strong> One budgeted MCP tool composing repo map, file API, call trace, impact radius, and a source excerpt under one token budget, RBAC-masked before truncation.</li>
+              <li><strong><code style="font-family: var(--font-mono); color: var(--color-primary);">weave_check_freshness</code>:</strong> Always-on MCP tool distinguishing Fresh/Behind/Dirty/Unknown &mdash; never a false "fresh."</li>
+              <li><strong><code style="font-family: var(--font-mono); color: var(--color-primary);">weave_find_all</code>:</strong> Exhaustive (not ranked top-N) FTS5 symbol-aware search.</li>
+              <li><strong>Edge provenance & confidence:</strong> Every edge now carries an Exact/Heuristic confidence tag, inspectable via <code style="font-family: var(--font-mono); color: var(--color-primary);">weave query</code>'s <code style="font-family: var(--font-mono); color: var(--color-primary);">precise:</code> filter.</li>
+              <li><strong>Query grammar filters:</strong> <code style="font-family: var(--font-mono); color: var(--color-primary);">path:</code>/<code style="font-family: var(--font-mono); color: var(--color-primary);">lang:</code>/<code style="font-family: var(--font-mono); color: var(--color-primary);">kind:</code>/<code style="font-family: var(--font-mono); color: var(--color-primary);">visibility:</code>/<code style="font-family: var(--font-mono); color: var(--color-primary);">edge:</code> on <code style="font-family: var(--font-mono); color: var(--color-primary);">weave query</code>, fully backward-compatible.</li>
+              <li><strong>Framework route pilot:</strong> Flask <code style="font-family: var(--font-mono); color: var(--color-primary);">@app.route</code> decorator detection (<code style="font-family: var(--font-mono); color: var(--color-primary);">feature: framework-routes</code>, off by default), zero default-build cost.</li>
+              <li><strong>Memory-bounded indexing</strong> <em>(partial)</em>: A cgroup/container-aware admission budget shipped and tested; the Linux RSS-ceiling verification half is still open (this project's sandbox is macOS-only).</li>
+              <li><strong>Not started, by deliberate choice:</strong> SCIP/LSP precision import &mdash; would need a new protobuf dependency or an unvalidated hand-rolled parser, neither of which clears this project's zero-invention bar yet.</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Phase 11 -->
+        <div class="timeline-item">
+          <div class="timeline-marker done"></div>
+          <div class="timeline-content">
+            <div class="timeline-header">
+              <span class="timeline-phase">Phase 11 — PR Review Speedup & Deterministic Risk Scoring</span>
+              <span class="badge badge-success">Done</span>
+            </div>
+            <h3 class="timeline-title"><code style="font-family: var(--font-mono); color: var(--color-primary);">weave pr-review</code>: Risk-Scored PR Artifact, Stacked Branches & Lanes</h3>
+            <p style="color: var(--color-text-muted); font-size: 0.95rem; line-height: 1.6;">
+              All eight milestones implemented and tested; Custom-tier only (<code style="font-family: var(--font-mono); color: var(--color-primary);">feature: pr-review</code>).
+            </p>
+            <ul class="timeline-deliverables">
+              <li><strong>Deterministic risk score:</strong> Fixed-threshold Low/Medium/High/Critical header, reusing <code style="font-family: var(--font-mono); color: var(--color-primary);">weave blast</code>'s existing traversal &mdash; no model.</li>
+              <li><strong>One consolidated artifact:</strong> Aggregates contract drift, policy lint violations, and <code style="font-family: var(--font-mono); color: var(--color-primary);">weave verify</code>'s phantom-symbol check into one severity-ranked findings list (<code style="font-family: var(--font-mono); color: var(--color-primary);">blocker</code>/<code style="font-family: var(--font-mono); color: var(--color-primary);">warning</code>/<code style="font-family: var(--font-mono); color: var(--color-primary);">info</code>, mapped to GitHub's own Checks API annotation levels).</li>
+              <li><strong><code style="font-family: var(--font-mono); color: var(--color-primary);">--waive</code> / <code style="font-family: var(--font-mono); color: var(--color-primary);">--fail-on</code>:</strong> An audited bypass mechanism reusing this project's existing waiver pattern; a documented, stable <code style="font-family: var(--font-mono); color: var(--color-primary);">--format json</code> contract for an external LLM reviewer.</li>
+              <li><strong><code style="font-family: var(--font-mono); color: var(--color-primary);">--stack-base &lt;ref&gt;|auto</code> / <code style="font-family: var(--font-mono); color: var(--color-primary);">--lane &lt;ref&gt;</code>:</strong> Stacked-branch-aware and parallel-lane scoring &mdash; both plain git refs, no third-party git client's on-disk format involved.</li>
+              <li><strong>Local pre-push pipeline gate:</strong> <code style="font-family: var(--font-mono); color: var(--color-primary);">weave hooks install</code>/<code style="font-family: var(--font-mono); color: var(--color-primary);">uninstall</code> wires <code style="font-family: var(--font-mono); color: var(--color-primary);">weave blast</code> and <code style="font-family: var(--font-mono); color: var(--color-primary);">weave check-contracts --submodules</code> into an offline <code style="font-family: var(--font-mono); color: var(--color-primary);">pre-push</code> hook.</li>
             </ul>
           </div>
         </div>
@@ -266,7 +412,7 @@
           Feature Isolation
         </h3>
         <p style="color: var(--color-text-muted); font-size: 0.95rem; max-width: 720px; margin: 0 auto; line-height: 1.6;">
-          Optional features (<code style="font-family: var(--font-mono); color: var(--color-primary);">federation</code>, <code style="font-family: var(--font-mono); color: var(--color-primary);">hub</code>, <code style="font-family: var(--font-mono); color: var(--color-primary);">provenance</code>, <code style="font-family: var(--font-mono); color: var(--color-primary);">slm</code>, <code style="font-family: var(--font-mono); color: var(--color-primary);">rbac</code>, <code style="font-family: var(--font-mono); color: var(--color-primary);">turso</code>) are compiled in behind Cargo feature flags, verified to add zero new dependency edges to a default build's dependency tree — enabling one is intended not to measurably change default-build query latency or idle memory use.
+          Optional features (<code style="font-family: var(--font-mono); color: var(--color-primary);">federation</code>, <code style="font-family: var(--font-mono); color: var(--color-primary);">hub</code>, <code style="font-family: var(--font-mono); color: var(--color-primary);">provenance</code>, <code style="font-family: var(--font-mono); color: var(--color-primary);">slm</code>, <code style="font-family: var(--font-mono); color: var(--color-primary);">rbac</code>, <code style="font-family: var(--font-mono); color: var(--color-primary);">turso</code>, <code style="font-family: var(--font-mono); color: var(--color-primary);">policy-lint</code>, <code style="font-family: var(--font-mono); color: var(--color-primary);">pr-review</code>) are compiled in behind Cargo feature flags, verified to add zero new dependency edges to a default build's dependency tree — enabling one is intended not to measurably change default-build query latency or idle memory use.
         </p>
       </div>
 
