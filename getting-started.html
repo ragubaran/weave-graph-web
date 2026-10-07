@@ -85,18 +85,26 @@
           <span style="display: flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 50%; background: var(--color-primary); color: #000; font-weight: 800;">1</span>
           <h2 style="font-size: 1.75rem; font-weight: 700;">Install the CLI</h2>
         </div>
-        <p style="color: var(--color-text-muted); margin-bottom: var(--space-4); line-height: 1.6;">
-          Building from source is the only install path today. You need a Rust toolchain; SQLite is bundled, so there is nothing else to install. Package-manager releases and GitHub Release binaries are not published yet &mdash; they are planned for v1.0.1, which is still in development.
-        </p>
+        <!-- Pre-Release Notice & Planned Date -->
+        <div class="glass-card" style="margin-bottom: var(--space-6); border-left: 3px solid var(--color-primary); padding: var(--space-4) var(--space-6); background: rgba(0, 240, 255, 0.03);">
+          <div style="display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap; margin-bottom: var(--space-2);">
+            <span class="badge badge-purple" style="font-size: 0.8rem; font-weight: 700;">v1.0.1 Maturity Target</span>
+            <span class="badge badge-cyan" style="font-size: 0.8rem; font-weight: 700;">Planned Release Date: 10 October 2026</span>
+          </div>
+          <p style="color: var(--color-text-muted); font-size: 0.95rem; line-height: 1.6; margin: 0;">
+            The <code>v1.0.1</code> maturity release target is <strong>10 October 2026</strong>. Today, building from source is the stable installation path. Pre-release verification instructions for the upcoming Homebrew tap, platform release archives, and smoke test workflow are provided under <strong style="color: var(--color-primary);">Test-Install 1.0.1</strong> below.
+          </p>
+        </div>
 
         <div class="code-tabs-wrapper">
           <div class="code-tabs-header">
             <div class="code-tabs-nav">
               <button class="tab-btn active" data-target="get-source">Build from Source</button>
-              <button class="tab-btn" data-target="get-brew" style="opacity: 0.55;">Homebrew (coming soon)</button>
-              <button class="tab-btn" data-target="get-cargo" style="opacity: 0.55;">crates.io (coming soon)</button>
-              <button class="tab-btn" data-target="get-npm" style="opacity: 0.55;">npm (coming soon)</button>
-              <button class="tab-btn" data-target="get-pypi" style="opacity: 0.55;">PyPI (coming soon)</button>
+              <button class="tab-btn" data-target="get-test-101">Test-Install 1.0.1</button>
+              <button class="tab-btn" data-target="get-brew">Homebrew (10 Oct)</button>
+              <button class="tab-btn" data-target="get-cargo">crates.io (10 Oct)</button>
+              <button class="tab-btn" data-target="get-npm">npm (10 Oct)</button>
+              <button class="tab-btn" data-target="get-pypi">PyPI (10 Oct)</button>
             </div>
             <button class="copy-btn">
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
@@ -109,22 +117,49 @@ cargo install --git https://github.com/ragubaran/weave-graph.git weave-graph-cli
 # Add notes, the file watcher and the HTML viewer (not part of the team bundle)
 cargo install --git https://github.com/ragubaran/weave-graph.git weave-graph-cli --features team,notes,watch,viz
 
-# Or clone and build
+# Or clone and build directly
 git clone https://github.com/ragubaran/weave-graph.git
 cd weave-graph
 cargo build --release -p weave-graph-cli --features team
 cp target/release/weave ~/.local/bin/
 
 weave --version</code></pre>
-          <pre id="get-brew" class="code-pane"><code># Not published yet. No Homebrew formula exists today.
-# Use "Build from Source" until a release ships.</code></pre>
-          <pre id="get-cargo" class="code-pane"><code># Not published yet. weave-graph-cli is not on crates.io today.
-# Use the "cargo install --git" command under "Build from Source".</code></pre>
-          <pre id="get-npm" class="code-pane"><code># Not published yet. No npm package exists today.
-# Use "Build from Source" until a release ships.</code></pre>
-          <pre id="get-pypi" class="code-pane"><code># Not published yet. A future wheel will contain the Python
-# bindings (weave-graph-python) only; it will not install the weave CLI.
-# Use "Build from Source" for the CLI.</code></pre>
+          <pre id="get-test-101" class="code-pane"><code># Test-installing Weave Graph 1.0.1 (pre-release verification for 10 Oct 2026)
+
+# 1. Download platform archive & SHA256 checksum manifest
+TARGET="aarch64-apple-darwin" # or x86_64-apple-darwin, x86_64-unknown-linux-musl, aarch64-unknown-linux-musl
+ARCHIVE="weave-v1.0.1-${TARGET}.tar.gz"
+BASE="https://github.com/ragubaran/weave-graph/releases/download/v1.0.1"
+
+curl -fLO "$BASE/$ARCHIVE"
+curl -fLO "$BASE/SHA256SUMS.txt"
+grep "  $ARCHIVE$" SHA256SUMS.txt | shasum -a 256 -c -
+tar -xzf "$ARCHIVE"
+./weave --version  # Confirms "weave 1.0.1"
+
+# 2. Run disposable repository smoke test
+mkdir weave-1.0.1-smoke && cd weave-1.0.1-smoke && git init
+printf 'pub fn greet() {}\nfn caller() { greet(); }\n' > lib.rs
+weave init --mode single
+weave index
+weave query 'callers(greet)'
+weave report</code></pre>
+          <pre id="get-brew" class="code-pane"><code># Available on the 10 October 2026 release target once release assets are published:
+brew update
+brew tap weave-graph/tap
+brew install weave-graph/tap/weave
+weave --version</code></pre>
+          <pre id="get-cargo" class="code-pane"><code># crates.io package-manager release planned for 10 October 2026:
+cargo install weave-graph-cli --version 1.0.1 --features team --locked
+
+# Pre-release today: use "cargo install --git" under "Build from Source"</code></pre>
+          <pre id="get-npm" class="code-pane"><code># Zero-install npx execution for AI agents planned for 10 October 2026:
+npx @weave-graph/cli serve --mcp</code></pre>
+          <pre id="get-pypi" class="code-pane"><code># PyPI Python bindings wheel planned for 10 October 2026:
+pip install weave-graph==1.0.1
+
+# Note: Python wheel provides the Python SDK (weave-graph-python) only.
+# Use Build from Source or Homebrew for the command-line binary.</code></pre>
         </div>
 
         <div class="glass-card" style="margin-top: var(--space-6);">
@@ -778,6 +813,7 @@ lazy_load = true                   # 0MB idle RSS until weave ask is run</code><
           <div class="footer-col-title">Releases</div>
           <ul class="footer-links">
             <li><a href="release-notes.html">Release Notes</a></li>
+            <li><a href="release-notes.html#v1.0.1">v1.0.1 Release Target (10 Oct)</a></li>
             <li><a href="release-notes.html#v1.0.0">v1.0.0 Archive</a></li>
             <li><a href="https://github.com/ragubaran/weave-graph/releases" target="_blank" rel="noopener noreferrer">GitHub Releases</a></li>
           </ul>

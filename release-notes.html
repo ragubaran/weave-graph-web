@@ -70,15 +70,17 @@
   <main class="section">
     <div class="container" style="max-width: 960px;">
 
-      <!-- Unreleased / In-Development Work -->
-      <div id="unreleased" style="margin-bottom: var(--space-12); padding-bottom: var(--space-12); border-bottom: 1px solid var(--color-border);">
+      <!-- v1.0.1 Release Target -->
+      <div id="v1.0.1" style="margin-bottom: var(--space-12); padding-bottom: var(--space-12); border-bottom: 1px solid var(--color-border); position: relative;">
+        <span id="unreleased" style="position: absolute; top: -80px;"></span>
         <div style="display: flex; gap: 0.75rem; align-items: center; margin-bottom: var(--space-3); flex-wrap: wrap;">
-          <span class="badge badge-purple" style="font-size: 0.85rem; font-weight: 700;">Unreleased — In Development</span>
-          <span style="color: var(--color-text-muted); font-size: 0.85rem;">Built on top of v1.0.0, not yet tagged</span>
+          <span class="badge badge-cyan" style="font-size: 0.85rem; font-weight: 700;">v1.0.1 Maturity Target</span>
+          <span class="badge badge-purple" style="font-size: 0.85rem; font-weight: 700;">Planned Release Date: 10 October 2026</span>
+          <span style="color: var(--color-text-muted); font-size: 0.85rem;">Pre-release candidate (code frozen on <code>main</code>)</span>
         </div>
-        <h1 style="font-size: 2.5rem; font-weight: 800; letter-spacing: -0.02em;">Unreleased — Pre-Push Hooks, RBAC Hardening & Verified Binary Sizes</h1>
+        <h1 style="font-size: 2.5rem; font-weight: 800; letter-spacing: -0.02em;">Weave Graph v1.0.1 — Packaging Tiers, PR Review, Pre-Push Hooks &amp; Storage Engine Isolation</h1>
         <p style="color: var(--color-text-muted); font-size: 1.15rem; margin-top: var(--space-2); line-height: 1.6;">
-          Work merged to <code style="font-family: var(--font-mono); color: var(--color-primary);">main</code> since v1.0.0. None of this has been tagged or published as a release yet.
+          <strong>Maturity release target: 10 October 2026.</strong> Consolidates comprehensive code-intelligence capabilities built on top of v1.0.0. This baseline remains a planned target until the Git tag, GitHub Release binaries, and checksum manifest are published. After this boundary, active product development transitions into PR-review mode.
         </p>
 
         <!-- Unreleased Key Highlights Grid -->
@@ -330,7 +332,7 @@ cargo build --release -p weave-graph-cli
           <div class="footer-col-title">Releases</div>
           <ul class="footer-links">
             <li><a href="release-notes.html">Release Notes</a></li>
-            <li><a href="release-notes.html#unreleased">Unreleased Notes</a></li>
+            <li><a href="release-notes.html#v1.0.1">v1.0.1 Release Target (10 Oct)</a></li>
             <li><a href="release-notes.html#v1.0.0">v1.0.0 Archive</a></li>
             <li><a href="https://github.com/ragubaran/weave-graph/releases" target="_blank" rel="noopener noreferrer">GitHub Releases</a></li>
           </ul>

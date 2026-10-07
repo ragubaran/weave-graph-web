@@ -161,6 +161,45 @@
         </p>
       </div>
 
+      <!-- v1.0.1 Maturity Release Target Banner -->
+      <div class="glass-card" style="margin-bottom: var(--space-12); padding: var(--space-8); border: 1px solid rgba(0, 240, 255, 0.3); background: rgba(13, 17, 23, 0.7); border-radius: var(--radius-lg); position: relative; overflow: hidden;">
+        <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: var(--space-4); margin-bottom: var(--space-4);">
+          <div style="display: flex; align-items: center; gap: 0.75rem; flex-wrap: wrap;">
+            <span class="badge badge-purple" style="font-size: 0.9rem; font-weight: 700; padding: 0.35rem 0.75rem;">Maturity Release Target</span>
+            <span class="badge badge-cyan" style="font-size: 0.9rem; font-weight: 700; padding: 0.35rem 0.75rem;">Planned Date: Saturday, 10 October 2026</span>
+          </div>
+          <a href="release-notes.html#v1.0.1" class="btn btn-secondary btn-sm">View v1.0.1 Notes →</a>
+        </div>
+        <h2 style="font-size: 2rem; font-weight: 800; letter-spacing: -0.02em; margin-bottom: var(--space-3);">
+          Weave Graph v1.0.1 — Baseline Release Target
+        </h2>
+        <p style="color: var(--color-text-muted); font-size: 1.05rem; line-height: 1.6; max-width: 880px; margin-bottom: var(--space-6);">
+          <strong>Release boundary:</strong> <code style="font-family: var(--font-mono); color: var(--color-primary);">v1.0.1</code> is scheduled for publication on <strong>10 October 2026</strong>. Feature expansion stops during the release freeze window; upon publication, active product work transitions into PR-review mode. All hard gates (code quality, 90% per-crate coverage, memory bounds, deterministic re-indexing, and platform checksums) are verified against the immutable tag.
+        </p>
+
+        <!-- Hard Gates & Scope Highlights Grid -->
+        <div class="grid grid-3" style="gap: var(--space-4);">
+          <div style="background: rgba(255,255,255,0.02); border: 1px solid var(--color-border); border-radius: var(--radius-md); padding: var(--space-4);">
+            <div style="font-weight: 600; color: var(--color-primary); margin-bottom: var(--space-1); font-size: 0.95rem;">Target Scope Freeze</div>
+            <p style="font-size: 0.85rem; color: var(--color-text-muted); line-height: 1.5; margin: 0;">
+              Phases 1–3, 7, 9, 10, and 11 implemented and tested on <code>main</code>. Includes deterministic risk-scored PR review (<code style="font-size: 0.8rem;">weave pr-review</code>), pre-push hooks (<code style="font-size: 0.8rem;">weave hooks install</code>), and 12 MCP tools.
+            </p>
+          </div>
+          <div style="background: rgba(255,255,255,0.02); border: 1px solid var(--color-border); border-radius: var(--radius-md); padding: var(--space-4);">
+            <div style="font-weight: 600; color: var(--color-secondary); margin-bottom: var(--space-1); font-size: 0.95rem;">Release Gates (Phase 4)</div>
+            <p style="font-size: 0.85rem; color: var(--color-text-muted); line-height: 1.5; margin: 0;">
+              Verifying 500k-symbol RSS ceilings (&lt;80MB storage/CSR, &lt;244MB full index), multi-profile binary sizes (9.67 MiB core), and blocking CI gates before publishing the 10 Oct tag.
+            </p>
+          </div>
+          <div style="background: rgba(255,255,255,0.02); border: 1px solid var(--color-border); border-radius: var(--radius-md); padding: var(--space-4);">
+            <div style="font-weight: 600; color: #34d399; margin-bottom: var(--space-1); font-size: 0.95rem;">Distribution Matrix</div>
+            <p style="font-size: 0.85rem; color: var(--color-text-muted); line-height: 1.5; margin: 0;">
+              Pre-release verification across Apple Silicon/Intel macOS, Linux MUSL x86_64/ARM64, Windows MSVC, and the <code style="font-size: 0.8rem;">weave-graph/tap</code> Homebrew formula.
+            </p>
+          </div>
+        </div>
+      </div>
+
       <!-- Timeline Container -->
       <div class="timeline">
         
@@ -193,16 +232,17 @@
           <div class="timeline-content">
             <div class="timeline-header">
               <span class="timeline-phase">Phase 2 — Federation & Team Intelligence</span>
-              <span class="badge badge-cyan">Done (unreleased)</span>
+              <span class="badge badge-cyan">Done (v1.0.1 target — 10 Oct 2026)</span>
             </div>
             <h3 class="timeline-title">Multi-Repo Federation, Contract Drift & Developer Ergonomics</h3>
             <p style="color: var(--color-text-muted); font-size: 0.95rem; line-height: 1.6;">
-              Cross-repository graph composition, boundary contracts, markdown/Obsidian knowledge graphs, debounced watch mode, and local NL intent routing. Built on top of v1.0.0; not yet tagged as a release — see <a href="release-notes.html#unreleased">Release Notes</a>.
+              Cross-repository graph composition, boundary contracts, markdown/Obsidian knowledge graphs, debounced watch mode, and local NL intent routing. Built on top of v1.0.0; consolidated into the v1.0.1 planned release candidate (10 October 2026) — see <a href="release-notes.html#v1.0.1">Release Notes</a>.
             </p>
             <ul class="timeline-deliverables">
               <li><strong>Zero-Config MCP Setup & Smart Ignore Management:</strong> <code style="font-family: var(--font-mono); color: var(--color-primary);">weave init</code> auto-registers <code style="font-family: var(--font-mono); color: var(--color-primary);">.mcp.json</code> for clients that read it, and manages <code style="font-family: var(--font-mono); color: var(--color-primary);">.gitignore</code>/<code style="font-family: var(--font-mono); color: var(--color-primary);">.ignore</code> so the derived graph database stays untracked while <code style="font-family: var(--font-mono); color: var(--color-primary);">config.toml</code> stays tracked.</li>
               <li><strong>Federation Virtual Schema (<code style="font-family: var(--font-mono); color: var(--color-primary);">feature: federation</code>):</strong> Multi-repo linking (<code style="font-family: var(--font-mono); color: var(--color-primary);">weave link &lt;a&gt; &lt;b&gt;</code>, exactly two repos), persisted cross-boundary queries (<code style="font-family: var(--font-mono); color: var(--color-primary);">weave query-federated</code>), and unified canvas maps.</li>
               <li><strong>Topological Cycle Analysis & Contracts:</strong> Tarjan's Strongly Connected Components (SCC) and automated public API contract drift CI gates (<code style="font-family: var(--font-mono); color: var(--color-primary);">weave check-contracts</code>).</li>
+              <li><strong>Local Pre-Push Git Gate (M2.17):</strong> <code style="font-family: var(--font-mono); color: var(--color-primary);">weave hooks install</code> / <code style="font-family: var(--font-mono); color: var(--color-primary);">uninstall</code> installs a local offline pre-push hook running <code style="font-size: 0.85rem;">weave blast</code> and <code style="font-size: 0.85rem;">weave check-contracts --submodules</code> before code leaves the machine.</li>
               <li><strong>Markdown & Obsidian Ingestion (<code style="font-family: var(--font-mono); color: var(--color-primary);">feature: docs</code>):</strong> Streaming markdown parser (<code style="font-family: var(--font-mono); color: var(--color-primary);">pulldown-cmark</code>), wikilinks, and <code style="font-family: var(--font-mono); color: var(--color-primary);">.canvas</code> export.</li>
               <li><strong>Pinned Symbol Notes (<code style="font-family: var(--font-mono); color: var(--color-primary);">feature: notes</code>):</strong> Persistent agent/human knowledge pins (<code style="font-family: var(--font-mono); color: var(--color-primary);">weave note pin</code> / <code style="font-family: var(--font-mono); color: var(--color-primary);">weave note list</code>, MCP recall) with content-hash staleness tracking.</li>
               <li><strong>Debounced Watch Mode & HTML Viewer:</strong> File watcher (<code style="font-family: var(--font-mono); color: var(--color-primary);">feature: watch</code>) with blast-radius gating and an offline HTML viewer (<code style="font-family: var(--font-mono); color: var(--color-primary);">feature: viz</code>, <code style="font-family: var(--font-mono); color: var(--color-primary);">weave report --html</code> / <code style="font-family: var(--font-mono); color: var(--color-primary);">weave viz</code>).</li>
@@ -219,11 +259,11 @@
           <div class="timeline-content">
             <div class="timeline-header">
               <span class="timeline-phase">Phase 3 — Self-Hosted Scale & Custom Extensions</span>
-              <span class="badge badge-cyan">Done (unreleased)</span>
+              <span class="badge badge-cyan">Done (v1.0.1 target — 10 Oct 2026)</span>
             </div>
             <h3 class="timeline-title">Query-Layer RBAC, Hybrid Search, SCIM & Self-Hosted Registry</h3>
             <p style="color: var(--color-text-muted); font-size: 0.95rem; line-height: 1.6;">
-              Self-hosted security controls, trace overlays, architectural boundary enforcement, snapshot provenance, and an experimental vector search path, all isolated behind Cargo feature flags.
+              Self-hosted security controls, trace overlays, architectural boundary enforcement, snapshot provenance, and an experimental vector search path, all isolated behind Cargo feature flags and targeting the v1.0.1 baseline.
             </p>
             <ul class="timeline-deliverables">
               <li><strong>Query-Layer RBAC (<code style="font-family: var(--font-mono); color: var(--color-primary);">feature: rbac</code>):</strong> Storage/traversal boundary node masking with identity enforcement (<code style="font-family: var(--font-mono); color: var(--color-primary);">--as</code>, <code style="font-family: var(--font-mono); color: var(--color-primary);">--require-as</code>), per-user <code style="font-family: var(--font-mono); color: var(--color-primary);">path_scope</code>, and SCIM 2.0 directory synchronization.</li>
@@ -245,7 +285,7 @@
           <div class="timeline-content">
             <div class="timeline-header">
               <span class="timeline-phase">Phase 4 — Developer Performance, Evidence-Based Review & CI Gates</span>
-              <span class="badge badge-cyan">Partial — Release Gates Open</span>
+              <span class="badge badge-cyan">Partial — 10 Oct Release Gates Open</span>
             </div>
             <h3 class="timeline-title">Measured Profile Baselines, Review Evidence & Resource Budgets</h3>
             <p style="color: var(--color-text-muted); font-size: 0.95rem; line-height: 1.6;">
@@ -303,7 +343,7 @@
           <div class="timeline-content">
             <div class="timeline-header">
               <span class="timeline-phase">Phase 7 — Search & Storage Tuning (M7.1&ndash;M7.11)</span>
-              <span class="badge badge-success">Done</span>
+              <span class="badge badge-success">Done (v1.0.1 target)</span>
             </div>
             <h3 class="timeline-title">FTS Body/Doc-Comment Indexing, Fuzzy Resolution & Storage Measurement</h3>
             <p style="color: var(--color-text-muted); font-size: 0.95rem; line-height: 1.6;">
@@ -342,7 +382,7 @@
           <div class="timeline-content">
             <div class="timeline-header">
               <span class="timeline-phase">Phase 9 — Skylos-Style Verification & Submodule Contract Checking</span>
-              <span class="badge badge-success">Done</span>
+              <span class="badge badge-success">Done (v1.0.1 target)</span>
             </div>
             <h3 class="timeline-title">Pre-Flight Verification (<code style="font-family: var(--font-mono); color: var(--color-primary);">weave verify</code>) & Submodule Contract Drift</h3>
             <p style="color: var(--color-text-muted); font-size: 0.95rem; line-height: 1.6;">
@@ -363,7 +403,7 @@
           <div class="timeline-content">
             <div class="timeline-header">
               <span class="timeline-phase">Phase 10 — Competitive Feature Adoption</span>
-              <span class="badge badge-cyan">Mostly Done</span>
+              <span class="badge badge-cyan">Mostly Done (v1.0.1 target)</span>
             </div>
             <h3 class="timeline-title">Budgeted MCP Tools, Edge Provenance & Query Grammar Filters</h3>
             <p style="color: var(--color-text-muted); font-size: 0.95rem; line-height: 1.6;">
@@ -388,7 +428,7 @@
           <div class="timeline-content">
             <div class="timeline-header">
               <span class="timeline-phase">Phase 11 — PR Review Speedup & Deterministic Risk Scoring</span>
-              <span class="badge badge-success">Done</span>
+              <span class="badge badge-success">Done (v1.0.1 target)</span>
             </div>
             <h3 class="timeline-title"><code style="font-family: var(--font-mono); color: var(--color-primary);">weave pr-review</code>: Risk-Scored PR Artifact, Stacked Branches & Lanes</h3>
             <p style="color: var(--color-text-muted); font-size: 0.95rem; line-height: 1.6;">
@@ -461,7 +501,7 @@
           <div class="footer-col-title">Releases</div>
           <ul class="footer-links">
             <li><a href="release-notes.html">Release Notes</a></li>
-            <li><a href="release-notes.html#v1.0.1">v1.0.1 Notes</a></li>
+            <li><a href="release-notes.html#v1.0.1">v1.0.1 Release Target (10 Oct)</a></li>
             <li><a href="release-notes.html#v1.0.0">v1.0.0 Archive</a></li>
             <li><a href="https://github.com/ragubaran/weave-graph/releases" target="_blank" rel="noopener noreferrer">GitHub Releases</a></li>
           </ul>
