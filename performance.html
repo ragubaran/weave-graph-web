@@ -146,16 +146,16 @@
 
         <div style="margin-top: var(--space-6); display: flex; justify-content: center; gap: 0.75rem; flex-wrap: wrap;">
           <div class="hw-badge">
-            <span>💻 Hardware:</span>
-            <strong style="color: #fff;">Intel Core i7-1068NG7 @ 2.30GHz</strong>
+            <span>🐧 Linux VM:</span>
+            <strong style="color: #fff;">Linux 6.8.0 x86_64 (6 vCPUs, 11 GiB RAM, Rust 1.100.0)</strong>
           </div>
           <div class="hw-badge">
-            <span>⚙️ OS:</span>
-            <strong style="color: #fff;">macOS Darwin 24.6.0 (16 GB RAM)</strong>
+            <span>💻 macOS:</span>
+            <strong style="color: #fff;">Intel Core i7-1068NG7 / Darwin 24.6.0 (16 GB RAM)</strong>
           </div>
           <div class="hw-badge">
             <span>📊 Harness:</span>
-            <strong style="color: #fff;">Criterion 0.8.2 + /usr/bin/time -l</strong>
+            <strong style="color: #fff;">Criterion 0.8.2 + GNU time / /usr/bin/time -l</strong>
           </div>
         </div>
       </div>
@@ -164,9 +164,9 @@
       <div class="grid grid-3" style="margin-bottom: var(--space-12);">
         <div class="metric-card">
           <span class="status-badge status-met">✅ Met (&lt; 15 MiB)</span>
-          <div class="metric-val">9.67 MiB</div>
+          <div class="metric-val">9.67 / 12.77 MiB</div>
           <div style="font-weight: 600; color: var(--color-text-main); margin-bottom: 0.25rem;">Core-Only Binary</div>
-          <p class="metric-sub"><code style="color: var(--color-primary);">--no-default-features</code> build with the 8 core languages. The default build, with all 29 grammars, is 41.16 MiB.</p>
+          <p class="metric-sub"><code style="color: var(--color-primary);">--no-default-features</code> (8 core languages): 9.67 MiB on macOS, 12.77 MiB on Linux. Default build: 41.16 / 43.65 MiB.</p>
         </div>
 
         <div class="metric-card">
@@ -184,24 +184,24 @@
         </div>
 
         <div class="metric-card">
-          <span class="status-badge status-met">✅ Met (&lt; 80 MiB)</span>
-          <div class="metric-val">24 MiB</div>
+          <span class="status-badge status-met">✅ Met (&le; 80 MiB)</span>
+          <div class="metric-val">52 / 55 MiB</div>
           <div style="font-weight: 600; color: var(--color-text-main); margin-bottom: 0.25rem;">Storage + Graph at 500k Symbols</div>
-          <p class="metric-sub">Peak memory of the storage and in-memory graph test alone (<code style="color: var(--color-primary);">mem_500k</code>, macOS). Linux rerun still open.</p>
+          <p class="metric-sub">Linux VM (<code style="color: var(--color-primary);">scripts/verify_envelope.sh</code>): 52 MiB SQLite+CSR, 55 MiB Turso+CSR (24 MiB on macOS).</p>
         </div>
 
         <div class="metric-card">
-          <span class="status-badge status-missed">❌ Missed (&lt; 80 MiB)</span>
-          <div class="metric-val">244 MiB</div>
+          <span class="status-badge status-met">✅ Met (&le; 80 MiB)</span>
+          <div class="metric-val">57 MiB</div>
           <div style="font-weight: 600; color: var(--color-text-main); margin-bottom: 0.25rem;">Full Index Run at 500k Symbols</div>
-          <p class="metric-sub">Peak memory of a complete <code style="color: var(--color-primary);">weave init &amp;&amp; weave index</code> run (<code style="color: var(--color-primary);">scripts/pipeline_rss.sh</code>). 80 MiB is a target, not yet met.</p>
+          <p class="metric-sub">Linux VM (<code style="color: var(--color-primary);">scripts/pipeline_rss.sh</code> exit 0): down from 381 &rarr; 244 &rarr; 162 &rarr; 103 &rarr; 57 MiB via <code style="color: var(--color-primary);">ProjectIndex</code> inline candidates; 14.21s at 6 threads.</p>
         </div>
 
         <div class="metric-card">
-          <span class="status-badge status-info">ℹ️ Container-aware</span>
-          <div class="metric-val">¼ of limit</div>
-          <div style="font-weight: 600; color: var(--color-text-main); margin-bottom: 0.25rem;">Indexing Memory Budget</div>
-          <p class="metric-sub">Indexing reads the cgroup (or host) memory limit and shrinks batch sizes when a quarter of it is less than 512 MiB. <a href="#resource-budget">How it works</a>.</p>
+          <span class="status-badge status-met">✅ Met (&le; 80 MiB)</span>
+          <div class="metric-val">13 MiB</div>
+          <div style="font-weight: 600; color: var(--color-text-main); margin-bottom: 0.25rem;">MCP Session &amp; Search at 500k</div>
+          <p class="metric-sub">200-call <code style="color: var(--color-primary);">weave_impact_radius</code> MCP session: 13 MiB RSS / 3 ms avg on Linux (11 MiB macOS); 500k <code style="color: var(--color-primary);">weave search</code>: 6.5 MiB.</p>
         </div>
       </div>
 
@@ -215,7 +215,7 @@
             </p>
           </div>
           <div style="font-family: var(--font-mono); font-size: 0.85rem; color: var(--color-text-muted);">
-            Benchmarks run: <strong style="color: #fff;">2026-09-22, unreleased main branch</strong>
+            Verified: <strong style="color: #fff;">2026-11-16 Linux x86_64 VM + macOS baseline</strong>
           </div>
         </div>
 
@@ -234,36 +234,43 @@
               <tr>
                 <td><strong>Binary size, core-only (<code style="font-size: 0.85rem;">--no-default-features</code>)</strong></td>
                 <td>&lt; 15 MiB</td>
-                <td class="highlight-col"><strong>9.67 MiB</strong> (10,141,152 bytes, 8 core languages)</td>
-                <td>Intel i7-1068NG7 / macOS</td>
+                <td class="highlight-col"><strong>12.77 MiB</strong> (13,386,032 B Linux) / <strong>9.67 MiB</strong> (10,141,152 B macOS)</td>
+                <td>Linux 6.8 x86_64 &amp; macOS</td>
                 <td><span class="status-badge status-met">✅ Met</span></td>
               </tr>
               <tr>
-                <td><strong>Binary size, default build</strong></td>
-                <td>No target</td>
-                <td class="highlight-col"><strong>41.16 MiB</strong> (all 29 grammars; the &lt; 15 MiB target covers the core-only build only)</td>
-                <td>Intel i7-1068NG7 / macOS</td>
-                <td><span class="status-badge status-info">ℹ️ Informational</span></td>
+                <td><strong>Binary size, default / custom builds</strong></td>
+                <td>&lt; 50 MiB</td>
+                <td class="highlight-col"><strong>43.65 MiB</strong> extended / <strong>13.36 MiB</strong> team / <strong>13.80 MiB</strong> custom (Linux); <strong>41.16 MiB</strong> macOS</td>
+                <td>Linux 6.8 x86_64 &amp; macOS</td>
+                <td><span class="status-badge status-met">✅ Met</span></td>
               </tr>
               <tr>
-                <td><strong>Storage + graph memory, 500k symbols (<code style="font-size: 0.85rem;">mem_500k</code>)</strong></td>
-                <td>&lt; 80 MiB</td>
-                <td class="highlight-col"><strong>24 MiB</strong> peak (storage and in-memory graph only, 2026-09-16)</td>
-                <td>Intel i7-1068NG7 / macOS</td>
-                <td><span class="status-badge status-met">✅ Met (macOS only)</span></td>
+                <td><strong>Storage + graph memory, 500k symbols</strong></td>
+                <td>&le; 80 MiB</td>
+                <td class="highlight-col"><strong>52 MiB</strong> SQLite+CSR / <strong>55 MiB</strong> Turso+CSR (Linux); <strong>24 MiB</strong> (macOS)</td>
+                <td>Linux 6.8 x86_64 &amp; macOS</td>
+                <td><span class="status-badge status-met">✅ Met</span></td>
               </tr>
               <tr>
                 <td><strong>Full index run memory, 500k symbols</strong></td>
-                <td>&lt; 80 MiB</td>
-                <td class="highlight-col"><strong>244 MiB</strong> peak (<code style="font-size: 0.85rem;">scripts/pipeline_rss.sh</code>, down from 381 MiB)</td>
-                <td>Intel i7-1068NG7 / macOS</td>
-                <td><span class="status-badge status-missed">❌ Missed</span></td>
+                <td>&le; 80 MiB</td>
+                <td class="highlight-col"><strong>57 MiB</strong> peak (<code style="font-size: 0.85rem;">scripts/pipeline_rss.sh</code> exit 0; <code style="font-size: 0.85rem;">core</code> 53.9–58.1 MiB across 1–6T, <code style="font-size: 0.85rem;">fts</code> 57.0 MiB)</td>
+                <td>Linux 6.8 x86_64 (6 vCPUs)</td>
+                <td><span class="status-badge status-met">✅ Met (PERF-G16 closed)</span></td>
               </tr>
               <tr>
-                <td><strong>MCP session memory, 500k-symbol graph</strong></td>
-                <td>&lt; 80 MiB</td>
-                <td class="highlight-col"><strong>11 MiB</strong> peak over 200 <code style="font-size: 0.85rem;">weave_impact_radius</code> calls, ~16 ms average per call</td>
-                <td>Intel i7-1068NG7 / macOS</td>
+                <td><strong>500k indexing wall clock (1 &rarr; 6 threads)</strong></td>
+                <td>Multi-core scaling</td>
+                <td class="highlight-col"><strong>28.55s &rarr; 14.21s</strong> (<strong>2.01&times;</strong> speedup, deterministic 96,550,912 B DB across all thread counts)</td>
+                <td>Linux 6.8 x86_64 (6 vCPUs)</td>
+                <td><span class="status-badge status-met">✅ Verified (P14.3)</span></td>
+              </tr>
+              <tr>
+                <td><strong>MCP session &amp; search RSS, 500k symbols</strong></td>
+                <td>&le; 80 MiB</td>
+                <td class="highlight-col"><strong>13 MiB</strong> RSS, 3 ms/query over 200 <code style="font-size: 0.85rem;">weave_impact_radius</code> calls; <strong>6.5 MiB</strong> <code style="font-size: 0.85rem;">weave search</code> (<code style="font-size: 0.85rem;">fts</code>)</td>
+                <td>Linux 6.8 x86_64</td>
                 <td><span class="status-badge status-met">✅ Met</span></td>
               </tr>
               <tr>
@@ -281,53 +288,32 @@
                 <td><span class="status-badge status-met">✅ Met</span></td>
               </tr>
               <tr>
-                <td><strong>Graph memory per node</strong></td>
-                <td>&lt;= 24 bytes</td>
-                <td class="highlight-col"><strong>12 bytes</strong> forward only; <strong>24 bytes</strong> once caller lookups build the reverse index</td>
-                <td>Intel i7-1068NG7 / macOS</td>
+                <td><strong>Graph memory (<code style="font-size: 0.85rem;">CompactCsr</code>)</strong></td>
+                <td>&le; 24 B/node, &le; 8 B/edge</td>
+                <td class="highlight-col"><strong>8.0 B/node</strong> (<code style="font-size: 0.85rem;">u32</code> offsets + <code style="font-size: 0.85rem;">index_to_id</code>) + <strong>4.0 B/edge</strong> forward; temporary reverse CSR on demand</td>
+                <td>Linux 6.8 x86_64</td>
                 <td><span class="status-badge status-met">✅ Met</span></td>
               </tr>
               <tr>
-                <td><strong>Graph memory per edge</strong></td>
-                <td>&lt;= 8 bytes</td>
-                <td class="highlight-col"><strong>4 bytes</strong> forward only; <strong>8 bytes</strong> with the reverse index</td>
-                <td>Intel i7-1068NG7 / macOS</td>
+                <td><strong>Quantized vector scale (10k / 100k chunks)</strong></td>
+                <td>Sub-25 ms @ 10k</td>
+                <td class="highlight-col"><strong>13.04 ms</strong> p50 (10k, 4.59 MiB DB) / <strong>130.09 ms</strong> p50 (100k, 43.72 MiB DB), <strong>Recall@10 = 0.980</strong></td>
+                <td>Linux 6.8 x86_64</td>
+                <td><span class="status-badge status-met">✅ Measured (P4-F)</span></td>
+              </tr>
+              <tr>
+                <td><strong>Full reindex, 500 files (Criterion)</strong></td>
+                <td>No target</td>
+                <td class="highlight-col"><strong>235.35 ms</strong> median (227.06–244.38 ms, &minus;61.07% parallel two-pass pipeline)</td>
+                <td>Linux 6.8 x86_64</td>
+                <td><span class="status-badge status-met">✅ Measured</span></td>
+              </tr>
+              <tr>
+                <td><strong>Feature isolation &amp; test coverage</strong></td>
+                <td>&ge; 90% per crate</td>
+                <td class="highlight-col"><strong>14/14</strong> optional features isolated; <strong>93.88%</strong> default / <strong>91.98%</strong> all-features / <strong>96.72%</strong> Python (all 9 crates &ge; 90%)</td>
+                <td>Linux 6.8 x86_64</td>
                 <td><span class="status-badge status-met">✅ Met</span></td>
-              </tr>
-              <tr>
-                <td><strong>1-File Delta Patch</strong></td>
-                <td>&lt; 20 ms</td>
-                <td class="highlight-col">Not measured directly. Estimated at <strong>~13 ms</strong> for a 500-symbol file from the insert rate</td>
-                <td>Intel i7-1068NG7 / macOS</td>
-                <td><span class="status-badge status-info">ℹ️ Estimate</span></td>
-              </tr>
-              <tr>
-                <td><strong>Full reindex, 500 files</strong></td>
-                <td>No target</td>
-                <td class="highlight-col"><strong>342–357 ms</strong> (<code style="font-size: 0.85rem;">index_full_reindex/500_files</code>)</td>
-                <td>Intel i7-1068NG7 / macOS</td>
-                <td><span class="status-badge status-info">ℹ️ Informational</span></td>
-              </tr>
-              <tr>
-                <td><strong>Batch insert, 1,000 nodes</strong></td>
-                <td>No target</td>
-                <td class="highlight-col"><strong>46.0–48.5 ms</strong> (~21k nodes/sec)</td>
-                <td>Intel i7-1068NG7 / macOS</td>
-                <td><span class="status-badge status-info">ℹ️ Informational</span></td>
-              </tr>
-              <tr>
-                <td><strong>Batch insert, 10,000 nodes</strong></td>
-                <td>No target</td>
-                <td class="highlight-col"><strong>372–382 ms</strong> (~26.5k nodes/sec)</td>
-                <td>Intel i7-1068NG7 / macOS</td>
-                <td><span class="status-badge status-info">ℹ️ Informational</span></td>
-              </tr>
-              <tr>
-                <td><strong>Graph load, 200k nodes</strong></td>
-                <td>No target</td>
-                <td class="highlight-col"><strong>155–159 ms</strong> (<code style="font-size: 0.85rem;">csr_load/load/200000</code>)</td>
-                <td>Intel i7-1068NG7 / macOS</td>
-                <td><span class="status-badge status-info">ℹ️ Informational</span></td>
               </tr>
               <tr>
                 <td><strong>Parser throughput (Rust)</strong></td>
@@ -753,13 +739,13 @@
               </tr>
               <tr>
                 <td><strong>Peak Memory (500k Symbols)</strong></td>
-                <td class="highlight-col"><strong>40.7 MB peak RSS</strong> (Integer CSR)</td>
+                <td class="highlight-col"><strong>57 MiB</strong> full CLI index / <strong>52 MiB</strong> CSR (Linux)</td>
                 <td>On-disk SQLite B-trees (No published figure)</td>
                 <td>&gt; 6.5 GB (OOM failure risk)</td>
               </tr>
               <tr>
                 <td><strong>Agent MCP Surface</strong></td>
-                <td class="highlight-col"><strong>Up to 8 Tools</strong> + 3-Tier Progressive Budgeting</td>
+                <td class="highlight-col"><strong>12 Tools</strong> (7 core + 5 feature-gated) + Token Budgeting</td>
                 <td>Single-call dense payload (<code style="font-size: 0.85rem;">codegraph_explore</code>)</td>
                 <td>Unbounded JSON dumps (30k-60k tokens)</td>
               </tr>

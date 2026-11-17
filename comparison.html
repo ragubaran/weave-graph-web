@@ -110,7 +110,7 @@
             </tr>
             <tr>
               <td><strong>Binary Size</strong></td>
-              <td class="highlight-col">9.67 MiB core-only build (8 languages); 41.16 MiB default build (29 grammars)</td>
+              <td class="highlight-col">9.67 MiB macOS / 12.77 MiB Linux core-only (8 languages); 41.16 / 43.65 MiB default (29 grammars)</td>
               <td>npm bundle; no published size</td>
               <td>Multi-service install</td>
               <td>Database install plus loader</td>
@@ -120,7 +120,7 @@
             </tr>
             <tr>
               <td><strong>Memory at 500k Symbols</strong></td>
-              <td class="highlight-col">24 MiB peak for storage + graph (macOS). A full <code>weave index</code> run peaks at 244 MiB, which misses the 80 MiB target.</td>
+              <td class="highlight-col"><strong>57 MiB</strong> full <code>weave index</code> on Linux (&le; 80 MiB budget); 52 MiB SQLite+CSR (24 MiB macOS); 13 MiB MCP session (3 ms/query); 6.5 MiB search</td>
               <td>No published figure</td>
               <td>Not measured here</td>
               <td>Not measured here</td>
@@ -190,7 +190,7 @@
             </tr>
             <tr>
               <td><strong>Where Others Are Better</strong></td>
-              <td class="highlight-col">Weave Graph gaps: parsing runs at ~2.3–3.2 MiB/s, below target; no framework route edges; Windows untested; 29 grammars</td>
+              <td class="highlight-col">Weave Graph gaps: parsing runs at ~2.3–3.2 MiB/s; framework routes are an opt-in 4-framework pilot (Flask, Spring Boot, Axum, Gin); vector uses mock embeddings; Windows untested</td>
               <td>Route/navigation edges for 17 web frameworks; interactive browser viewer with flow tracing; FTS5 on by default</td>
               <td>Mature org-scale code search, precise SCIP navigation, web UI</td>
               <td>General-purpose graph query language (Cypher) over any schema</td>
@@ -224,7 +224,7 @@
               Sourcegraph is built for code search and navigation across an organisation, with a web UI and precise SCIP indexes. Running it means running a server deployment.
             </p>
             <p style="color: var(--color-text-muted); font-size: 0.95rem; line-height: 1.6;">
-              <strong>Weave Graph:</strong> A single binary that keeps its graph under <code style="font-family: var(--font-mono); color: var(--color-primary);">.weave/</code> in each repo, with no server to run. The core-only build is 9.67 MiB; the default build is 41.16 MiB.
+              <strong>Weave Graph:</strong> A single binary that keeps its graph under <code style="font-family: var(--font-mono); color: var(--color-primary);">.weave/</code> in each repo, with no server to run. The core-only build is 9.67 MiB (macOS) / 12.77 MiB (Linux); the default build is 41.16 / 43.65 MiB.
             </p>
           </div>
 
@@ -254,7 +254,7 @@
               CodeGraph is the closest tool in this category: a Rust-kernel, SQLite-backed, MCP-served local code graph. According to its own docs, it supports route edges for 17 web frameworks, an interactive viewer, and anonymous telemetry that is on by default.
             </p>
             <p style="color: var(--color-text-muted); font-size: 0.95rem; line-height: 1.6;">
-              <strong>Weave Graph:</strong> No second runtime. The default build contains no network code, and agents get tiered, token-budgeted tools instead of one dense payload. Weave Graph has no framework-route awareness.
+              <strong>Weave Graph:</strong> No second runtime. The default build contains no network code, and agents get tiered, token-budgeted tools instead of one dense payload. Weave Graph ships a standalone opt-in <code style="font-family: var(--font-mono); color: var(--color-primary);">framework-routes</code> pilot for Flask, Spring Boot, Axum, and Gin.
             </p>
           </div>
 
@@ -264,7 +264,7 @@
               Python tools are easy to extend and can expose the graph over MCP. They usually hold the whole graph in Python objects and save it as one file.
             </p>
             <p style="color: var(--color-text-muted); font-size: 0.95rem; line-height: 1.6;">
-              <strong>Weave Graph:</strong> Stores the graph in SQLite and loads it into compact arrays: 24 MiB for storage + graph at 500k symbols. A full index run peaks at 244 MiB. It removes edges in both directions on incremental saves, and it can link two repos for cross-repo queries.
+              <strong>Weave Graph:</strong> Stores the graph in SQLite and loads it into compact arrays: 52 MiB for storage + graph on Linux (24 MiB macOS) at 500k symbols, and <strong>57 MiB</strong> peak RSS for a full <code style="font-family: var(--font-mono); color: var(--color-primary);">weave index</code> (&le; 80 MiB budget). It removes edges in both directions on incremental saves, and it can link two repos for cross-repo queries.
             </p>
           </div>
 

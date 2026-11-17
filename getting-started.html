@@ -168,7 +168,7 @@ pip install weave-graph==1.0.1
             <li><code style="color: var(--color-primary);">--features team</code>: multi-repo linking, contract checks, <code>weave verify</code>, Markdown/Obsidian ingestion, <code>weave search</code>.</li>
             <li><code style="color: var(--color-primary);">notes</code>, <code style="color: var(--color-primary);">watch</code>, <code style="color: var(--color-primary);">viz</code>: add them explicitly; neither <code>team</code> nor <code>custom</code> includes them.</li>
             <li><code style="color: var(--color-primary);">--features custom</code>: <code>team</code> plus hub sync, snapshot signing, RBAC, trace import and policy lint. See <a href="self-hosted.html">Self-Hosted</a>.</li>
-            <li>Binary size: the default and <code>team</code> builds are about 41 MB. The core-only build (<code style="color: var(--color-primary);">--no-default-features</code>, 8 languages) is about 9.7 MiB. Windows builds are untested.</li>
+            <li>Binary size: the default and <code>team</code> builds are ~41.16 MiB (macOS) / ~43.65 MiB (Linux extended). The core-only build (<code style="color: var(--color-primary);">--no-default-features</code>, 8 languages) is 9.67 MiB (macOS) / 12.77 MiB (Linux); <code>team</code> on Linux is 13.36 MiB. Windows builds are untested.</li>
           </ul>
         </div>
       </section>
@@ -689,14 +689,20 @@ lazy_load = true                   # 0MB idle RSS until weave ask is run</code><
               <tr>
                 <td><strong>Deterministic Core</strong></td>
                 <td><code style="color: var(--color-primary);">--no-default-features</code></td>
-                <td><span class="badge badge-cyan">9.6 MB Static</span></td>
-                <td>8 core languages, integer CSR matrix, SQLite store, stdio MCP server, <code style="font-size: 0.85rem;">weave query</code>.</td>
+                <td><span class="badge badge-cyan">9.67 / 12.77 MiB</span></td>
+                <td>8 core languages, integer <code style="font-size: 0.85rem;">CompactCsr</code> matrix, SQLite store, stdio MCP server, <code style="font-size: 0.85rem;">weave query</code>, 57 MiB 500k index RSS on Linux.</td>
               </tr>
               <tr>
                 <td><strong>Extended Languages</strong></td>
                 <td><code style="color: var(--color-primary);">--features lang-extended</code></td>
                 <td><span class="badge badge-cyan">Default (29+ Langs)</span></td>
                 <td>Adds Bash, C#, CSS, Dart, Elixir, Haskell, HTML, JSON, Kotlin, Lua, PHP, PowerShell, Properties/.env, R, Ruby, Scala, SQL, Swift, TOML, YAML, Zig (21 grammars, on by default).</td>
+              </tr>
+              <tr>
+                <td><strong>Full-Text &amp; Vector Search</strong></td>
+                <td><code style="color: var(--color-primary);">--features fts,vector</code></td>
+                <td><span class="badge badge-cyan">In Team</span></td>
+                <td>SQLite FTS5 BM25 search with AST synonyms (<code style="font-size: 0.85rem;">weave search</code>, 6.5 MiB RSS @ 500k) plus <code style="font-size: 0.85rem;">sqlite-vec</code> quantized ANN (currently backed by deterministic <code style="font-size: 0.85rem;">MockEmbeddingProvider</code>).</td>
               </tr>
               <tr>
                 <td><strong>Documentation & Notes</strong></td>
@@ -711,10 +717,22 @@ lazy_load = true                   # 0MB idle RSS until weave ask is run</code><
                 <td>Cross-repo dependency cycle detection (Tarjan SCC) and boundary contract validation.</td>
               </tr>
               <tr>
+                <td><strong>Policy Lint &amp; Drift</strong></td>
+                <td><code style="color: var(--color-primary);">--features policy-lint</code></td>
+                <td><span class="badge badge-cyan">In Custom</span></td>
+                <td>YAML architectural boundary rules (<code style="font-size: 0.85rem;">weave policy lint</code>), cycle/orphan drift detection, and role/waiver exemptions.</td>
+              </tr>
+              <tr>
                 <td><strong>PR Review Risk Scoring</strong></td>
                 <td><code style="color: var(--color-primary);">--features pr-review</code></td>
-                <td><span class="badge badge-cyan">Available</span></td>
-                <td>Risk-scored <code style="font-size: 0.85rem;">weave pr-review</code> artifact: blast radius, contract drift, policy violations, and phantom symbols in one severity-ranked report, with <code style="font-size: 0.85rem;">--stack-base</code>/<code style="font-size: 0.85rem;">--lane</code> for stacked branches and parallel lanes. Implies <code style="font-size: 0.85rem;">federation</code>.</td>
+                <td><span class="badge badge-cyan">In Custom</span></td>
+                <td>Risk-scored <code style="font-size: 0.85rem;">weave pr-review</code> artifact: blast radius, contract drift, policy violations, and phantom symbols in one severity-ranked report, with <code style="font-size: 0.85rem;">--stack-base</code>/<code style="font-size: 0.85rem;">--lane</code>, <code style="font-size: 0.85rem;">--format html</code>, <code style="font-size: 0.85rem;">--check-remote</code>, and <code style="font-size: 0.85rem;">--history</code>. Implies <code style="font-size: 0.85rem;">federation</code>.</td>
+              </tr>
+              <tr>
+                <td><strong>Framework Routes Pilot</strong></td>
+                <td><code style="color: var(--color-primary);">--features framework-routes</code></td>
+                <td><span class="badge badge-cyan">Opt-in Pilot</span></td>
+                <td>Standalone route/handler extraction for Flask, Spring Boot, Axum, and Gin (<code style="font-size: 0.85rem;">ROUTES_TO</code> edges during <code style="font-size: 0.85rem;">weave index</code>).</td>
               </tr>
               <tr>
                 <td><strong>File Watcher</strong></td>
@@ -729,6 +747,12 @@ lazy_load = true                   # 0MB idle RSS until weave ask is run</code><
                 <td>Offline SVG/Canvas HTML graph viewer (<code style="font-size: 0.85rem;">weave viz</code> or <code style="font-size: 0.85rem;">weave report --html</code>).</td>
               </tr>
               <tr>
+                <td><strong>HTTP Compression</strong></td>
+                <td><code style="color: var(--color-primary);">--features http-compression</code></td>
+                <td><span class="badge badge-cyan">Available</span></td>
+                <td>Gzip negotiation on MCP HTTP responses (&gt; 1 KB threshold) with smaller-only bypass.</td>
+              </tr>
+              <tr>
                 <td><strong>Local SLM Router</strong></td>
                 <td><code style="color: var(--color-primary);">--features slm</code></td>
                 <td><span class="badge badge-cyan">Available</span></td>
@@ -737,26 +761,26 @@ lazy_load = true                   # 0MB idle RSS until weave ask is run</code><
               <tr>
                 <td><strong>Centralized Hub</strong></td>
                 <td><code style="color: var(--color-primary);">--features hub</code></td>
-                <td><span class="badge badge-cyan">Available</span></td>
+                <td><span class="badge badge-cyan">In Custom</span></td>
                 <td>Client push/pull snapshot sync + standalone lightweight <code style="font-size: 0.85rem;">weave-registry</code> daemon.</td>
               </tr>
               <tr>
                 <td><strong>RBAC Masking</strong></td>
                 <td><code style="color: var(--color-primary);">--features rbac</code></td>
-                <td><span class="badge badge-cyan">Available</span></td>
+                <td><span class="badge badge-cyan">In Custom</span></td>
                 <td>Query-layer security guard masking private symbols across CLI, MCP, and export streams.</td>
               </tr>
               <tr>
                 <td><strong>OpenTelemetry Tracing</strong></td>
                 <td><code style="color: var(--color-primary);">--features otel</code></td>
-                <td><span class="badge badge-cyan">Available</span></td>
+                <td><span class="badge badge-cyan">In Custom</span></td>
                 <td>OTLP JSON span ingestion and latency heatmap annotations on call graphs.</td>
               </tr>
               <tr>
                 <td><strong>Python SDK Wheel</strong></td>
                 <td><code style="color: var(--color-primary);">--features python</code></td>
                 <td><span class="badge badge-cyan">maturin wheel</span></td>
-                <td>PyO3 native bindings (<code style="font-size: 0.85rem;">import weave_graph</code>) with zero impact on the CLI binary.</td>
+                <td>PyO3 native bindings (<code style="font-size: 0.85rem;">import weave_graph</code>, 96.72% line coverage) with zero impact on the CLI binary.</td>
               </tr>
               <tr>
                 <td><strong>Full Team Bundle</strong></td>

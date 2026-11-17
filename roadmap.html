@@ -403,20 +403,20 @@
           <div class="timeline-content">
             <div class="timeline-header">
               <span class="timeline-phase">Phase 10 — Competitive Feature Adoption</span>
-              <span class="badge badge-cyan">Mostly Done (v1.0.1 target)</span>
+              <span class="badge badge-success">Core &amp; Scheduling Verified (Linux 2026-11-16)</span>
             </div>
-            <h3 class="timeline-title">Budgeted MCP Tools, Edge Provenance & Query Grammar Filters</h3>
+            <h3 class="timeline-title">Budgeted MCP Tools, Edge Provenance &amp; Memory-Bounded Indexing</h3>
             <p style="color: var(--color-text-muted); font-size: 0.95rem; line-height: 1.6;">
-              Recommendations from an internal competitive review; most items done and tested. Two are honestly left partial &mdash; a real mechanism shipped, with a benchmark or Linux-verification half needing infrastructure this project doesn't have yet &mdash; and one is deliberately not started.
+              Recommendations from an internal competitive review; core items implemented, tested, and verified on Linux x86_64 (including cgroup v2 container scheduling and the 57 MiB &le; 80 MiB 500k-symbol gate).
             </p>
             <ul class="timeline-deliverables">
               <li><strong><code style="font-family: var(--font-mono); color: var(--color-primary);">weave_explore</code>:</strong> One budgeted MCP tool composing repo map, file API, call trace, impact radius, and a source excerpt under one token budget, RBAC-masked before truncation.</li>
               <li><strong><code style="font-family: var(--font-mono); color: var(--color-primary);">weave_check_freshness</code>:</strong> Always-on MCP tool distinguishing Fresh/Behind/Dirty/Unknown &mdash; never a false "fresh."</li>
               <li><strong><code style="font-family: var(--font-mono); color: var(--color-primary);">weave_find_all</code>:</strong> Exhaustive (not ranked top-N) FTS5 symbol-aware search.</li>
-              <li><strong>Edge provenance & confidence:</strong> Every edge now carries an Exact/Heuristic confidence tag, inspectable via <code style="font-family: var(--font-mono); color: var(--color-primary);">weave query</code>'s <code style="font-family: var(--font-mono); color: var(--color-primary);">precise:</code> filter.</li>
+              <li><strong>Edge provenance &amp; confidence:</strong> Every edge now carries an Exact/Heuristic confidence tag, inspectable via <code style="font-family: var(--font-mono); color: var(--color-primary);">weave query</code>'s <code style="font-family: var(--font-mono); color: var(--color-primary);">precise:</code> filter.</li>
               <li><strong>Query grammar filters:</strong> <code style="font-family: var(--font-mono); color: var(--color-primary);">path:</code>/<code style="font-family: var(--font-mono); color: var(--color-primary);">lang:</code>/<code style="font-family: var(--font-mono); color: var(--color-primary);">kind:</code>/<code style="font-family: var(--font-mono); color: var(--color-primary);">visibility:</code>/<code style="font-family: var(--font-mono); color: var(--color-primary);">edge:</code> on <code style="font-family: var(--font-mono); color: var(--color-primary);">weave query</code>, fully backward-compatible.</li>
-              <li><strong>Framework route pilot:</strong> Flask <code style="font-family: var(--font-mono); color: var(--color-primary);">@app.route</code> decorator detection (<code style="font-family: var(--font-mono); color: var(--color-primary);">feature: framework-routes</code>, off by default), zero default-build cost.</li>
-              <li><strong>Memory-bounded indexing</strong> <em>(partial)</em>: A cgroup/container-aware admission budget shipped and tested; the Linux RSS-ceiling verification half is still open (this project's sandbox is macOS-only).</li>
+              <li><strong>Framework route pilot:</strong> 4-framework opt-in route/handler detection across Flask, Spring Boot, Axum, and Gin (<code style="font-family: var(--font-mono); color: var(--color-primary);">feature: framework-routes</code>, off by default), zero default-build cost.</li>
+              <li><strong>Memory-bounded indexing:</strong> Verified inside a real Linux cgroup v2 container (<code style="font-family: var(--font-mono); color: var(--color-primary);">--memory=256m --cpus=2</code>), and unthrottled 500k-symbol indexing closed <code style="font-family: var(--font-mono); color: var(--color-primary);">PERF-G16</code> at <strong>57 MiB &le; 80 MiB</strong>.</li>
               <li><strong>Not started, by deliberate choice:</strong> SCIP/LSP precision import &mdash; would need a new protobuf dependency or an unvalidated hand-rolled parser, neither of which clears this project's zero-invention bar yet.</li>
             </ul>
           </div>
@@ -444,6 +444,26 @@
           </div>
         </div>
 
+        <!-- Phase 14 -->
+        <div class="timeline-item">
+          <div class="timeline-marker done"></div>
+          <div class="timeline-content">
+            <div class="timeline-header">
+              <span class="timeline-phase">Phase 14 — Core-Aware Multi-Threaded Indexing &amp; 80 MiB Closure</span>
+              <span class="badge badge-success">Done &amp; Verified (Linux 2026-11-16)</span>
+            </div>
+            <h3 class="timeline-title">57 MiB 500k-Symbol Indexing, Parallel Pipeline &amp; 90%+ Coverage Across All 9 Crates</h3>
+            <p style="color: var(--color-text-muted); font-size: 0.95rem; line-height: 1.6;">
+              Eliminated the two dominant resolver allocations and parallelized AST parsing/edge resolution over a single overlapped SQLite writer.
+            </p>
+            <ul class="timeline-deliverables">
+              <li><strong>Resolver memory closure (<code style="font-family: var(--font-mono); color: var(--color-primary);">PERF-G16</code>):</strong> Contiguous arena <code style="font-family: var(--font-mono); color: var(--color-primary);">StringInterner</code> (<code style="font-family: var(--font-mono); color: var(--color-primary);">RandomState</code>) + inline <code style="font-family: var(--font-mono); color: var(--color-primary);">ProjectIndex::first_candidate: Vec&lt;u32&gt;</code> cut 500k indexing RSS from 162 MiB &rarr; 103 MiB &rarr; <strong>57 MiB</strong> (&le; 80 MiB budget).</li>
+              <li><strong>Parallel overlapped pipeline:</strong> Rayon worker pool (<code style="font-family: var(--font-mono); color: var(--color-primary);">WEAVE_INDEX_THREADS</code>) overlapped with single-writer SQLite rebuilds, <code style="font-family: var(--font-mono); color: var(--color-primary);">open_rebuild</code> + <code style="font-family: var(--font-mono); color: var(--color-primary);">fsync</code>, and deferred secondary index creation (<strong>2.01&times;</strong> speedup on Linux, <strong>235.35 ms</strong> Criterion median).</li>
+              <li><strong>Vector &amp; coverage hardening:</strong> Removed stage-2 vector N+1 SQL lookups (<code style="font-family: var(--font-mono); color: var(--color-primary);">PERF-G15</code>), measured 1k–100k quantized-scan scale (<code style="font-family: var(--font-mono); color: var(--color-primary);">Recall@10 = 0.980</code>), and verified &ge; 90% line coverage across all 9 crates (93.88% default / 91.98% all-features / 96.72% Python).</li>
+            </ul>
+          </div>
+        </div>
+
       </div>
 
       <!-- Feature Isolation Callout -->
@@ -452,7 +472,7 @@
           Feature Isolation
         </h3>
         <p style="color: var(--color-text-muted); font-size: 0.95rem; max-width: 720px; margin: 0 auto; line-height: 1.6;">
-          Optional features (<code style="font-family: var(--font-mono); color: var(--color-primary);">federation</code>, <code style="font-family: var(--font-mono); color: var(--color-primary);">hub</code>, <code style="font-family: var(--font-mono); color: var(--color-primary);">provenance</code>, <code style="font-family: var(--font-mono); color: var(--color-primary);">slm</code>, <code style="font-family: var(--font-mono); color: var(--color-primary);">rbac</code>, <code style="font-family: var(--font-mono); color: var(--color-primary);">turso</code>, <code style="font-family: var(--font-mono); color: var(--color-primary);">policy-lint</code>, <code style="font-family: var(--font-mono); color: var(--color-primary);">pr-review</code>) are compiled in behind Cargo feature flags, verified to add zero new dependency edges to a default build's dependency tree — enabling one is intended not to measurably change default-build query latency or idle memory use.
+          All 14 optional features (<code style="font-family: var(--font-mono); color: var(--color-primary);">docs</code>, <code style="font-family: var(--font-mono); color: var(--color-primary);">federation</code>, <code style="font-family: var(--font-mono); color: var(--color-primary);">hub</code>, <code style="font-family: var(--font-mono); color: var(--color-primary);">provenance</code>, <code style="font-family: var(--font-mono); color: var(--color-primary);">slm</code>, <code style="font-family: var(--font-mono); color: var(--color-primary);">rbac</code>, <code style="font-family: var(--font-mono); color: var(--color-primary);">policy-lint</code>, <code style="font-family: var(--font-mono); color: var(--color-primary);">pr-review</code>, <code style="font-family: var(--font-mono); color: var(--color-primary);">framework-routes</code>, etc.) pass <code style="font-family: var(--font-mono); color: var(--color-primary);">scripts/feature_isolation.sh</code> on Linux x86_64 with no measurable idle RSS or query-latency regression.
         </p>
       </div>
 

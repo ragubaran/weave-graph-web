@@ -93,14 +93,14 @@
         <!-- Metric Cards -->
         <div class="stats-grid">
           <div class="stat-card">
-            <span class="stat-badge">Target &lt; 15 MiB</span>
+            <span class="stat-badge">Met &lt; 15 MiB</span>
             <span class="stat-number">9.67 MiB</span>
-            <div class="stat-label">Core-only binary<br><span style="font-size: 0.75rem; color: var(--color-text-muted); font-weight: 400; display: block; margin-top: 3px;">(<code>--no-default-features</code>, 8 languages). The default build is 41.16 MiB.</span></div>
+            <div class="stat-label">Core-only binary (macOS)<br><span style="font-size: 0.75rem; color: var(--color-text-muted); font-weight: 400; display: block; margin-top: 3px;"><code>12.77 MiB</code> on Linux x86_64 (<code>--no-default-features</code>, 8 languages). Default build: 41.16 / 43.65 MiB.</span></div>
           </div>
           <div class="stat-card">
-            <span class="stat-badge">Measured</span>
-            <span class="stat-number">11 MiB</span>
-            <div class="stat-label">MCP session peak RSS<br><span style="font-size: 0.75rem; color: var(--color-text-muted); font-weight: 400; display: block; margin-top: 3px;">A full <code>weave index</code> of 500k symbols peaks at 244 MiB, above the 80 MiB target. <a href="performance.html">Details</a></span></div>
+            <span class="stat-badge">Met &le; 80 MiB</span>
+            <span class="stat-number">57 MiB</span>
+            <div class="stat-label">Full 500k-symbol index RSS (Linux)<br><span style="font-size: 0.75rem; color: var(--color-text-muted); font-weight: 400; display: block; margin-top: 3px;">MCP 200-query session: <code>13 MiB</code> (<code>3 ms/q</code>); <code>weave search</code>: <code>6.5 MiB</code>. <a href="performance.html">Details</a></span></div>
           </div>
           <div class="stat-card">
             <span class="stat-badge">MCP</span>
@@ -109,8 +109,8 @@
           </div>
           <div class="stat-card">
             <span class="stat-badge">Measured</span>
-            <span class="stat-number">~30 µs</span>
-            <div class="stat-label">3-hop call traversal<br><span style="font-size: 0.75rem; color: var(--color-text-muted); font-weight: 400; display: block; margin-top: 3px;">(27.6 µs Criterion bench on a laptop; <a href="performance.html">details</a>)</span></div>
+            <span class="stat-number">~28 µs</span>
+            <div class="stat-label">3-hop call traversal<br><span style="font-size: 0.75rem; color: var(--color-text-muted); font-weight: 400; display: block; margin-top: 3px;">(27.6 µs Criterion bench; <code>93.88%</code> / <code>91.98%</code> test coverage; <a href="performance.html">details</a>)</span></div>
           </div>
         </div>
 
@@ -327,7 +327,7 @@
             <div style="font-size: 2rem; margin-bottom: var(--space-4);">⚡</div>
             <h3 style="font-size: 1.25rem; margin-bottom: var(--space-2);">CSR Adjacency Matrix</h3>
             <p style="color: var(--color-text-muted); font-size: 0.95rem; line-height: 1.6;">
-              A compact uint32 Compressed Sparse Row layout backs the in-memory graph. Storage and graph memory alone stay at 24 MiB at 500k symbols; a full <code style="font-family: var(--font-mono); color: var(--color-primary);">weave index</code> run currently peaks at 244 MiB, above the 80 MiB target &mdash; see <a href="performance.html">Performance</a>.
+              A compact <code style="font-family: var(--font-mono); color: var(--color-primary);">CompactCsr</code> layout (8 B/node + 4 B/edge forward) backs the in-memory graph. Storage + CSR stay at 52 MiB on Linux (24 MiB macOS) at 500k symbols, and full <code style="font-family: var(--font-mono); color: var(--color-primary);">weave index</code> peaks at <strong>57 MiB</strong> (&le; 80 MiB budget) &mdash; see <a href="performance.html">Performance</a>.
             </p>
           </div>
         </div>
